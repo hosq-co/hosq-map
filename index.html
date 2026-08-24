@@ -20,7 +20,7 @@
   --paper:#EBE2D6;
   --paper-dim:#e2d8c9;
   --text:#231F20;
-  --text-soft:#6B6566;
+  --text-soft:#5C5657;
   --kraft:#c3ad88;
   --kraft-deep:#b09a74;
   --frame:#e9e3d2;
@@ -106,12 +106,13 @@ a{color:inherit}
 .card{position:absolute;width:150px;cursor:pointer;user-select:none;-webkit-user-select:none;
   background:var(--frame);padding:8px 8px 7px;border-radius:1px;
   box-shadow:0 6px 18px rgba(0,0,0,.5);
-  transform:rotate(var(--rot,0deg));
+  /* centred on its own point, so the three widths all sit true */
+  transform:translate(-50%,-50%) rotate(var(--rot,0deg));
   transition:box-shadow .2s, opacity .25s, transform .11s ease;
 }
 .card:hover{box-shadow:0 12px 28px rgba(0,0,0,.6)}
 /* the card wakes under a held pointer — this is how the rule teaches itself */
-.card.arming{transform:rotate(var(--rot,0deg)) translateY(-2px) scale(1.015);
+.card.arming{transform:translate(-50%,-52%) rotate(var(--rot,0deg)) scale(1.015);
   box-shadow:0 10px 24px rgba(0,0,0,.58)}
 .card.sel{cursor:grab}               /* an open card lifts on the first move */
 #stage.dragging .card{transition:none;cursor:grabbing} /* the field is moving */
@@ -121,7 +122,7 @@ a{color:inherit}
   background:rgba(0,0,0,.7);pointer-events:none}
 .card.member{outline:2px solid var(--coral);outline-offset:3px}
 .card.held{cursor:grabbing;transition:none;
-  transform:rotate(var(--rot,0deg)) scale(1.03);
+  transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.03);
   box-shadow:0 3px 6px rgba(0,0,0,.6),0 26px 50px rgba(0,0,0,.6)}
 .card.sel{outline:2px solid var(--coral);outline-offset:3px}
 .card .ph{position:relative;width:100%;height:138px;background:#2a2620;overflow:hidden}
@@ -141,6 +142,20 @@ a{color:inherit}
 .card .tag{display:flex;align-items:center;gap:5px;font-family:'IBM Plex Mono',monospace;
   font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#6a6350;padding:0 1px 2px}
 .card .tag i{font-style:normal;font-size:10px}
+
+/* ---- the three kinds of card ---- */
+/* a curator's print sits in a wider, lighter mat */
+.card.curator{width:172px;background:#f4f0e4;padding:11px 11px 9px}
+.card.curator .ph{height:150px}
+.card.curator .cap{font-size:13.5px;font-weight:700}
+.card.curator .tag{color:#5d5644}
+/* the hosq team on kraft stock */
+.card.team{width:140px;background:var(--kraft);padding:7px 7px 6px}
+.card.team .ph{height:124px}
+.card.team .cap{font-size:11.5px;color:#2e2617}
+.card.team .given,.card.team .tag{color:#6d5c3c}
+.card.team .ph .init{background:linear-gradient(160deg,#b9a682,#ab9871);color:#5d4f33}
+.card.team .ph .init::after{color:#7d6c4b}
 
 /* ---------- controls ---------- */
 #controls{position:fixed;left:18px;bottom:18px;display:flex;flex-direction:column;gap:6px;z-index:30}
@@ -177,36 +192,40 @@ a{color:inherit}
    is cropped to the drawing, so its left edge sits on the text's left edge. */
 #masthead{flex:none;padding:26px 34px 22px}
 #homelogo{display:block;padding:0;line-height:0;cursor:pointer;transition:opacity .15s}
-#homelogo img{display:block;width:104px;height:auto;user-select:none;-webkit-user-drag:none}
+#homelogo img{display:block;width:83px;height:auto;user-select:none;-webkit-user-drag:none}
 #homelogo:hover{opacity:.6}
 
-.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--text-soft);margin-bottom:18px}
-h1.big{font-size:clamp(32px,3.2vw,46px);line-height:1.05;font-weight:700;letter-spacing:-.01em;margin-bottom:22px}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--text-soft);margin-bottom:12px}
+h1.big{font-size:38px;line-height:1.1;font-weight:700;letter-spacing:-.01em;margin-bottom:24px}
+h1.big:has(+ .given){margin-bottom:12px}
 .lead{font-size:17px;line-height:1.6;color:var(--text);margin-bottom:14px}
 .lead a,.lead .lk{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;cursor:pointer;transition:color .15s}
 .lead a:hover,.lead .lk:hover{color:var(--coral)}
 /* the given name, only where it is not already the headline */
 .given{font-family:'Cera Pro',sans-serif;font-weight:400;font-size:20px;line-height:1.3;
-  color:var(--text-soft);margin:-14px 0 22px}
+  color:var(--text-soft);margin:0 0 24px}
 /* the opening statement on the home view */
 .display{font-family:'Cera Pro',sans-serif;font-weight:400;font-size:24px;line-height:1.45;
   color:var(--ink);margin-bottom:18px}
 .display .lk{text-decoration:underline;text-underline-offset:3px;cursor:pointer;transition:color .15s}
 .display .lk:hover{color:var(--coral)}
+/* what they do, in a sentence, above the plate */
+.blurb{font-size:17px;line-height:1.6;color:var(--text);margin:0 0 24px}
 /* where they are from — printed verbatim, as a record entry */
-.platecap{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;
+.platecap{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;
   text-transform:uppercase;color:var(--text-soft);margin:2px 0 6px}
-.unlisted{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-soft)}
+.unlisted{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--text-soft)}
 .backrow{display:block;width:100%;text-align:left;margin:-8px 0 22px;padding:9px 0;
   font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--text-soft);border-bottom:1px solid var(--line);transition:color .15s}
 .backrow:hover{color:var(--coral)}
-.sect{margin-top:30px}
-.sect h3{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.22em;
+.sect{margin-top:36px}
+.sect h3{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;
   text-transform:uppercase;color:var(--text-soft);font-weight:400;margin-bottom:12px}
 .pills{display:flex;flex-wrap:wrap;gap:7px}
-.pill{font-family:'IBM Plex Mono',monospace;font-size:11.5px;padding:6px 10px;border:1px solid #c9c4b4;
+.pill{font-family:'IBM Plex Mono',monospace;font-size:11.5px;padding:6px 10px;
   border-radius:999px;color:#42402f;background:transparent}
 button.pill{cursor:pointer;transition:background .15s,border-color .15s,color .15s}
 button.pill:hover{background:#fff;border-color:var(--coral)}
@@ -217,8 +236,11 @@ button.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 
 /* profile photo */
 /* the print in its frame, lying on the page */
-.pphoto{width:100%;max-width:340px;background:var(--frame);padding:10px 10px 30px;margin:6px 0 10px;
-  box-shadow:0 2px 6px rgba(0,0,0,.12),0 14px 30px rgba(0,0,0,.12);transform:rotate(-1deg)}
+.pphoto{position:relative;width:100%;max-width:340px;background:var(--frame);
+  padding:10px 10px 34px;margin:24px 0;
+  box-shadow:0 2px 6px rgba(0,0,0,.12),0 14px 30px rgba(0,0,0,.12);
+  transform:rotate(var(--prot,-1deg))}   /* leans the same way its card does */
+.pphoto .platecap{position:absolute;left:12px;right:12px;bottom:10px;margin:0}
 .pphoto img{width:100%;display:block;filter:grayscale(1) sepia(.25) contrast(1.04)}
 .pphoto .no{height:240px;display:flex;align-items:center;justify-content:center;
   font-family:'IBM Plex Mono',monospace;font-size:44px;color:#6b5c3e;
@@ -229,16 +251,18 @@ button.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .connect span.tg{font-family:'IBM Plex Mono',monospace;font-size:13px;color:#42402f}
 
 /* related */
-.rel{margin-top:52px;border-top:1px solid var(--line);padding-top:18px}
-.rel h3{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--text-soft);font-weight:400;margin-bottom:6px}
+.rel{margin-top:60px;border-top:1px solid var(--line);padding-top:18px}
+.rel h3{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--text-soft);font-weight:400;margin-bottom:12px}
 .rel .r{display:flex;justify-content:space-between;align-items:baseline;gap:12px;width:100%;
   text-align:left;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
-.rel .r:hover{background:var(--paper-dim)}
+.rel .r{padding:12px 8px;margin:0 -8px;width:calc(100% + 16px)}
+.rel .r:hover{background:transparent}
+.rel .r:hover span{color:var(--coral)}
 .rel .r small{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;
   text-transform:uppercase;color:var(--text-soft);white-space:nowrap}
 
-.footline{margin-top:48px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;
+.footline{margin-top:60px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;
   letter-spacing:.18em;text-transform:uppercase;color:var(--text-soft)}
 
 /* help overlay */
@@ -252,7 +276,11 @@ button.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   /* the panel is a bottom sheet, so every control moves into the strip of
      map that is left above it — before this they all sat behind the sheet */
   #panel{width:100vw;top:auto;height:58vh;box-shadow:0 -10px 30px rgba(0,0,0,.4)}
-  #panel-scroll{padding:20px 22px 50px}
+  #panel-scroll{padding:0 22px 40px}
+  /* the sheet is short: the running head takes a third of what it does on
+     desktop, and its left edge follows the text's left edge down here too */
+  #masthead{padding:14px 22px 12px;border-bottom:1px solid var(--line)}
+  #homelogo img{width:64px}
   #controls{flex-direction:row;left:12px;top:12px;bottom:auto}
   #controls button{width:34px;height:34px}
   #statebar{top:56px;left:12px;right:12px;font-size:10.5px}
@@ -358,6 +386,7 @@ function applySoon(){                 // at most one transform write per frame
   requestAnimationFrame(()=>{rafPending=false;apply()});
 }
 
+const TILTS=[-6.5,-4.5,-2.5,-1,0,0,1,2.5,4.5,6.5];   // right, left, and square
 function layout(){
   const groups={};
   DATA.projects.forEach(p=>groups[p]=[]);
@@ -387,7 +416,11 @@ function layout(){
       ring++;
     }
     c.members.forEach((p,idx)=>{
-      p._x=pts[idx].x; p._y=pts[idx].y; p._rot=(rnd()-.5)*7;
+      p._x=pts[idx].x; p._y=pts[idx].y;
+      // Cards thrown down by hand: some lean right, some left, some landed
+      // square. A narrow random spread reads as one uniform tilt, so the
+      // angles are drawn from a set with real distance between them.
+      p._rot=TILTS[Math.floor(rnd()*TILTS.length)]+(rnd()-.5)*.8;
       order.push(p.id);
     });
     c.rings=ring-1;
@@ -401,7 +434,7 @@ function layout(){
    A few passes of pairwise separation, pushing along the cheaper axis so the
    scatter survives. Deterministic — no randomness, same board every load. */
 function relax(){
-  const MINX=158*.72, MINY=196*.72, PASSES=14;
+  const MINX=176*.72, MINY=200*.72, PASSES=14;   // sized for the widest card
   for(let it=0;it<PASSES;it++){
     for(let i=0;i<PEOPLE.length;i++){
       const a=PEOPLE[i];
@@ -432,38 +465,12 @@ const TITLE=s=>s.replace(/\S+/g,w=>/^(to|and|of|the|in)$/i.test(w)?w.toLowerCase
 const NORM=s=>TITLE(s.replace(/AI [Vv]isual/i,'AI visual').replace(/\s+/g,' ').trim())
   .replace(/^Ai Visual$/,'AI visual').replace(/^Ai Sound$/,'AI sound');
 const tagsOf=p=>[...p.disciplines.map(NORM),...p.tools.map(NORM),...p.skills.map(NORM)];
-const keysOf=p=>[...p.disciplines.map(x=>'d:'+NORM(x)),...p.tools.map(x=>'t:'+NORM(x)),
-                 ...p.skills.map(x=>'s:'+NORM(x))];
-let AFFINITY=[], TAGINDEX={};
-function computeAffinity(){
-  const N=PEOPLE.length, df={};
-  const sets=PEOPLE.map(p=>new Set(keysOf(p)));
-  sets.forEach(s=>s.forEach(a=>df[a]=(df[a]||0)+1));
-  const idf=a=>Math.log(N/(df[a]||1));
+/* Every craft, and who holds it. This is the whole index the piece needs:
+   a tag is a thread, and pulling one shows the entire company that shares it. */
+let TAGINDEX={};
+function buildTagIndex(){
   TAGINDEX={};
   PEOPLE.forEach(p=>tagsOf(p).forEach(t=>{(TAGINDEX[t]=TAGINDEX[t]||[]).push(p.id)}));
-  const cand=[];
-  for(let i=0;i<N;i++){
-    const c=[];
-    for(let j=0;j<N;j++){
-      if(i===j)continue;
-      let w=0,n=0,shared=[];
-      for(const a of sets[i])if(sets[j].has(a)){w+=idf(a);n++;shared.push(a)}
-      if(!n)continue;
-      c.push({j,score:w/Math.sqrt(sets[i].size*sets[j].size),shared});
-    }
-    c.sort((a,b)=>b.score-a.score);
-    cand.push(c.slice(0,2)); // each person keeps their two closest kin
-  }
-  const seen=new Set(); AFFINITY=[];
-  cand.forEach((c,i)=>c.forEach(({j,score,shared})=>{
-    const k=Math.min(i,j)+'-'+Math.max(i,j);
-    if(seen.has(k))return; seen.add(k);
-    // the reason for the bond = the rarest thing they share
-    const reason=shared.slice().sort((a,b)=>idf(b)-idf(a))[0];
-    AFFINITY.push({a:PEOPLE[i],b:PEOPLE[j],score,reason:reason.slice(2),
-      shared:shared.map(s=>s.slice(2))});
-  }));
 }
 
 /* deterministic wobble: same pair always gets the same crooked line */
@@ -638,10 +645,13 @@ function render(){
   PEOPLE.forEach(p=>{
     const [icon,role]=ROLE_ICON(p.role);
     const el=document.createElement('div');
-    // one species of card for everyone — a catalogue does not print two
-    // designs for the same kind of entry
-    el.className='card';
-    el.style.left=(p._x-79)+'px'; el.style.top=(p._y-95)+'px';
+    // Three kinds of card, so the field has rhythm and you can read standing
+    // at a glance: curators sit in a wide light mat, the hosq team on kraft,
+    // everyone else in the plain frame.
+    const kind=role==='curator'||role==='verticurator'?' curator'
+              :role==='hosq team'?' team':'';
+    el.className='card'+kind;
+    el.style.left=p._x+'px'; el.style.top=p._y+'px';
     // the tilt lives in a variable so the lift states can compose on top of it
     el.style.setProperty('--rot',p._rot+'deg');
     // only files we actually hold are requested — no speculative fetches
@@ -670,8 +680,8 @@ function render(){
   refreshThreads(); // threads pinned over the cards, like string on a cork board
 }
 function placeCard(p){
-  p._el.style.left=(p._x-79)+'px';
-  p._el.style.top=(p._y-95)+'px';
+  p._el.style.left=p._x+'px';
+  p._el.style.top=p._y+'px';
 }
 
 /* ---- press to open, hold to pick up ----
@@ -922,13 +932,17 @@ function renderProfile(p){
   if(activeTag){                       // a way back into the thread you came from
     h+=`<button class="backrow" onclick="renderTagPanel('${esc(activeTag)}')">← ${activeTag} · ${(TAGINDEX[activeTag]||[]).length} people</button>`;
   }
-  h+=`<div class="eyebrow">${p.project} · ${role}</div>`;
+  // the hosq team's project is the team, so it would otherwise say it twice
+  h+=`<div class="eyebrow">${p.project.toLowerCase()===role.toLowerCase()?role:p.project+' · '+role}</div>`;
   h+=`<h1 class="big" tabindex="-1">${art}</h1>`;
   if(given)h+=`<p class="given">${given}</p>`;
-  h+=`<div class="pphoto">`+
+  if(p.blurb)h+=`<p class="blurb">${p.blurb}</p>`;
+  // the country is printed in the mat's own bottom band, where a plate's
+  // caption belongs — that band is what the 30px of padding was always for
+  h+=`<div class="pphoto" style="--prot:${(p._rot*.22).toFixed(2)}deg">`+
      (p.photo?`<img src="photos/${p.photo}.jpg" alt="${art}" onerror="this.outerHTML='<div class=no>${initials(art)}</div>'">`
-             :`<div class="no">${initials(art)}</div>`)+`</div>`;
-  if(p.country)h+=`<div class="platecap">${p.country}</div>`;
+             :`<div class="no">${initials(art)}</div>`)+
+     (p.country?`<div class="platecap">${p.country}</div>`:'')+`</div>`;
   const tagPills=arr=>arr.map(d=>tagPill(NORM(d))).join('');
   if(p.disciplines.length){h+=`<div class="sect"><h3>Discipline</h3><div class="pills">${tagPills(p.disciplines)}</div></div>`}
   if(p.tools.length){h+=`<div class="sect"><h3>Tools</h3><div class="pills">${tagPills(p.tools)}</div></div>`}
@@ -936,18 +950,12 @@ function renderProfile(p){
   if(!p.disciplines.length&&!p.tools.length&&!p.skills.length){
     h+=`<div class="sect"><h3>Craft</h3><div class="unlisted">not yet listed</div></div>`;
   }
-  const kin=AFFINITY.filter(e=>e.a.id===p.id||e.b.id===p.id)
-    .sort((x,y)=>y.score-x.score).slice(0,4);
-  if(kin.length){
-    // the right column names the other person's project, so you can see the
-    // tie jump the ring — which is the whole claim the threads make
-    h+=`<div class="rel"><h3>Bound by craft</h3>`+
-      kin.map(e=>{const o=e.a.id===p.id?e.b:e.a;
-        return `<button class="r" onclick="select(${o.id})"><span>${o.artistic}</span><small>${o.project}</small></button>`}).join('')+
-      `</div>`;
-  }
+  // No ranked "closest kin" list here. Every craft above is already the way
+  // to everyone who shares it: the pill pulls its thread and shows the whole
+  // company on the map, which is a fuller answer than a pair chosen by a
+  // score the reader cannot see.
   if(p.instagram||p.telegram){
-    h+=`<div class="sect connect"><h3>Connect</h3>`;
+    h+=`<div class="rel connect"><h3>Connect</h3>`;
     if(p.instagram)h+=`<a href="${p.instagram}" target="_blank" rel="noopener">Instagram</a>`;
     if(p.telegram)h+=`<a href="https://t.me/${p.telegram.replace(/^@/,'')}" target="_blank" rel="noopener">Telegram</a>`;
     h+=`</div>`;
@@ -1151,7 +1159,7 @@ fetch('data/people.json')
   .then(d=>{
     DATA=d; PEOPLE=d.people;
     PEOPLE.forEach(p=>BY_ID[p.id]=p);
-    layout(); computeAffinity(); render(); buildMenu(); placeArrows();
+    layout(); buildTagIndex(); render(); buildMenu(); placeArrows();
     const m=location.hash.match(/^#p\/(\d+)$/);
     if(m&&BY_ID[+m[1]])renderProfile(BY_ID[+m[1]]); else renderHome();
     frameInitial();
