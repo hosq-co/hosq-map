@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hosq community — Notations '26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Cera Pro';src:url('fonts/Cera Pro Regular.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Cera Pro';src:url('fonts/Cera Pro Medium.otf') format('opentype');font-weight:500;font-display:swap}
+@font-face{font-family:'Cera Pro';src:url('fonts/Cera Pro Bold.otf') format('opentype');font-weight:700;font-display:swap}
+:root{
+  --ink:#231F20;
+  --canvas:#231F20;
+  --mm-1:rgba(214,138,96,.055);   /* 1 mm — the mesh you feel more than see */
+  --mm-5:rgba(214,138,96,.10);    /* 5 mm */
+  --mm-10:rgba(219,150,108,.17);  /* 10 mm — the decade line */
+  --paper:#EBE2D6;
+  --paper-dim:#e2d8c9;
+  --text:#231F20;
+  --text-soft:#6B6566;
+  --kraft:#c3ad88;
+  --kraft-deep:#b09a74;
+  --frame:#e9e3d2;
+  --line:#d0c5b4;
+  --sel:#FF6F55;
+  --coral:#FF6F55;
+  --violet:#C47CF1;
+  --green:#14B672;
+  --greendark:#0A7A4B;
+  --blue:#56A4CB;
+  --pink:#E770C3;
+  font-size:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;background:var(--canvas)}
+body{font-family:'Cera Pro','DM Sans',system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+button{font:inherit;background:none;border:none;cursor:pointer;color:inherit}
+a{color:inherit}
+
+/* ---------- stage ---------- */
+/* Millimetre paper: the old draughting sheet — a 1 mm mesh, a firmer line
+   every 5 mm, a decade line every 10 mm, in the rust ink those sheets were
+   printed with. Fixed CSS background: painted once, never scales, costs the
+   browser nothing while the field pans or zooms. */
+#stage{position:fixed;inset:0;cursor:grab;overflow:hidden;
+  touch-action:none;   /* the map owns the gesture; the panel keeps native scroll */
+  background:radial-gradient(ellipse 120% 100% at 50% 45%, #2b2624 0%, var(--canvas) 78%);
+}
+/* The sheet itself: one layer, rasterised once, turned by the compositor.
+   Oversized by √2 so no corner ever swings into view. The browser animates
+   a transform matrix — no repaint, no layout, nothing per frame on the CPU. */
+#paper{position:fixed;left:50%;top:50%;width:220vmax;height:220vmax;
+  margin:-110vmax 0 0 -110vmax;pointer-events:none;z-index:0;
+  will-change:transform;transform:translateZ(0);
+  animation:turn 900s linear infinite;
+  background:
+    linear-gradient(var(--mm-10) 1px, transparent 1px),
+    linear-gradient(90deg, var(--mm-10) 1px, transparent 1px),
+    linear-gradient(var(--mm-5) 1px, transparent 1px),
+    linear-gradient(90deg, var(--mm-5) 1px, transparent 1px),
+    linear-gradient(var(--mm-1) 1px, transparent 1px),
+    linear-gradient(90deg, var(--mm-1) 1px, transparent 1px);
+  background-size:
+    110px 110px, 110px 110px,
+    55px 55px, 55px 55px,
+    11px 11px, 11px 11px;
+}
+@keyframes turn{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+#stage.dragging{cursor:grabbing}
+#stage::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+#world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;z-index:1}
+#edges{opacity:var(--eop,1);transition:opacity .25s}
+#edges path{stroke-width:var(--esw,1.6px)}
+#edges path.halo{stroke-width:calc(var(--esw,1.6px) * 2.6)}
+
+/* ---------- cluster labels ---------- */
+/* the group's name, holding the empty middle of its ring of cards */
+.cluster-label{position:absolute;
+  /* counter-scaled: a place-name holds its size on screen at every altitude,
+     so the overview reads as 17 named places and not 138 specks */
+  transform:translate(-50%,-50%) scale(var(--ls,1));
+  pointer-events:auto;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-family:'IBM Plex Mono',monospace;white-space:nowrap;text-align:center;
+  padding:8px 12px;background:rgba(35,31,32,.62);border-radius:2px;
+  transition:color .2s,background .2s}
+.cluster-label b{font-weight:400;font-size:15px;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(235,226,214,.72)}
+.cluster-label .n{font-size:11px;letter-spacing:.12em;color:rgba(235,226,214,.4)}
+.cluster-label:hover{background:rgba(35,31,32,.85)}
+.cluster-label:hover b,.cluster-label:hover .n{color:var(--coral)}
+/* seen from far off, the captions fall away and only the places are named */
+#world.afar .card .cap,
+#world.afar .card .given,
+#world.afar .card .tag{opacity:0}
+/* seen from far off the name of the place outranks the people in it */
+#world.afar .cluster-label{background:rgba(35,31,32,.92);z-index:5;padding:9px 14px}
+#world.afar .cluster-label b{color:rgba(235,226,214,.92)}
+
+/* ---------- cards ---------- */
+.card{position:absolute;width:150px;cursor:pointer;user-select:none;-webkit-user-select:none;
+  background:var(--frame);padding:8px 8px 7px;border-radius:1px;
+  box-shadow:0 6px 18px rgba(0,0,0,.5);
+  transform:rotate(var(--rot,0deg));
+  transition:box-shadow .2s, opacity .25s, transform .11s ease;
+}
+.card:hover{box-shadow:0 12px 28px rgba(0,0,0,.6)}
+/* the card wakes under a held pointer — this is how the rule teaches itself */
+.card.arming{transform:rotate(var(--rot,0deg)) translateY(-2px) scale(1.015);
+  box-shadow:0 10px 24px rgba(0,0,0,.58)}
+.card.sel{cursor:grab}               /* an open card lifts on the first move */
+#stage.dragging .card{transition:none;cursor:grabbing} /* the field is moving */
+/* while a thread is pulled, everyone else goes under a black veil — the card
+   keeps its weight on the board, it just steps into shadow */
+.card.dim::after,.card.faded::after{content:"";position:absolute;inset:0;
+  background:rgba(0,0,0,.7);pointer-events:none}
+.card.member{outline:2px solid var(--coral);outline-offset:3px}
+.card.held{cursor:grabbing;transition:none;
+  transform:rotate(var(--rot,0deg)) scale(1.03);
+  box-shadow:0 3px 6px rgba(0,0,0,.6),0 26px 50px rgba(0,0,0,.6)}
+.card.sel{outline:2px solid var(--coral);outline-offset:3px}
+.card .ph{position:relative;width:100%;height:138px;background:#2a2620;overflow:hidden}
+.card .ph img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:grayscale(1) sepia(.28) contrast(1.04) brightness(.97);
+  /* the photograph is part of the card, not a thing you can peel off it */
+  -webkit-user-drag:none;user-drag:none;pointer-events:none}
+.card .ph .init{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  font-family:'IBM Plex Mono',monospace;font-size:30px;color:#6b5c3e;
+  background:linear-gradient(160deg,#d3c6a8,#c6b592)}
+/* until the portrait arrives the tile names the practice, not the absence */
+.card .ph .init::after{content:attr(data-note);font-size:7.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:#93815d;max-width:88%;text-align:center;line-height:1.4}
+.card .cap{font-family:'Cera Pro',sans-serif;font-weight:500;font-size:12.5px;line-height:1.25;
+  color:var(--ink);padding:8px 1px 3px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .tag{display:flex;align-items:center;gap:5px;font-family:'IBM Plex Mono',monospace;
+  font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#6a6350;padding:0 1px 2px}
+.card .tag i{font-style:normal;font-size:10px}
+
+/* ---------- controls ---------- */
+#controls{position:fixed;left:18px;bottom:18px;display:flex;flex-direction:column;gap:6px;z-index:30}
+#controls button{width:30px;height:30px;background:rgba(238,231,211,.08);border:1px solid rgba(238,231,211,.18);
+  color:rgba(238,231,211,.8);font-family:'IBM Plex Mono',monospace;font-size:13px;border-radius:2px;
+  transition:background .15s}
+#controls button:hover{background:rgba(238,231,211,.18)}
+
+/* what is holding the map right now, and how to let go of it */
+#statebar{position:fixed;left:18px;top:18px;z-index:32;display:none;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;
+  background:rgba(35,31,32,.92);border:1px solid rgba(235,226,214,.16);border-radius:3px;
+  color:rgba(235,226,214,.85);overflow:hidden}
+#statebar .row{display:flex;align-items:center;gap:14px;padding:7px 8px 7px 12px;
+  border-bottom:1px solid rgba(235,226,214,.1)}
+#statebar .row:last-child{border-bottom:0}
+#statebar button{color:rgba(235,226,214,.5);font-size:12px;line-height:1;padding:2px 4px}
+#statebar button:hover{color:var(--coral)}
+
+#navarrows{position:fixed;bottom:18px;z-index:30;display:flex;gap:6px;align-items:center}
+#walkpos{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;
+  color:rgba(235,226,214,.55);padding:0 4px;white-space:nowrap}
+#navarrows button{width:36px;height:30px;background:var(--paper);border:1px solid #b8b2a0;
+  color:var(--ink);font-size:13px;border-radius:999px;transition:background .15s,border-color .15s}
+#navarrows button:hover{background:#fff;border-color:var(--coral)}
+
+/* ---------- panel ---------- */
+#panel{position:fixed;top:0;right:0;bottom:0;width:min(460px,94vw);background:var(--paper);
+  z-index:20;display:flex;flex-direction:column;box-shadow:-14px 0 40px rgba(0,0,0,.35)}
+#panel-scroll{overflow-y:auto;flex:1;padding:0 34px 60px;scrollbar-width:thin}
+#content{padding-top:6px}
+
+/* masthead: the logo itself is the way home — no box around it. Its artboard
+   is cropped to the drawing, so its left edge sits on the text's left edge. */
+#masthead{flex:none;padding:26px 34px 22px}
+#homelogo{display:block;padding:0;line-height:0;cursor:pointer;transition:opacity .15s}
+#homelogo img{display:block;width:104px;height:auto;user-select:none;-webkit-user-drag:none}
+#homelogo:hover{opacity:.6}
+
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--text-soft);margin-bottom:18px}
+h1.big{font-size:clamp(32px,3.2vw,46px);line-height:1.05;font-weight:700;letter-spacing:-.01em;margin-bottom:22px}
+.lead{font-size:17px;line-height:1.6;color:var(--text);margin-bottom:14px}
+.lead a,.lead .lk{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;cursor:pointer;transition:color .15s}
+.lead a:hover,.lead .lk:hover{color:var(--coral)}
+/* the given name, only where it is not already the headline */
+.given{font-family:'Cera Pro',sans-serif;font-weight:400;font-size:20px;line-height:1.3;
+  color:var(--text-soft);margin:-14px 0 22px}
+/* the opening statement on the home view */
+.display{font-family:'Cera Pro',sans-serif;font-weight:400;font-size:24px;line-height:1.45;
+  color:var(--ink);margin-bottom:18px}
+.display .lk{text-decoration:underline;text-underline-offset:3px;cursor:pointer;transition:color .15s}
+.display .lk:hover{color:var(--coral)}
+/* where they are from — printed verbatim, as a record entry */
+.platecap{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-soft);margin:2px 0 6px}
+.unlisted{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-soft)}
+.backrow{display:block;width:100%;text-align:left;margin:-8px 0 22px;padding:9px 0;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text-soft);border-bottom:1px solid var(--line);transition:color .15s}
+.backrow:hover{color:var(--coral)}
+.sect{margin-top:30px}
+.sect h3{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--text-soft);font-weight:400;margin-bottom:12px}
+.pills{display:flex;flex-wrap:wrap;gap:7px}
+.pill{font-family:'IBM Plex Mono',monospace;font-size:11.5px;padding:6px 10px;border:1px solid #c9c4b4;
+  border-radius:999px;color:#42402f;background:transparent}
+button.pill{cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+button.pill:hover{background:#fff;border-color:var(--coral)}
+button.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.pill{background:#fff;border:1px solid #fff}
+.tag-pill .ct{margin-left:7px;color:var(--text-soft);font-size:10px}
+.tag-pill.on .ct{color:rgba(235,226,214,.6)}
+
+/* profile photo */
+/* the print in its frame, lying on the page */
+.pphoto{width:100%;max-width:340px;background:var(--frame);padding:10px 10px 30px;margin:6px 0 10px;
+  box-shadow:0 2px 6px rgba(0,0,0,.12),0 14px 30px rgba(0,0,0,.12);transform:rotate(-1deg)}
+.pphoto img{width:100%;display:block;filter:grayscale(1) sepia(.25) contrast(1.04)}
+.pphoto .no{height:240px;display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;font-size:44px;color:#6b5c3e;
+  background:linear-gradient(160deg,#d3c6a8,#c6b592)}
+
+.connect a{display:inline-block;margin-right:18px;font-size:15px;text-decoration:underline;
+  text-underline-offset:3px}
+.connect span.tg{font-family:'IBM Plex Mono',monospace;font-size:13px;color:#42402f}
+
+/* related */
+.rel{margin-top:52px;border-top:1px solid var(--line);padding-top:18px}
+.rel h3{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--text-soft);font-weight:400;margin-bottom:6px}
+.rel .r{display:flex;justify-content:space-between;align-items:baseline;gap:12px;width:100%;
+  text-align:left;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
+.rel .r:hover{background:var(--paper-dim)}
+.rel .r small{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--text-soft);white-space:nowrap}
+
+.footline{margin-top:48px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--text-soft)}
+
+/* help overlay */
+#help{position:fixed;left:60px;bottom:18px;z-index:40;background:rgba(23,21,15,.92);
+  border:1px solid rgba(238,231,211,.2);color:rgba(238,231,211,.85);padding:16px 18px;
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.9;border-radius:3px;display:none}
+#help.open{display:block}
+#help b{color:#fff;font-weight:500}
+
+@media (max-width:760px){
+  /* the panel is a bottom sheet, so every control moves into the strip of
+     map that is left above it — before this they all sat behind the sheet */
+  #panel{width:100vw;top:auto;height:58vh;box-shadow:0 -10px 30px rgba(0,0,0,.4)}
+  #panel-scroll{padding:20px 22px 50px}
+  #controls{flex-direction:row;left:12px;top:12px;bottom:auto}
+  #controls button{width:34px;height:34px}
+  #statebar{top:56px;left:12px;right:12px;font-size:10.5px}
+  #navarrows{bottom:calc(58vh + 14px) !important;right:12px !important}
+  #navarrows button{width:42px;height:34px}
+  #help{left:12px;right:12px;bottom:calc(58vh + 56px);font-size:11px;line-height:1.8}
+}
+</style>
+</head>
+<body>
+<!-- the panel is the accessible presentation of the same 138 people; the canvas
+     is the same data as geometry, so screen readers are spared 935 loose divs -->
+<div id="stage" tabindex="0" role="application" aria-label="Map of the hosq community — arrow keys pan, plus and minus zoom, 0 shows everyone">
+  <div id="paper" aria-hidden="true"></div>
+  <div id="world" aria-hidden="true"></div>
+</div>
+
+<div id="controls">
+  <button id="z-in" title="Zoom in" aria-label="Zoom in">+</button>
+  <button id="z-out" title="Zoom out" aria-label="Zoom out">−</button>
+  <button id="z-center" title="See everyone" aria-label="See everyone">◎</button>
+  <button id="z-full" title="Fullscreen" aria-label="Fullscreen">⛶</button>
+  <button id="z-help" title="Help" aria-label="Help" aria-expanded="false">?</button>
+</div>
+<div id="help">
+  <b>drag anywhere</b> — move across the map<br>
+  <b>click a card</b> — open a profile<br>
+  <b>press and hold a card</b> — pick it up<br>
+  <b>alt-drag</b> — pick it up at once<br>
+  <b>scroll / pinch</b> — zoom<br>
+  <b>click a tag</b> — pull the thread of a shared craft<br>
+  <b>esc</b> — release the thread<br>
+  <b>◎</b> — see everyone
+</div>
+<div id="statebar" role="status"></div>
+<div id="navarrows">
+  <button id="prev" title="Previous entry" aria-label="Previous entry">←</button>
+  <span id="walkpos"></span>
+  <button id="next" title="Next entry" aria-label="Next entry">→</button>
+</div>
+
+<div id="panel">
+  <!-- a running head: the way home never scrolls away -->
+  <div id="masthead">
+    <button id="homelogo" aria-label="hosq — back to the whole map">
+      <img src="assets/hosq-logo.svg" alt="hosq" draggable="false">
+    </button>
+  </div>
+  <div id="panel-scroll">
+    <div id="content"></div>
+  </div>
+</div>
+
+<script>
+/* ================= data & layout ================= */
+let DATA=null, PEOPLE=[], BY_ID={}, CLUSTERS=[];
+let order=[]; // ids in layout order
+let selected=null, filterRole=null;
+
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const rnd=mulberry32(2026);
+
+const ROLE_ICON=r=>{
+  r=(r||'').toLowerCase();
+  if(r.includes('hosq team')&&r.includes('curator'))return['◈','curator'];
+  if(r.includes('verticurator'))return['◇','verticurator'];
+  if(r.includes('curator'))return['◈','curator'];
+  if(r.includes('hosq team'))return['■','hosq team'];
+  if(r.includes('volunteer'))return['◐','volunteer'];
+  return['○','participant'];
+};
+const initials=n=>n.split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
+
+
+/* view state */
+const stage=document.getElementById('stage'), world=document.getElementById('world');
+let vx=0, vy=0, vs=1; // translate x,y & scale
+function apply(){
+  if(!isFinite(vs)||vs<ZMIN)vs=ZMIN;
+  if(vs>ZMAX)vs=ZMAX;
+  if(!isFinite(vx))vx=0; if(!isFinite(vy))vy=0;
+  world.style.transform=`translate(${vx}px,${vy}px) scale(${vs})`;
+  // these vars invalidate every child's style, so only write them when the
+  // scale really changed — panning must stay a pure transform
+  if(vs!==lastScale){
+    lastScale=vs;
+    const near=Math.max(0,Math.min(1,(vs-.09)/.30));
+    // never thinner than 2.6 screen px — the thread is the gesture, it has to read
+    world.style.setProperty('--esw',Math.min(Math.max(2.6,1+near*.75)/vs,34)+'px');
+    world.style.setProperty('--eop',.82+near*.18);
+    // a place-name keeps a constant size on screen; on a narrow phone the
+    // constant is smaller so 17 of them don't crowd each other
+    const K=innerWidth<=760?.40:.62;
+    world.style.setProperty('--ls',Math.max(.45,Math.min(8,K/vs)));
+    // far out, the field is a map of places; close in, of people
+    world.classList.toggle('afar',vs<0.22);
+  }
+}
+let lastScale=-1, rafPending=false;
+function applySoon(){                 // at most one transform write per frame
+  if(rafPending)return;
+  rafPending=true;
+  requestAnimationFrame(()=>{rafPending=false;apply()});
+}
+
+function layout(){
+  const groups={};
+  DATA.projects.forEach(p=>groups[p]=[]);
+  // a project nobody declared is still a project — never let one row kill the map
+  PEOPLE.forEach(p=>{(groups[p.project]=groups[p.project]||[]).push(p)});
+  const names=Object.keys(groups).sort((a,b)=>groups[b].length-groups[a].length);
+  const centers=[];
+  const GA=2.399963;
+  names.forEach((name,i)=>{
+    const r= i===0?0: 1050*Math.sqrt(i);   // wide enough that no two groups touch
+    const th=i*GA;
+    centers.push({name,x:r*Math.cos(th),y:r*Math.sin(th),members:groups[name]});
+  });
+  CLUSTERS=centers;
+  order=[];
+  centers.forEach(c=>{
+    // rings around an empty middle — the name of the group holds it
+    let placed=0, ring=1;
+    const pts=[];
+    while(placed<c.members.length){
+      const cap=Math.floor(ring*5.2);
+      const rad=ring*240;
+      for(let k=0;k<cap&&placed<c.members.length;k++,placed++){
+        const a=(k/cap)*Math.PI*2+ring*.7+rnd()*.22;
+        pts.push({x:c.x+rad*Math.cos(a)+(rnd()-.5)*70, y:c.y+rad*Math.sin(a)*.86+(rnd()-.5)*60});
+      }
+      ring++;
+    }
+    c.members.forEach((p,idx)=>{
+      p._x=pts[idx].x; p._y=pts[idx].y; p._rot=(rnd()-.5)*7;
+      order.push(p.id);
+    });
+    c.rings=ring-1;
+    c.labelY=c.y;         // the name holds the empty middle of its ring
+  });
+  relax();
+}
+
+/* The pile should look thrown down, not stacked: cards may lap over each other
+   at the edges, but none may be buried and no two groups may run together.
+   A few passes of pairwise separation, pushing along the cheaper axis so the
+   scatter survives. Deterministic — no randomness, same board every load. */
+function relax(){
+  const MINX=158*.72, MINY=196*.72, PASSES=14;
+  for(let it=0;it<PASSES;it++){
+    for(let i=0;i<PEOPLE.length;i++){
+      const a=PEOPLE[i];
+      for(let j=i+1;j<PEOPLE.length;j++){
+        const b=PEOPLE[j];
+        const dx=b._x-a._x, dy=b._y-a._y;
+        const px=MINX-Math.abs(dx), py=MINY-Math.abs(dy);
+        if(px<=0||py<=0)continue;
+        if(px/MINX<py/MINY){const s=(dx>=0?1:-1)*px/2*.55;a._x-=s;b._x+=s}
+        else{const s=(dy>=0?1:-1)*py/2*.55;a._y-=s;b._y+=s}
+      }
+    }
+  }
+}
+
+
+/* ================= threads =================
+   The layout already says who shares a project. The threads say something
+   the layout can't: who shares a craft. Overlap of discipline / tool / skill,
+   weighted by rarity — two qanun players bind harder than two Ableton users —
+   then thinned to each person's two strongest ties, so the web stays readable.
+   Most of what remains crosses project lines. */
+const BRAND=['#FF6F55','#C47CF1','#14B672','#56A4CB','#E770C3'];
+const NS='http://www.w3.org/2000/svg';
+// one spelling per craft: "AI Visual"/"AI visual" and "Art to Wear"/"Art To Wear"
+// are one tag, and "Multimedia  Journalism" loses its stray second space
+const TITLE=s=>s.replace(/\S+/g,w=>/^(to|and|of|the|in)$/i.test(w)?w.toLowerCase():w[0].toUpperCase()+w.slice(1));
+const NORM=s=>TITLE(s.replace(/AI [Vv]isual/i,'AI visual').replace(/\s+/g,' ').trim())
+  .replace(/^Ai Visual$/,'AI visual').replace(/^Ai Sound$/,'AI sound');
+const tagsOf=p=>[...p.disciplines.map(NORM),...p.tools.map(NORM),...p.skills.map(NORM)];
+const keysOf=p=>[...p.disciplines.map(x=>'d:'+NORM(x)),...p.tools.map(x=>'t:'+NORM(x)),
+                 ...p.skills.map(x=>'s:'+NORM(x))];
+let AFFINITY=[], TAGINDEX={};
+function computeAffinity(){
+  const N=PEOPLE.length, df={};
+  const sets=PEOPLE.map(p=>new Set(keysOf(p)));
+  sets.forEach(s=>s.forEach(a=>df[a]=(df[a]||0)+1));
+  const idf=a=>Math.log(N/(df[a]||1));
+  TAGINDEX={};
+  PEOPLE.forEach(p=>tagsOf(p).forEach(t=>{(TAGINDEX[t]=TAGINDEX[t]||[]).push(p.id)}));
+  const cand=[];
+  for(let i=0;i<N;i++){
+    const c=[];
+    for(let j=0;j<N;j++){
+      if(i===j)continue;
+      let w=0,n=0,shared=[];
+      for(const a of sets[i])if(sets[j].has(a)){w+=idf(a);n++;shared.push(a)}
+      if(!n)continue;
+      c.push({j,score:w/Math.sqrt(sets[i].size*sets[j].size),shared});
+    }
+    c.sort((a,b)=>b.score-a.score);
+    cand.push(c.slice(0,2)); // each person keeps their two closest kin
+  }
+  const seen=new Set(); AFFINITY=[];
+  cand.forEach((c,i)=>c.forEach(({j,score,shared})=>{
+    const k=Math.min(i,j)+'-'+Math.max(i,j);
+    if(seen.has(k))return; seen.add(k);
+    // the reason for the bond = the rarest thing they share
+    const reason=shared.slice().sort((a,b)=>idf(b)-idf(a))[0];
+    AFFINITY.push({a:PEOPLE[i],b:PEOPLE[j],score,reason:reason.slice(2),
+      shared:shared.map(s=>s.slice(2))});
+  }));
+}
+
+/* deterministic wobble: same pair always gets the same crooked line */
+function hash32(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+const PIN_Y=88; // thread attaches at the top edge of a card
+function threadPath(p1,p2,seed,frame){
+  const r=mulberry32(hash32(seed)+frame*7919);
+  const rBow=mulberry32(hash32(seed)); // the arc itself stays put; only the fibres tremble
+  const x1=p1._x,y1=p1._y-PIN_Y,x2=p2._x,y2=p2._y-PIN_Y;
+  const dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy)||1;
+  const nx=-dy/len,ny=dx/len;
+  // the longer the tie, the more the string gives — slack arcs, never beams
+  const bow=(rBow()-.5)*Math.min(len*.30,520);
+  const sag=Math.min(len*.16,380);
+  const cx=(x1+x2)/2+nx*bow, cy=(y1+y2)/2+ny*bow+sag;
+  const N=18; let d='';
+  for(let s=0;s<=N;s++){
+    const t=s/N,omt=1-t;
+    let x=omt*omt*x1+2*omt*t*cx+t*t*x2;
+    let y=omt*omt*y1+2*omt*t*cy+t*t*y2;
+    if(s>0&&s<N){const j=3.4*Math.sin(t*Math.PI);x+=(r()-.5)*2*j;y+=(r()-.5)*2*j}
+    d+=(s?'L':'M')+x.toFixed(1)+' '+y.toFixed(1);
+  }
+  return d;
+}
+/* The layer is sized to the content, not to a guessed 18000px square: #world
+   carries will-change, so an oversized child inflates the composited layer. */
+let WORLD_BOX=null;
+function worldBox(){
+  if(WORLD_BOX)return WORLD_BOX;
+  let a=1e9,b=1e9,c=-1e9,d=-1e9;
+  PEOPLE.forEach(p=>{a=Math.min(a,p._x);c=Math.max(c,p._x);b=Math.min(b,p._y);d=Math.max(d,p._y)});
+  const pad=420;
+  return WORLD_BOX={x:a-pad,y:b-pad,w:(c-a)+pad*2,h:(d-b)+pad*2};
+}
+function svgLayer(){
+  const old=document.getElementById('edges'); if(old)old.remove();
+  const bx=worldBox();
+  const svg=document.createElementNS(NS,'svg');
+  svg.id='edges';
+  svg.setAttribute('viewBox',`${bx.x} ${bx.y} ${bx.w} ${bx.h}`);
+  svg.style.cssText=`position:absolute;left:${bx.x}px;top:${bx.y}px;width:${bx.w}px;height:${bx.h}px;pointer-events:none;overflow:visible`;
+  return svg;
+}
+let THREADS=[], PINS=[];
+/* recompute only the strings tied to one card — used while it is being moved */
+function retieThreads(p){
+  for(const t of THREADS){
+    if(t.a.id!==p.id&&t.b.id!==p.id)continue;
+    t.variants=[0,1,2].map(f=>threadPath(t.a,t.b,t.seed,f));
+    t.path.setAttribute('d',t.variants[boilFrame]);
+    t.halo.setAttribute('d',t.variants[boilFrame]);
+  }
+  for(const pin of PINS){
+    if(pin.p.id!==p.id)continue;
+    pin.el.setAttribute('cx',p._x); pin.el.setAttribute('cy',p._y-PIN_Y);
+  }
+}
+function drawThreads(list){
+  if(!list.length){                     // nothing to draw: drop the layer entirely
+    const old=document.getElementById('edges'); if(old)old.remove();
+    THREADS=[]; setBoil(false); return;
+  }
+  const svg=svgLayer();
+  THREADS=[];
+  const pins=new Map();
+  list.forEach(({a,b,color,op})=>{
+    const seed=a.id+'|'+b.id;
+    const variants=[0,1,2].map(f=>threadPath(a,b,seed,f)); // three frames of the same thread
+    // the string is drawn twice: a soft halo under a firm line, so it holds
+    // against the dark field instead of dissolving into it
+    const halo=document.createElementNS(NS,'path');
+    halo.setAttribute('d',variants[0]);
+    halo.setAttribute('class','halo');
+    halo.setAttribute('fill','none');
+    halo.setAttribute('stroke',color);
+    halo.setAttribute('stroke-opacity','.16');
+    halo.setAttribute('stroke-linecap','round');
+    svg.appendChild(halo);
+    const path=document.createElementNS(NS,'path');
+    path.setAttribute('d',variants[0]);
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke',color);
+    path.setAttribute('stroke-opacity',op==null?.6:op);
+    path.setAttribute('stroke-linecap','round');
+    svg.appendChild(path);
+    THREADS.push({path,halo,variants,a,b,seed});
+    pins.set(a.id,{p:a,color});pins.set(b.id,{p:b,color});
+  });
+  PINS=[];
+  pins.forEach(({p,color})=>{
+    const c=document.createElementNS(NS,'circle');
+    c.setAttribute('cx',p._x);c.setAttribute('cy',p._y-PIN_Y);
+    c.setAttribute('r','5');c.setAttribute('fill',color);
+    svg.appendChild(c);
+    PINS.push({el:c,p});
+  });
+  world.appendChild(svg); // threads read on top of the cards, like real string
+  setBoil(true);
+}
+/* the boil: the line breathes without ever leaving its place.
+   It ticks only while threads are on screen. */
+/* Driven by rAF, not a timer: it stops dead in a hidden tab, never lands in
+   the middle of a pan, and stands still for anyone who asked for less motion. */
+let boilFrame=0, boilRaf=0, boilLast=0;
+function setBoil(on){
+  // the tremble is the piece, not decoration — it runs for everyone. The
+  // camera flights are what reduced-motion turns off.
+  if(on&&!boilRaf){
+    boilLast=0;
+    const tick=t=>{
+      if(!THREADS.length){boilRaf=0;return}
+      if(!boilLast)boilLast=t;
+      if(t-boilLast>190&&!dragging&&!cardDrag){
+        boilLast=t;
+        boilFrame=(boilFrame+1)%3;
+        for(const th of THREADS){
+          th.path.setAttribute('d',th.variants[boilFrame]);
+          th.halo.setAttribute('d',th.variants[boilFrame]);
+        }
+      }
+      boilRaf=requestAnimationFrame(tick);
+    };
+    boilRaf=requestAnimationFrame(tick);
+  }else if(!on&&boilRaf){cancelAnimationFrame(boilRaf);boilRaf=0}
+}
+/* which threads are on screen right now */
+/* The field carries no threads of its own. A thread is something you pull:
+   pick a tag and only then does the string appear. */
+let THREAD_MODE={kind:'none'};
+function refreshThreads(){
+  apply();
+  drawThreads(THREAD_MODE.kind==='tag'?tagThreads(THREAD_MODE.tag):[]);
+}
+/* tag mode: one thread stitching everyone who shares the tag, nearest-first */
+function tagThreads(tag){
+  const ids=TAGINDEX[tag]||[];
+  const m=ids.map(id=>BY_ID[id]).filter(Boolean);
+  if(m.length<2)return[];
+  const color=BRAND[hash32(tag)%BRAND.length];
+  // Prim over the nearest-distance frontier: each round only rescans the
+  // people still outside the tree, not every pair
+  const n=m.length, inTree=new Array(n).fill(false), best=new Array(n).fill(Infinity),
+        from=new Array(n).fill(0), out=[];
+  inTree[0]=true;
+  for(let j=1;j<n;j++)best[j]=(m[0]._x-m[j]._x)**2+(m[0]._y-m[j]._y)**2;
+  for(let k=1;k<n;k++){
+    let bj=-1,bd=Infinity;
+    for(let j=0;j<n;j++)if(!inTree[j]&&best[j]<bd){bd=best[j];bj=j}
+    if(bj<0)break;
+    inTree[bj]=true;
+    out.push({a:m[from[bj]],b:m[bj],color,op:.92});
+    for(let j=0;j<n;j++){
+      if(inTree[j])continue;
+      const d=(m[bj]._x-m[j]._x)**2+(m[bj]._y-m[j]._y)**2;
+      if(d<best[j]){best[j]=d;from[j]=bj}
+    }
+  }
+  return out;
+}
+
+function render(){
+  world.innerHTML='';
+  CLUSTERS.forEach(c=>{
+    const l=document.createElement('div');
+    l.className='cluster-label';
+    l.style.left=c.x+'px'; l.style.top=c.labelY+'px';
+    l.innerHTML=`<b>${c.name}</b><span class="n">${c.members.length} people</span>`;
+    l.addEventListener('click',e=>{e.stopPropagation();flyToCluster(c)});
+    world.appendChild(l);
+  });
+  PEOPLE.forEach(p=>{
+    const [icon,role]=ROLE_ICON(p.role);
+    const el=document.createElement('div');
+    // one species of card for everyone — a catalogue does not print two
+    // designs for the same kind of entry
+    el.className='card';
+    el.style.left=(p._x-79)+'px'; el.style.top=(p._y-95)+'px';
+    // the tilt lives in a variable so the lift states can compose on top of it
+    el.style.setProperty('--rot',p._rot+'deg');
+    // only files we actually hold are requested — no speculative fetches
+    const img=p.photo?`<img loading="lazy" decoding="async" draggable="false" src="photos/${p.photo}.jpg" alt="">`:'';
+    // one name, the real one; the stage name and the links live in the profile
+    el.innerHTML=`<div class="ph">${img}
+      <div class="init" data-note="${(p.disciplines[0]||p.skills[0]||role)}"${p.photo?' style="display:none"':''}>${initials(p.name)}</div></div>
+      <div class="cap">${p.name}</div>
+      <div class="tag"><i>${icon}</i>${role}</div>`;
+    if(p.photo){
+      const im=el.querySelector('img');
+      im.addEventListener('error',()=>{
+        im.style.display='none';el.querySelector('.init').style.display='flex';
+      });
+    }
+    el.dataset.id=p.id;
+    el.addEventListener('click',e=>{
+      e.stopPropagation();
+      if(suppressClick){suppressClick=false;return}   // that was a lift
+      select(p.id);
+    });
+    el.addEventListener('pointerdown',e=>beginCardGesture(e,p));
+    p._el=el;
+    world.appendChild(el);
+  });
+  refreshThreads(); // threads pinned over the cards, like string on a cork board
+}
+function placeCard(p){
+  p._el.style.left=(p._x-79)+'px';
+  p._el.style.top=(p._y-95)+'px';
+}
+
+/* ---- press to open, hold to pick up ----
+   The field wins by default: a press on a card is just a press on the map, so
+   half the surface is no longer a dead zone for panning. A card is lifted only
+   by a deliberate act inside the same gesture — a short hold, or the first
+   move on a card that is already open. The ambiguity is settled late, when
+   enough is known, instead of at pointerdown when nothing is. */
+const SLOP ={mouse:4,  touch:10};    // screen px before a gesture commits
+const HOLD ={mouse:200,touch:250};   // ms to lift an unselected card
+const HOLDS={mouse:0,  touch:120};   // ms to lift one that is already open
+let pending=null, cardDrag=null, cardMoved=false, suppressClick=false;
+
+function beginCardGesture(e,p){
+  if(e.button!==0)return;
+  const touch=e.pointerType!=='mouse';
+  if(!touch)e.preventDefault();      // kills the native image drag; on touch it
+                                     // would eat the tap, and touch-action covers us
+  // no stopPropagation: the stage must see this pointer, or it can neither pan
+  // nor recognise a second finger as a pinch
+  const hold=(selected===p.id?HOLDS:HOLD)[touch?'touch':'mouse'];
+  pending={p,id:e.pointerId,touch,sx:e.clientX,sy:e.clientY,phase:'undecided',
+           instant:hold===0,slop:SLOP[touch?'touch':'mouse'],raf:0};
+  if(hold>0){
+    pending.armTimer=setTimeout(()=>p._el.classList.add('arming'),hold*.45);
+    pending.holdTimer=setTimeout(()=>commitLift(),hold);
+  }
+}
+function commitLift(){
+  if(!pending||pending.phase==='lift')return;
+  const p=pending.p;
+  clearTimeout(pending.armTimer);clearTimeout(pending.holdTimer);
+  pending.phase='lift';
+  // the field lets go of this gesture, but the pointer stays in `touches` so a
+  // second finger can still start a pinch
+  dragging=false;panId=null;stage.classList.remove('dragging');
+  pending.ox=p._x;pending.oy=p._y;    // rebase, or the card jumps by the slop
+  p._el.classList.remove('arming');
+  p._el.classList.add('held');
+  const edges=document.getElementById('edges');
+  edges?world.insertBefore(p._el,edges):world.appendChild(p._el);
+  try{p._el.setPointerCapture(pending.id)}catch(_){}
+  cardDrag=pending;
+}
+function abortCardGesture(){
+  if(!pending)return;
+  clearTimeout(pending.armTimer);clearTimeout(pending.holdTimer);
+  if(pending.raf)cancelAnimationFrame(pending.raf);
+  pending.p._el.classList.remove('arming','held');
+  pending=null;cardDrag=null;
+}
+window.addEventListener('pointermove',e=>{
+  if(!pending||e.pointerId!==pending.id)return;
+  const sdx=e.clientX-pending.sx, sdy=e.clientY-pending.sy;
+  if(pending.phase==='undecided'){
+    if(Math.hypot(sdx,sdy)<=pending.slop)return;   // still a press: touch nothing
+    if(pending.instant||e.altKey){commitLift()}
+    else{                                           // it is a pan, and the stage
+      pending.phase='pan';                          // already owns this pointer
+      clearTimeout(pending.armTimer);clearTimeout(pending.holdTimer);
+      pending.p._el.classList.remove('arming');
+      return;
+    }
+  }
+  if(pending.phase!=='lift')return;
+  cardMoved=true;
+  const p=pending.p;
+  p._x=pending.ox+(e.clientX-pending.sx)/vs;
+  p._y=pending.oy+(e.clientY-pending.sy)/vs;
+  if(!pending.raf){                  // one repaint per frame, not per event
+    pending.raf=requestAnimationFrame(()=>{
+      if(!pending)return;
+      pending.raf=0;
+      placeCard(p);
+      retieThreads(p);               // only the strings on this card move
+    });
+  }
+},{passive:true});
+function endCardDrag(){
+  if(!pending)return;
+  clearTimeout(pending.armTimer);clearTimeout(pending.holdTimer);
+  if(pending.raf)cancelAnimationFrame(pending.raf);
+  const p=pending.p, lifted=pending.phase==='lift';
+  if(lifted){
+    placeCard(p);retieThreads(p);
+    p._el.classList.remove('held');
+    suppressClick=true;              // a lift is not a click
+  }
+  p._el.classList.remove('arming');
+  pending=null;cardDrag=null;
+}
+window.addEventListener('pointerup',endCardDrag);
+
+/* ================= pan / zoom =================
+   Every live pointer is tracked by id: one finger pans, two pinch. Without
+   the id bookkeeping a second finger computes its delta against the first
+   one's last position and throws the field hundreds of pixels away. */
+let dragging=false,moved=false,lx=0,ly=0,panId=null;
+const touches=new Map();
+let pinchDist=0,pinchMid=null;
+
+stage.addEventListener('pointerdown',e=>{
+  touches.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(touches.size===2){
+    abortCardGesture();               // a second finger means the gesture is a pinch
+    dragging=false; panId=null; stage.classList.remove('dragging');
+    const [a,b]=[...touches.values()];
+    pinchDist=Math.hypot(a.x-b.x,a.y-b.y);
+    pinchMid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+    return;
+  }
+  if(touches.size>2)return;
+  dragging=true;moved=false;panId=e.pointerId;lx=e.clientX;ly=e.clientY;
+  stage.classList.add('dragging');
+});
+window.addEventListener('pointermove',e=>{
+  if(touches.has(e.pointerId))touches.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(touches.size===2){
+    const [a,b]=[...touches.values()];
+    const dist=Math.hypot(a.x-b.x,a.y-b.y);
+    const mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+    if(pinchDist>0){
+      vx+=mid.x-pinchMid.x; vy+=mid.y-pinchMid.y;
+      zoomAt(mid.x,mid.y,dist/pinchDist);
+    }
+    pinchDist=dist; pinchMid=mid; moved=true;
+    return;
+  }
+  if(pending&&pending.phase==='lift')return;   // the card owns this gesture now
+  if(!dragging||e.pointerId!==panId)return;
+  const dx=e.clientX-lx,dy=e.clientY-ly;
+  if(Math.abs(dx)+Math.abs(dy)>3)moved=true;
+  if(moved){vx+=dx;vy+=dy;lx=e.clientX;ly=e.clientY;applySoon()}
+},{passive:true});
+function endPan(e){
+  if(e)touches.delete(e.pointerId);
+  if(touches.size<2)pinchDist=0;
+  if(!e||e.pointerId===panId||touches.size===0){
+    dragging=false;panId=null;stage.classList.remove('dragging');
+  }
+}
+window.addEventListener('pointerup',endPan);
+window.addEventListener('pointercancel',e=>{endPan(e);abortCardGesture()}); // the OS can claim a gesture at any moment
+// a drag must not read as a click — but the flag is consumed here, or it
+// would swallow every card click for the rest of the session
+world.addEventListener('click',e=>{if(moved){e.stopPropagation();moved=false}},true);
+stage.addEventListener('wheel',e=>{
+  e.preventDefault();
+  const f=Math.exp(-e.deltaY*.0016);
+  zoomAt(e.clientX,e.clientY,f);
+},{passive:false});
+const ZMIN=.04, ZMAX=2.4;              // one pair of limits, used everywhere
+function zoomAt(cx,cy,f){
+  const ns=Math.min(ZMAX,Math.max(ZMIN,vs*f));
+  const r=ns/vs;
+  vx=cx-(cx-vx)*r; vy=cy-(cy-vy)*r; vs=ns; applySoon();
+}
+const zoomButtons=f=>{const r=mapRect();zoomAt(r.x+r.w/2,r.y+r.h/2,f)};
+document.getElementById('z-in').onclick=()=>zoomButtons(1.35);
+document.getElementById('z-out').onclick=()=>zoomButtons(1/1.35);
+document.getElementById('z-center').onclick=()=>fitAll(true);
+document.getElementById('z-full').onclick=()=>{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()};
+document.getElementById('z-help').onclick=e=>{
+  const open=document.getElementById('help').classList.toggle('open');
+  e.currentTarget.setAttribute('aria-expanded',open);
+};
+// the map itself, from the keyboard — 138 tab stops would be worse than none
+stage.addEventListener('keydown',e=>{
+  const step=80, r=mapRect();
+  if(e.key==='ArrowUp'){vy+=step;applySoon()}
+  else if(e.key==='ArrowDown'){vy-=step;applySoon()}
+  else if(e.key==='ArrowLeft'&&!selected){vx+=step;applySoon()}
+  else if(e.key==='ArrowRight'&&!selected){vx-=step;applySoon()}
+  else if(e.key==='+'||e.key==='='){zoomAt(r.x+r.w/2,r.y+r.h/2,1.35)}
+  else if(e.key==='-'||e.key==='_'){zoomAt(r.x+r.w/2,r.y+r.h/2,1/1.35)}
+  else if(e.key==='0'){fitAll(true)}
+  else return;
+  e.preventDefault();
+});
+
+/* The free rectangle the map actually owns. On a phone the panel is a bottom
+   sheet, not a side column — measuring only its width there gives zero, which
+   used to silently kill every camera move. */
+function mapRect(){
+  const r=document.getElementById('panel').getBoundingClientRect();
+  return innerWidth<=760
+    ? {x:0,y:0,w:innerWidth,h:Math.max(0,r.top)}
+    : {x:0,y:0,w:Math.max(0,innerWidth-r.width),h:innerHeight};
+}
+function visibleW(){return mapRect().w}
+function liveRect(){const r=mapRect();return r.w>=200&&r.h>=200?r:null}
+function animateTo(tx,ty,ts){
+  if(!isFinite(tx)||!isFinite(ty)||!isFinite(ts)||ts<=0)return; // never fly to nowhere
+  const sx=vx,sy=vy,ss=vs,t0=performance.now(),D=650;
+  function step(t){
+    let k=Math.min(1,(t-t0)/D); k=1-Math.pow(1-k,3);
+    vx=sx+(tx-sx)*k; vy=sy+(ty-sy)*k; vs=ss+(ts-ss)*k; apply();
+    if(k<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+function fitAll(anim){ fitPeople(PEOPLE,anim) }
+function flyTo(x,y,s){
+  const r=liveRect(); if(!r)return;
+  animateTo(r.x+r.w/2-x*s, r.y+r.h/2-y*s, s);
+}
+function flyToCluster(c){
+  const r=liveRect(); if(!r)return;
+  let minX=1e9,minY=1e9,maxX=-1e9,maxY=-1e9;
+  c.members.forEach(p=>{minX=Math.min(minX,p._x);maxX=Math.max(maxX,p._x);
+    minY=Math.min(minY,p._y);maxY=Math.max(maxY,p._y)});
+  const cx=(minX+maxX)/2, cy=(minY+maxY)/2;
+  const s=Math.min(1.05,(r.w-160)/(maxX-minX+340),(r.h-200)/(maxY-minY+400));
+  flyTo(cx,cy,Math.max(.06,s));
+}
+
+/* ================= selection & panel ================= */
+const content=document.getElementById('content');
+
+function select(id,noFly){
+  const p=BY_ID[id]; if(!p)return;
+  if(selected)BY_ID[selected]?._el.classList.remove('sel');
+  selected=id;
+  p._el.classList.add('sel');
+  if(!noFly){
+    // don't teleport to someone already on screen — inside a thread, hold the
+    // scale so the thread stays composed instead of flying off the edges
+    const r=mapRect(), sx=p._x*vs+vx, sy=p._y*vs+vy, m=90;
+    const onScreen=sx>r.x+m&&sx<r.x+r.w-m&&sy>r.y+m&&sy<r.y+r.h-m;
+    if(!onScreen)flyTo(p._x,p._y-40,activeTag?vs:Math.max(vs,.85));
+  }
+  history.replaceState(null,'','#p/'+id);   // the URL follows, history stays clean
+  renderProfile(p);
+  document.getElementById('panel-scroll').scrollTop=0;
+  const h1=content.querySelector('h1.big'); if(h1)h1.focus({preventScroll:true});
+}
+
+function clusterOf(name){return CLUSTERS.find(c=>c.name===name)}
+/* A catalogue entry, not a record read back to itself: a classification line,
+   a name, a plate, a caption, the craft, and the two ways out. Each fact is
+   printed once — the project in the eyebrow, the role beside it, the country
+   under the plate, the disciplines in their own pills and nowhere else. */
+function renderProfile(p){
+  const role=ROLE_ICON(p.role)[1];
+  const art=p.artistic, given=p.name!==p.artistic?p.name:'';
+  const group=clusterOf(p.project);
+  let h='';
+  if(activeTag){                       // a way back into the thread you came from
+    h+=`<button class="backrow" onclick="renderTagPanel('${esc(activeTag)}')">← ${activeTag} · ${(TAGINDEX[activeTag]||[]).length} people</button>`;
+  }
+  h+=`<div class="eyebrow">${p.project} · ${role}</div>`;
+  h+=`<h1 class="big" tabindex="-1">${art}</h1>`;
+  if(given)h+=`<p class="given">${given}</p>`;
+  h+=`<div class="pphoto">`+
+     (p.photo?`<img src="photos/${p.photo}.jpg" alt="${art}" onerror="this.outerHTML='<div class=no>${initials(art)}</div>'">`
+             :`<div class="no">${initials(art)}</div>`)+`</div>`;
+  if(p.country)h+=`<div class="platecap">${p.country}</div>`;
+  const tagPills=arr=>arr.map(d=>tagPill(NORM(d))).join('');
+  if(p.disciplines.length){h+=`<div class="sect"><h3>Discipline</h3><div class="pills">${tagPills(p.disciplines)}</div></div>`}
+  if(p.tools.length){h+=`<div class="sect"><h3>Tools</h3><div class="pills">${tagPills(p.tools)}</div></div>`}
+  if(p.skills.length){h+=`<div class="sect"><h3>Skills</h3><div class="pills">${tagPills(p.skills)}</div></div>`}
+  if(!p.disciplines.length&&!p.tools.length&&!p.skills.length){
+    h+=`<div class="sect"><h3>Craft</h3><div class="unlisted">not yet listed</div></div>`;
+  }
+  const kin=AFFINITY.filter(e=>e.a.id===p.id||e.b.id===p.id)
+    .sort((x,y)=>y.score-x.score).slice(0,4);
+  if(kin.length){
+    // the right column names the other person's project, so you can see the
+    // tie jump the ring — which is the whole claim the threads make
+    h+=`<div class="rel"><h3>Bound by craft</h3>`+
+      kin.map(e=>{const o=e.a.id===p.id?e.b:e.a;
+        return `<button class="r" onclick="select(${o.id})"><span>${o.artistic}</span><small>${o.project}</small></button>`}).join('')+
+      `</div>`;
+  }
+  if(p.instagram||p.telegram){
+    h+=`<div class="sect connect"><h3>Connect</h3>`;
+    if(p.instagram)h+=`<a href="${p.instagram}" target="_blank" rel="noopener">Instagram</a>`;
+    if(p.telegram)h+=`<a href="https://t.me/${p.telegram.replace(/^@/,'')}" target="_blank" rel="noopener">Telegram</a>`;
+    h+=`</div>`;
+  }
+  const others=(group?group.members:[]).filter(m=>m.id!==p.id);
+  if(others.length){
+    h+=`<div class="rel"><h3>The rest of the group · ${others.length}</h3>`+
+       others.map(m=>{const[ic,ro]=ROLE_ICON(m.role);
+         return `<button class="r" onclick="select(${m.id})"><span>${m.artistic}</span><small>${ic} ${ro}</small></button>`}).join('')+
+       `</div>`;
+  }
+  h+=`<div class="footline">notations '26 — hosq community</div>`;
+  content.innerHTML=h;
+  renderState(); renderWalk();
+}
+
+function renderHome(){
+  if(selected){BY_ID[selected]?._el.classList.remove('sel');selected=null}
+  history.replaceState(null,'','#');
+  const nRoles={};
+  PEOPLE.forEach(p=>{const r=ROLE_ICON(p.role)[1];nRoles[r]=(nRoles[r]||0)+1});
+  let h='';
+  h+=`<p class="display">hosq is a community of <span class="lk" onclick="fitAll(true)">${PEOPLE.length} people</span> — musicians, artists, engineers and curators — building <b style="font-weight:500">Notations '26</b> across ${CLUSTERS.length} projects.</p>`;
+  h+=`<p class="lead">Everyone stands in a ring around the name of their project. Drag across the field, zoom in, and open a card. Press and hold one to pick it up.</p>`;
+  h+=`<div class="sect"><h3>Projects</h3><div class="pills">`+
+     CLUSTERS.map((c,i)=>`<button class="pill" onclick="flyToCluster(CLUSTERS[${i}])">${c.name} · ${c.members.length}</button>`).join('')+
+     `</div></div>`;
+  const top=Object.entries(TAGINDEX).sort((a,b)=>b[1].length-a[1].length).slice(0,18);
+  h+=`<div class="sect"><h3>Shared craft — pull a thread</h3><div class="pills">`+
+     top.map(([t])=>tagPill(t)).join('')+`</div></div>`;
+  h+=`<div class="sect"><h3>Roles</h3><div class="pills">`+
+     Object.entries(nRoles).map(([r,n])=>`<button class="pill ${filterRole===r?'on':''}" onclick="toggleRole('${r}')">${r} · ${n}</button>`).join('')+
+     `</div></div>`;
+  h+=`<div class="footline">notations '26 — hosq community</div>`;
+  content.innerHTML=h;
+  renderState(); renderWalk();
+}
+
+/* ================= tag mode =================
+   A tag is a thread that ignores the map's geography: everyone who shares the
+   craft gets stitched together across the hills, everyone else steps back. */
+let activeTag=null;
+const esc=s=>s.replace(/'/g,"\\'");
+function tagPill(t){
+  const n=(TAGINDEX[t]||[]).length;
+  return `<button class="pill tag-pill${activeTag===t?' on':''}" onclick="showTag('${esc(t)}')">${t}<span class="ct">${n}</span></button>`;
+}
+function showTag(tag){
+  if(activeTag===tag){clearTag();return}
+  activeTag=tag;
+  THREAD_MODE={kind:'tag',tag};
+  // a thread and a role filter may hold at once — the state bar names both,
+  // and Esc lets go of them one at a time
+  const ids=new Set(TAGINDEX[tag]||[]);
+  const solo=ids.size<2;                  // nothing to stitch: don't fade the room
+  PEOPLE.forEach(p=>{
+    p._el.classList.toggle('faded',!solo&&!ids.has(p.id));
+    p._el.classList.toggle('member',ids.has(p.id));
+  });
+  refreshThreads();
+  fitPeople([...ids].map(id=>BY_ID[id]));
+  renderTagPanel(tag);
+}
+function clearTag(){
+  activeTag=null;
+  THREAD_MODE={kind:'none'};
+  PEOPLE.forEach(p=>{p._el.classList.remove('faded');p._el.classList.remove('member')});
+  refreshThreads();
+  if(selected)renderProfile(BY_ID[selected]); else renderHome();
+}
+function fitPeople(list,anim){
+  const r=liveRect(); if(!list.length||!r)return;
+  let minX=1e9,minY=1e9,maxX=-1e9,maxY=-1e9;
+  list.forEach(p=>{minX=Math.min(minX,p._x-190);maxX=Math.max(maxX,p._x+190);
+    minY=Math.min(minY,p._y-230);maxY=Math.max(maxY,p._y+190)});
+  const w=r.w-90, h=r.h-90;
+  const s=Math.min(1.0, w/(maxX-minX), h/(maxY-minY));
+  const tx=r.x+45+w/2-((minX+maxX)/2)*s, ty=r.y+45+h/2-((minY+maxY)/2)*s;
+  if(anim===false){vx=tx;vy=ty;vs=s;apply()} else animateTo(tx,ty,s);
+}
+function renderTagPanel(tag){
+  const people=(TAGINDEX[tag]||[]).map(id=>BY_ID[id]);
+  const byProj={};
+  people.forEach(p=>{(byProj[p.project]=byProj[p.project]||[]).push(p)});
+  const projs=Object.entries(byProj).sort((a,b)=>b[1].length-a[1].length);
+  let h='';
+  h+=`<div class="eyebrow">Shared craft</div>`;
+  h+=`<h1 class="big">${tag}</h1>`;
+  h+= people.length===1
+    ? `<p class="lead">Only ${people[0].artistic} holds this one. Here they are.</p>`
+    : `<p class="lead">${people.length} people across ${projs.length} ${projs.length===1?'project':'projects'} hold this in common.</p>`;
+  h+=`<div class="rel"><h3>Everyone who holds it</h3>`+
+     people.map(p=>`<button class="r" onclick="select(${p.id})"><span>${p.artistic}</span><small>${p.project}</small></button>`).join('')+
+     `</div>`;
+  h+=`<div class="footline">notations '26 — hosq community</div>`;
+  content.innerHTML=h;
+  renderState(); renderWalk();
+  document.getElementById('panel-scroll').scrollTop=0;
+}
+/* One way out, and one place that says what is holding the map. Every lens —
+   a pulled thread, a role filter, a chosen person — is listed and releasable. */
+function goHome(){
+  if(activeTag)clearTag();
+  if(filterRole)toggleRole(filterRole);
+  if(selected){BY_ID[selected]._el.classList.remove('sel');selected=null}
+  renderHome();
+}
+function renderState(){
+  const box=document.getElementById('statebar');
+  const rows=[];
+  if(activeTag)rows.push([`thread · ${activeTag} · ${(TAGINDEX[activeTag]||[]).length}`,'clearTag()']);
+  if(filterRole)rows.push([`role · ${filterRole}`,`toggleRole('${esc(filterRole)}')`]);
+  if(selected)rows.push([`open · ${BY_ID[selected].artistic}`,'goHome()']);
+  box.innerHTML=rows.map(([t,fn])=>
+    `<div class="row"><span>${t}</span><button onclick="${fn}" aria-label="release">✕</button></div>`).join('');
+  box.style.display=rows.length?'block':'none';
+}
+addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    if(document.getElementById('help').classList.contains('open'))document.getElementById('help').classList.remove('open');
+    else if(activeTag)clearTag();
+    else if(filterRole)toggleRole(filterRole);
+    else if(selected)goHome();
+    return;
+  }
+  if(e.target.closest('input,textarea'))return;
+  if(e.key==='ArrowRight'){stepSel(1);e.preventDefault()}
+  if(e.key==='ArrowLeft'){stepSel(-1);e.preventDefault()}
+});
+
+function toggleRole(r){
+  filterRole=filterRole===r?null:r;
+  PEOPLE.forEach(p=>{
+    const mine=ROLE_ICON(p.role)[1];
+    p._el.classList.toggle('dim',!!filterRole&&mine!==filterRole);
+  });
+  if(!activeTag&&!selected)renderHome(); else renderState();
+}
+
+/* prev / next — inside a thread the arrows walk the thread, not the layout */
+document.getElementById('prev').onclick=()=>stepSel(-1);
+document.getElementById('next').onclick=()=>stepSel(1);
+function walkOrder(){
+  return activeTag?(TAGINDEX[activeTag]||[]):order;
+}
+function stepSel(d){
+  const seq=walkOrder(); if(!seq.length)return;
+  let i=selected?seq.indexOf(selected):-1;
+  i=(i+d+seq.length)%seq.length;
+  select(seq[i]);
+}
+function renderWalk(){
+  const seq=walkOrder(), i=selected?seq.indexOf(selected):-1;
+  document.getElementById('walkpos').textContent=
+    (i>=0?`${i+1} / ${seq.length}`:`${seq.length}`)+(activeTag?' · '+activeTag:'');
+}
+
+/* the logo takes you home; the project list lives in the panel below, so
+   there is no second copy of it up here */
+document.getElementById('homelogo').addEventListener('click',()=>{goHome();fitAll(true)});
+function buildMenu(){}
+
+/* position nav arrows just left of panel */
+function placeArrows(){
+  const el=document.getElementById('navarrows');
+  if(innerWidth<=760){el.style.right='';return}   // the sheet layout places them
+  el.style.right=(document.getElementById('panel').offsetWidth+18)+'px';
+}
+let wasNarrow=innerWidth<=760, resizeTimer=null;
+addEventListener('resize',()=>{
+  placeArrows();
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(()=>{
+    const narrow=innerWidth<=760;
+    if(narrow!==wasNarrow){        // the map's rectangle changed meaning — re-aim
+      wasNarrow=narrow;
+      if(activeTag)fitPeople((TAGINDEX[activeTag]||[]).map(id=>BY_ID[id]));
+      else if(selected)flyTo(BY_ID[selected]._x,BY_ID[selected]._y-40,vs);
+      else fitAll(true);
+    }
+  },160);
+});
+
+/* ================= boot ================= */
+let framed=false;
+function frameInitial(){
+  // a hidden tab reports a zero viewport; wait for a real one rather than
+  // aiming the camera at nothing
+  const r=liveRect(); if(framed||!r||!CLUSTERS.length)return;
+  framed=true;
+  const c=CLUSTERS[0];
+  vs=.42; vx=r.x+r.w/2-c.x*vs; vy=r.y+r.h/2-c.y*vs; apply();
+  const m=location.hash.match(/^#p\/(\d+)$/);
+  if(m&&BY_ID[+m[1]])select(+m[1]);
+}
+addEventListener('visibilitychange',frameInitial);
+addEventListener('resize',frameInitial);
+
+fetch('data/people.json')
+  .then(r=>{if(!r.ok)throw new Error('data/people.json — '+r.status);return r.json()})
+  .then(d=>{
+    DATA=d; PEOPLE=d.people;
+    PEOPLE.forEach(p=>BY_ID[p.id]=p);
+    layout(); computeAffinity(); render(); buildMenu(); placeArrows();
+    const m=location.hash.match(/^#p\/(\d+)$/);
+    if(m&&BY_ID[+m[1]])renderProfile(BY_ID[+m[1]]); else renderHome();
+    frameInitial();
+  })
+  .catch(err=>{
+    console.error(err);
+    content.innerHTML=`<div class="eyebrow">The map is not here</div>
+      <h1 class="big">Nobody loaded</h1>
+      <p class="lead">The community file could not be read — <code>${String(err.message||err)}</code>.</p>
+      <div class="sect"><button class="pill" onclick="location.reload()">try again</button></div>`;
+  });
+// empty field: first click releases the thread, the next one goes home
+stage.addEventListener('click',()=>{
+  if(moved)return;
+  if(activeTag)clearTag();
+  else if(selected||filterRole)goHome();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,3413 @@
+{
+ "projects": [
+  "Ambisonic Installation",
+  "Art To Wear",
+  "Assembling Ritual",
+  "Communitas",
+  "Contemporary Art",
+  "Documental Art",
+  "Installation",
+  "Music Production",
+  "Neo-Tribes",
+  "hosq team",
+  "Reverse Tower Ritual",
+  "Sama Soundbath",
+  "Set Design",
+  "Somatic Practices",
+  "The Refrain",
+  "Video Art",
+  "Zine Art"
+ ],
+ "people": [
+  {
+   "id": 1,
+   "name": "Kai Khachatryan",
+   "artistic": "Kai Khachatryan",
+   "photo": null,
+   "role": "curator",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/kaikhachatryan/",
+   "telegram": "@nystagmuskay",
+   "project": "Ambisonic Installation",
+   "disciplines": [
+    "Sound Design",
+    "Music Production",
+    "Performance"
+   ],
+   "tools": [
+    "Ableton Live",
+    "DIY"
+   ],
+   "skills": [
+    "Composing",
+    "Sound Recording",
+    "Sound Synthesis",
+    "Sampling",
+    "Mixing and Mastering"
+   ],
+   "photoRemote": "1OAOmD8Ve5LwUO8BojnCg7EI66cZSqBPs"
+  },
+  {
+   "id": 2,
+   "name": "Diren Demir",
+   "artistic": "DİREN",
+   "photo": null,
+   "role": "participant",
+   "country": "Turkey / Germany",
+   "instagram": "https://www.instagram.com/diren.art/?hl=en",
+   "telegram": "@direnart",
+   "project": "Ambisonic Installation",
+   "disciplines": [
+    "Media Art"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1WDewS-1znioq-t_t7L4Mx4LhVnIGrWaV"
+  },
+  {
+   "id": 3,
+   "name": "Aleksandra Zakaryan",
+   "artistic": "XANDRA",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/xanddara/",
+   "telegram": "@xanddara",
+   "project": "Ambisonic Installation",
+   "disciplines": [
+    "Music Production",
+    "Media Art",
+    "Electronics"
+   ],
+   "tools": [
+    "Ableton Live",
+    "Touch Designer"
+   ],
+   "skills": [
+    "Sound Recording",
+    "Design"
+   ],
+   "photoRemote": "1ObMDuGCaUlyrz47dWHOlfO9VZpfknkIh"
+  },
+  {
+   "id": 4,
+   "name": "Ani Yeghoyan",
+   "artistic": "NODE",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/node.officiall/",
+   "telegram": "@ani_yeghoyan",
+   "project": "Ambisonic Installation",
+   "disciplines": [
+    "Music Production"
+   ],
+   "tools": [
+    "Guitar",
+    "Piano",
+    "Ableton Live"
+   ],
+   "skills": [
+    "Composing",
+    "Instrumentalist"
+   ],
+   "photoRemote": "1EsLcg0Uu9RsqSDKVKiJ0nHOEqpvppVl2"
+  },
+  {
+   "id": 5,
+   "name": "Vardan Sargsyan",
+   "artistic": "duke",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/duke93duke?igsh=MXdoMzl2cjM2anQ5MQ==",
+   "telegram": "",
+   "project": "Ambisonic Installation",
+   "disciplines": [
+    "Music Production"
+   ],
+   "tools": [
+    "Guitar",
+    "Bass",
+    "Ableton Live"
+   ],
+   "skills": [
+    "Composing",
+    "Arranging",
+    "Instrumentalist"
+   ],
+   "photoRemote": "1PAztxQ4UY2HGIGA7XAu8ubXl7OwbPdFg"
+  },
+  {
+   "id": 6,
+   "name": "Evgeniia Kovalchuk",
+   "artistic": "arnet",
+   "photo": null,
+   "role": "volunteer / participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/skinny.wrist?igsh=MWlpcGpiMDZmYzF2cg%3D%3D&utm_source=qr",
+   "telegram": "@pospalpoel",
+   "project": "Ambisonic Installation",
+   "disciplines": [
+    "Electronics",
+    "Music Production",
+    "Visual Art"
+   ],
+   "tools": [
+    "Ableton Live",
+    "Synthesizers"
+   ],
+   "skills": [
+    "Design",
+    "Sound Synthesis"
+   ],
+   "photoRemote": "1uOPFVK7Jt1xSkG9NJhaUR3_DomPijltv"
+  },
+  {
+   "id": 7,
+   "name": "Venera Kazarova",
+   "artistic": "Venera Kazarova",
+   "photo": null,
+   "role": "curator",
+   "country": "Germany",
+   "instagram": "https://www.instagram.com/venera_kazarova/",
+   "telegram": "@venera_kazarova",
+   "project": "Art To Wear",
+   "disciplines": [
+    "Theatre",
+    "Animation",
+    "Set Design",
+    "Installation",
+    "Visual Art",
+    "Art to Wear"
+   ],
+   "tools": [
+    "Body",
+    "DIY"
+   ],
+   "skills": [
+    "Sculpture",
+    "Illustration and Painting",
+    "Design"
+   ],
+   "photoRemote": "1EQFSKW2cOED36H5aEJPuAB4kQnoaFIZb"
+  },
+  {
+   "id": 8,
+   "name": "Tigran Gevorkian",
+   "artistic": "Tigran Gevorkian",
+   "photo": null,
+   "role": "participant",
+   "country": "Russia / Armenia",
+   "instagram": "https://www.instagram.com/cringeofdionysus?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@aah_arlekino",
+   "project": "Art To Wear",
+   "disciplines": [
+    "Performance",
+    "Theatre",
+    "Acting"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1oroJE3idyh9ohx40_2nAowZsNnWyz5UF"
+  },
+  {
+   "id": 9,
+   "name": "Minami KINTO",
+   "artistic": "Minami KINTO",
+   "photo": null,
+   "role": "participant",
+   "country": "Japan",
+   "instagram": "https://www.instagram.com/kintominami/",
+   "telegram": "@kintominami",
+   "project": "Art To Wear",
+   "disciplines": [
+    "Installation",
+    "Visual Art",
+    "Performance"
+   ],
+   "tools": [
+    "DIY"
+   ],
+   "skills": [
+    "Research",
+    "Illustration and Painting",
+    "Sculpture"
+   ],
+   "photoRemote": "1d-OtrZTqC2XrLMH0hEk1BfcRwmtVyMXw"
+  },
+  {
+   "id": 10,
+   "name": "Carolina Zakharova",
+   "artistic": "Carolina Zakharova",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/car.zakh?igsh=cDAwdHF5OGx5Y3ly&utm_source=qr",
+   "telegram": "@carzakh",
+   "project": "Art To Wear",
+   "disciplines": [
+    "Choreography",
+    "Performance",
+    "Animation",
+    "Photography",
+    "Visual Art"
+   ],
+   "tools": [
+    "Adobe"
+   ],
+   "skills": [
+    "Design"
+   ],
+   "photoRemote": "1yO81alZxT9jgdQxlH3Yxa84vgGqf3E9M"
+  },
+  {
+   "id": 11,
+   "name": "Toma Aydinyan",
+   "artistic": "Toma Aydinyan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/tomaydinyan/",
+   "telegram": "",
+   "project": "Art To Wear",
+   "disciplines": [
+    "Choreography",
+    "Performance",
+    "Filming",
+    "Photography"
+   ],
+   "tools": [],
+   "skills": [
+    "Improvisation"
+   ]
+  },
+  {
+   "id": 12,
+   "name": "Syuzanna Misakyan",
+   "artistic": "Syuzan Misakyan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/syuzan.misakian?igsh=c3YxYnV1dHdoejBi&utm_source=qr",
+   "telegram": "@syuzan_misakian",
+   "project": "Art To Wear",
+   "disciplines": [
+    "Choreography",
+    "Acting",
+    "Performance",
+    "Theatre"
+   ],
+   "tools": [],
+   "skills": [
+    "Teaching"
+   ],
+   "photoRemote": "1rr3k1eRadIvpNzpHXpsINX_eOPs7ld3M"
+  },
+  {
+   "id": 13,
+   "name": "Robert Poghosyan",
+   "artistic": "Robert Poghosyan",
+   "photo": "1iwy6Em6TapY-TqE5lR9DYvkXDtz62zrT",
+   "role": "verticurator",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/robin_van_cox/",
+   "telegram": "@crossroads_imcs",
+   "project": "Art To Wear",
+   "disciplines": [
+    "Sound Design",
+    "Music Production",
+    "Performance",
+    "Visual Art",
+    "Set Design"
+   ],
+   "tools": [
+    "Piano",
+    "Guitar",
+    "Ableton Live",
+    "Touch Designer",
+    "DIY",
+    "Synthesizers"
+   ],
+   "skills": [
+    "Composing",
+    "Sound Recording",
+    "Instrumentalist",
+    "Arranging",
+    "Sound Synthesis",
+    "Sampling",
+    "Mixing and Mastering",
+    "Instrument Design"
+   ]
+  },
+  {
+   "id": 14,
+   "name": "Jeanne Kormina",
+   "artistic": "Jeanne Kormina",
+   "photo": null,
+   "role": "curator",
+   "country": "Russia / Armenia",
+   "instagram": "https://www.instagram.com/yerevan_center_ycie/",
+   "telegram": "@fainaLo",
+   "project": "Assembling Ritual",
+   "disciplines": [
+    "Writing"
+   ],
+   "tools": [],
+   "skills": [
+    "Research"
+   ],
+   "photoRemote": "1GfUSge7C3Mzmz7xNOfsYtr5iSIWYUJ0j"
+  },
+  {
+   "id": 15,
+   "name": "Arev Hayrapetyan",
+   "artistic": "Arev",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "",
+   "telegram": "@arevhayrapetyan",
+   "project": "Assembling Ritual",
+   "disciplines": [
+    "Acting",
+    "Theatre",
+    "Directing",
+    "Writing"
+   ],
+   "tools": [
+    "Piano",
+    "Guitar"
+   ],
+   "skills": [
+    "Instrumentalist",
+    "Composing"
+   ],
+   "photoRemote": "1uMrWbAkGZaMzIkvdc_mOsBtQ5_fMsO0f"
+  },
+  {
+   "id": 16,
+   "name": "Yuliia Potapova",
+   "artistic": "Yuliia Potapova",
+   "photo": null,
+   "role": "participant",
+   "country": "Russia",
+   "instagram": "",
+   "telegram": "@yulia_uap",
+   "project": "Assembling Ritual",
+   "disciplines": [
+    "Art Management"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1kzDWxaBe5JviaDmHxdNnRnu6FtDLPqIu"
+  },
+  {
+   "id": 17,
+   "name": "Aleksandr Veselov",
+   "artistic": "Aleksandr Veselov",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/mozgalex",
+   "telegram": "@mozgalex",
+   "project": "Assembling Ritual",
+   "disciplines": [
+    "Sound Design",
+    "Media Art",
+    "Writing"
+   ],
+   "tools": [],
+   "skills": [
+    "Research"
+   ],
+   "photoRemote": "1X2i9Hw1orFd3hCjrG5lSpGzdb1vrlVuB"
+  },
+  {
+   "id": 18,
+   "name": "Elena Korkina",
+   "artistic": "Elena Korkina",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "",
+   "telegram": "@zhamanakovor",
+   "project": "Assembling Ritual",
+   "disciplines": [
+    "Art Management",
+    "Writing"
+   ],
+   "tools": [],
+   "skills": [
+    "Research",
+    "Teaching"
+   ],
+   "photoRemote": "1d2dHLH5TLXiWti159S4_X-tZ6lk6lwv5"
+  },
+  {
+   "id": 19,
+   "name": "Anika Krbetschek",
+   "artistic": "Anika Krbetschek",
+   "photo": null,
+   "role": "participant",
+   "country": "Germany",
+   "instagram": "",
+   "telegram": "@anikakrb",
+   "project": "Assembling Ritual",
+   "disciplines": [
+    "Writing",
+    "Art Management",
+    "Media Art",
+    "Photography",
+    "Installation",
+    "Sound Design"
+   ],
+   "tools": [],
+   "skills": [
+    "Research"
+   ],
+   "photoRemote": "1pAsdVK-4ZAFZlH8MZ4z69PirEqdivCx1"
+  },
+  {
+   "id": 20,
+   "name": "Ben Wheeler",
+   "artistic": "Ben Wheeler",
+   "photo": null,
+   "role": "curator",
+   "country": "USA / Georgia",
+   "instagram": "https://www.instagram.com/benwheelermusic/",
+   "telegram": "",
+   "project": "Communitas",
+   "disciplines": [
+    "Music Production",
+    "Sound Design"
+   ],
+   "tools": [
+    "Ableton Live",
+    "Guitar",
+    "Synthesizers",
+    "Electronics"
+   ],
+   "skills": [
+    "Composing",
+    "Sound Recording",
+    "Instrumentalist",
+    "Arranging",
+    "Sound Synthesis",
+    "Sampling"
+   ],
+   "photoRemote": "15BK0jUdQlZvAO-qHdOF1iuLQV619qE0a"
+  },
+  {
+   "id": 21,
+   "name": "Zhanna Davtyan",
+   "artistic": "Zhanna Davtyan",
+   "photo": null,
+   "role": "curator",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/zhannadavtyan/",
+   "telegram": "",
+   "project": "Communitas",
+   "disciplines": [
+    "Performance",
+    "Classical Music",
+    "Jazz"
+   ],
+   "tools": [
+    "Vocal"
+   ],
+   "skills": [
+    "Composing",
+    "Singing",
+    "Improvisation"
+   ],
+   "photoRemote": "1ep3Cp7GZvCLyfGmeT9Rgu5Bp2gfLTL-9"
+  },
+  {
+   "id": 22,
+   "name": "Jessica James",
+   "artistic": "Winter",
+   "photo": null,
+   "role": "participant",
+   "country": "Scotland, UK",
+   "instagram": "https://www.instagram.com/glassforbrains?igsh=b3Zlb2M4dzJwejJv",
+   "telegram": "@glassforbrains",
+   "project": "Communitas",
+   "disciplines": [
+    "Theatre",
+    "Performance",
+    "Sound Design",
+    "Music Production",
+    "Electronics"
+   ],
+   "tools": [
+    "Ableton Live",
+    "Vocal",
+    "Synthesizers"
+   ],
+   "skills": [
+    "Composing",
+    "Improvisation",
+    "Singing",
+    "Teaching",
+    "Sound Synthesis"
+   ],
+   "photoRemote": "1LSw03i2CD05Vikd9drc2UPAEGrpF3beW"
+  },
+  {
+   "id": 23,
+   "name": "Gohar Gizhlaryan",
+   "artistic": "Gohar Gizhlaryan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/edofreme?igsh=MTBqeHdwcDI3MXE3YQ==",
+   "telegram": "@GoharGizhlaryan",
+   "project": "Communitas",
+   "disciplines": [
+    "Visual Art",
+    "Photography",
+    "Writing",
+    "Classical Music",
+    "Performance"
+   ],
+   "tools": [
+    "Qanun"
+   ],
+   "skills": [
+    "Improvisation",
+    "Illustration and Painting",
+    "Instrumentalist"
+   ],
+   "photoRemote": "1d06f7YhAlOadB-e-5y9nVvfQZaUH591V"
+  },
+  {
+   "id": 24,
+   "name": "Olivia Melkonian",
+   "artistic": "khanum",
+   "photo": null,
+   "role": "participant",
+   "country": "United Kingdom",
+   "instagram": "",
+   "telegram": "@omelkonian",
+   "project": "Communitas",
+   "disciplines": [
+    "Sound Design",
+    "Performance",
+    "Music Production",
+    "Filming",
+    "Installation"
+   ],
+   "tools": [],
+   "skills": [
+    "Composing",
+    "Sound Recording",
+    "Research"
+   ],
+   "photoRemote": "1vVgBwMuE5w5FGqaGu1OvQl4B0j0ZasIh"
+  },
+  {
+   "id": 25,
+   "name": "Louise Gorm",
+   "artistic": "Louise Gorm",
+   "photo": null,
+   "role": "participant",
+   "country": "Denmark",
+   "instagram": "https://www.instagram.com/louise.gorm",
+   "telegram": "@louisegorm",
+   "project": "Communitas",
+   "disciplines": [
+    "Classical Music",
+    "Performance",
+    "Production"
+   ],
+   "tools": [
+    "Violin"
+   ],
+   "skills": [
+    "Improvisation",
+    "Composing",
+    "Research",
+    "Instrumentalist"
+   ],
+   "photoRemote": "1xpixqSLUQ8YxXJINtJBAzcoVXnNWivp2"
+  },
+  {
+   "id": 26,
+   "name": "Matteo Cenerini",
+   "artistic": "Matteo Cenerini",
+   "photo": null,
+   "role": "participant",
+   "country": "Italy",
+   "instagram": "https://www.instagram.com/jimmo_biloba/?hl=en",
+   "telegram": "@jimmog",
+   "project": "Communitas",
+   "disciplines": [
+    "Performance",
+    "Jazz",
+    "Music Production",
+    "Installation",
+    "Writing"
+   ],
+   "tools": [
+    "Guitar"
+   ],
+   "skills": [
+    "Composing",
+    "Arranging",
+    "Improvisation",
+    "Instrumentalist",
+    "Research"
+   ],
+   "photoRemote": "12az41ox6HXaJ-Po5QasSn-0yZbDeSro9"
+  },
+  {
+   "id": 27,
+   "name": "Van Sadagh",
+   "artistic": "Van Sadagh",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/van.sadagh/?hl=en",
+   "telegram": "@van_muse",
+   "project": "Communitas",
+   "disciplines": [
+    "Jazz",
+    "Acting",
+    "Theatre",
+    "Visual Art",
+    "Photography",
+    "Performance",
+    "Music Production"
+   ],
+   "tools": [
+    "Piano",
+    "Vocal"
+   ],
+   "skills": [
+    "Composing",
+    "Singing",
+    "Teaching",
+    "Illustration and Painting",
+    "Instrumentalist"
+   ]
+  },
+  {
+   "id": 28,
+   "name": "Elen Poghosyan",
+   "artistic": "Elen Poghosyan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/_elenpogosyan_?igsh=MXUycjI0NndxbXVneg%3D%3D&utm_source=qr",
+   "telegram": "@elenpoghosyan",
+   "project": "Communitas",
+   "disciplines": [
+    "Classical Music"
+   ],
+   "tools": [
+    "Piano",
+    "Cello"
+   ],
+   "skills": [
+    "Instrumentalist"
+   ],
+   "photoRemote": "1y8AUbqrGNicWaeTWix8Z-R8E1ePW4DI7"
+  },
+  {
+   "id": 29,
+   "name": "Ana Kipshidze",
+   "artistic": "Anuka Kipshidze",
+   "photo": null,
+   "role": "participant",
+   "country": "Georgia",
+   "instagram": "https://www.instagram.com/kipshidzeanuka?igsh=c25zaHB0dHJ3cTkz&utm_source=qr",
+   "telegram": "@akipshidze",
+   "project": "Communitas",
+   "disciplines": [
+    "Sound Design",
+    "Music Production"
+   ],
+   "tools": [
+    "Bass",
+    "Guitar",
+    "Piano"
+   ],
+   "skills": [
+    "Instrumentalist",
+    "Composing",
+    "Sound Recording",
+    "Instrument Design",
+    "Engineering",
+    "Mixing and Mastering"
+   ],
+   "photoRemote": "16nGyUv4m6HPQgqlLclOnfvf8f5WMCyHd"
+  },
+  {
+   "id": 30,
+   "name": "Maria Tsharakyan",
+   "artistic": "manu",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia / Spain",
+   "instagram": "https://www.instagram.com/manu.tsharak/",
+   "telegram": "@bitchok",
+   "project": "Communitas",
+   "disciplines": [
+    "Music Production",
+    "Sound Design"
+   ],
+   "tools": [
+    "Piano",
+    "Guitar",
+    "Drums",
+    "Bass"
+   ],
+   "skills": [
+    "Instrumentalist",
+    "Teaching",
+    "Engineering",
+    "Composing"
+   ],
+   "photoRemote": "1yHM0qm8MljMRNYjCwkscFm495iTftYZi"
+  },
+  {
+   "id": 31,
+   "name": "Levon Yerkanyan",
+   "artistic": "Lerk",
+   "photo": "1UHBQ-78ZcaLr_5yfJyONpE5GeI97iJ4i",
+   "role": "volunteer / participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/leeerk/",
+   "telegram": "@leerrk",
+   "project": "Communitas",
+   "disciplines": [
+    "Classical Music",
+    "Music Production",
+    "Photography"
+   ],
+   "tools": [
+    "Vocal",
+    "Guitar",
+    "Ableton Live",
+    "Logic Pro"
+   ],
+   "skills": [
+    "Singing",
+    "Instrumentalist"
+   ]
+  },
+  {
+   "id": 32,
+   "name": "Andronik Khachiian",
+   "artistic": "Andronik Khachiian",
+   "photo": "1aPmiZaJkzgM3R-cARvvZmI4asqAM_7-x",
+   "role": "curator, hosq team",
+   "country": "Armenia / Mexico",
+   "instagram": "https://www.instagram.com/andronik_/",
+   "telegram": "@andronikh",
+   "project": "Contemporary Art",
+   "disciplines": [
+    "Light",
+    "Visual Art",
+    "Animation",
+    "Performance",
+    "Choreography",
+    "Directing",
+    "Production",
+    "Filming"
+   ],
+   "tools": [
+    "Resolume",
+    "Adobe"
+   ],
+   "skills": [
+    "AI visual",
+    "Design",
+    "Illustration and Painting",
+    "Improvisation"
+   ]
+  },
+  {
+   "id": 33,
+   "name": "Tatiana Iaksina",
+   "artistic": "helical_worm",
+   "photo": null,
+   "role": "participant",
+   "country": "Russia / Cyprus",
+   "instagram": "https://www.instagram.com/helical_worm?igsh=N25weG0yMTlrM251",
+   "telegram": "@Hlclwr",
+   "project": "Contemporary Art",
+   "disciplines": [
+    "Media Art",
+    "Visual Art",
+    "Electronics",
+    "Installation",
+    "Photography",
+    "Sound Design"
+   ],
+   "tools": [
+    "Max/MSP",
+    "Electronics",
+    "Coding",
+    "DIY",
+    "Touch Designer"
+   ],
+   "skills": [
+    "Coding and Patching",
+    "Illustration and Painting",
+    "Instrument Design",
+    "Research"
+   ],
+   "photoRemote": "174_f_S4APDApp3T3C9urmlpfGZepRiZr"
+  },
+  {
+   "id": 34,
+   "name": "Wanbo Li",
+   "artistic": "Ember Li",
+   "photo": null,
+   "role": "participant",
+   "country": "China / United Kingdom",
+   "instagram": "https://www.instagram.com/ember.leee?igsh=MWRzdXh2NDhmZWZzaw%3D%3D&utm_source=qr",
+   "telegram": "@emberlee7",
+   "project": "Contemporary Art",
+   "disciplines": [
+    "Installation",
+    "Performance",
+    "Media Art",
+    "Photography",
+    "Filming",
+    "Sound Design"
+   ],
+   "tools": [],
+   "skills": [
+    "Research"
+   ],
+   "photoRemote": "1fcQOYWMlx9oJgyMEqlBy1XDj7SEyIn70"
+  },
+  {
+   "id": 35,
+   "name": "Rhys Votano",
+   "artistic": "weight of light",
+   "photo": null,
+   "role": "participant",
+   "country": "Austria / UK",
+   "instagram": "https://www.instagram.com/weight.of.light/?hl=en",
+   "telegram": "@Votaaano",
+   "project": "Contemporary Art",
+   "disciplines": [
+    "Filming",
+    "Media Art",
+    "Writing",
+    "Theatre",
+    "Visual Art",
+    "Sound Design"
+   ],
+   "tools": [
+    "Synthesizers"
+   ],
+   "skills": [
+    "Illustration and Painting"
+   ],
+   "photoRemote": "1dCbWLnqAuiIxeil6bv08Aa4eVi3P1gma"
+  },
+  {
+   "id": 36,
+   "name": "Yulia Nemova",
+   "artistic": "Yulia Nemova",
+   "photo": null,
+   "role": "participant",
+   "country": "Uzbekistan / Russia",
+   "instagram": "https://www.instagram.com/yuliyanemova?igsh=MTI2cGVxem5jMWVheQ==",
+   "telegram": "@yulianemova777",
+   "project": "Contemporary Art",
+   "disciplines": [
+    "Media Art",
+    "Installation",
+    "Filming",
+    "Visual Art"
+   ],
+   "tools": [
+    "Unreal Engine",
+    "Adobe"
+   ],
+   "skills": [
+    "Teaching",
+    "AI Visual",
+    "3D",
+    "Illustration and Painting",
+    "Design"
+   ],
+   "photoRemote": "1n98QZMTc8GqFL-3sz6ItwpbSsyQ1rdGp"
+  },
+  {
+   "id": 37,
+   "name": "Evgeniia Starikova",
+   "artistic": "Evgeniia Starikova",
+   "photo": null,
+   "role": "participant",
+   "country": "Russia",
+   "instagram": "",
+   "telegram": "@evgelioon",
+   "project": "Contemporary Art",
+   "disciplines": [
+    "Installation",
+    "Performance",
+    "Media Art",
+    "Filming",
+    "Sound Design"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1kbKoekV-ui2iD5vV3ylrSAgNiM5tP5-3"
+  },
+  {
+   "id": 38,
+   "name": "Artem Semenov",
+   "artistic": "Artem Semenov",
+   "photo": null,
+   "role": "curator",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/somewherestation/",
+   "telegram": "@somewherestation",
+   "project": "Documental Art",
+   "disciplines": [
+    "Filming",
+    "Photography",
+    "Light",
+    "Directing"
+   ],
+   "tools": [
+    "Da Vinci Resolve"
+   ],
+   "skills": [],
+   "photoRemote": "1UZlx0zGNvkmPOcMFFwIkRlM8nL54pYnd"
+  },
+  {
+   "id": 39,
+   "name": "Evgeniy Sharakshane",
+   "artistic": "Evgeniy Sharakshane",
+   "photo": null,
+   "role": "curator",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/evbe_shar/",
+   "telegram": "@glyadite",
+   "project": "Documental Art",
+   "disciplines": [
+    "Filming",
+    "Photography",
+    "Light",
+    "Directing"
+   ],
+   "tools": [
+    "Da Vinci Resolve"
+   ],
+   "skills": [],
+   "photoRemote": "1MnEb8Vll8xPM7YlxpXFZtCL-ofRh8YbA"
+  },
+  {
+   "id": 40,
+   "name": "Kristina Manucharyan",
+   "artistic": "Kristina Arark Manucharyan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenian",
+   "instagram": "",
+   "telegram": "@christin17",
+   "project": "Documental Art",
+   "disciplines": [
+    "Visual Art",
+    "Animation",
+    "Writing",
+    "Performance"
+   ],
+   "tools": [],
+   "skills": [
+    "Illustration and Painting",
+    "Sculpture"
+   ],
+   "photoRemote": "1g9FI3JAMgl4jROD0kaYYFrU6pIhexjsf"
+  },
+  {
+   "id": 41,
+   "name": "Veronika Poghosyan",
+   "artistic": "Who Is Veronika Poghosyan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/jojo___san?igsh=MTN1bml3MDcxOW1tbw%3D%3D&utm_source=qr",
+   "telegram": "@mermaidbuttercookies",
+   "project": "Documental Art",
+   "disciplines": [
+    "Filming",
+    "Animation",
+    "Performance",
+    "Acting",
+    "Writing",
+    "Directing"
+   ],
+   "tools": [
+    "Adobe",
+    "Dragon Frame"
+   ],
+   "skills": [
+    "Sculpture",
+    "Design"
+   ],
+   "photoRemote": "170pdeM3nZBcKTOAsIIXeU_rwC3g2CHrJ"
+  },
+  {
+   "id": 42,
+   "name": "Juliette Martirosyan",
+   "artistic": "Juliette Martirosyan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/juliette.martirosyan/",
+   "telegram": "@jules_juliette",
+   "project": "Documental Art",
+   "disciplines": [
+    "Filming",
+    "Directing",
+    "Writing"
+   ],
+   "tools": [
+    "Adobe"
+   ],
+   "skills": [],
+   "photoRemote": "1CnbGHnJKfYfRv54WkFwBwqa2pLiUs_XG"
+  },
+  {
+   "id": 43,
+   "name": "Vlada Stoyakina",
+   "artistic": "Vlada Stoyakina",
+   "photo": null,
+   "role": "volunteer / participant",
+   "country": "Russia",
+   "instagram": "",
+   "telegram": "@stksk0st",
+   "project": "Documental Art",
+   "disciplines": [],
+   "tools": [],
+   "skills": []
+  },
+  {
+   "id": 44,
+   "name": "Nadya Xyxu",
+   "artistic": "Nadya Xyxu",
+   "photo": null,
+   "role": "curator",
+   "country": "Russia",
+   "instagram": "https://www.instagram.com/nadya_xyxu/",
+   "telegram": "@NadyaXyxu",
+   "project": "Installation",
+   "disciplines": [
+    "Sound Design",
+    "Music Production",
+    "Performance",
+    "Light",
+    "Visual Art",
+    "Installation",
+    "Electronics"
+   ],
+   "tools": [
+    "Touch Designer",
+    "Vocal",
+    "Synthesizers",
+    "Electronics"
+   ],
+   "skills": [
+    "Sound Synthesis",
+    "Coding and Patching",
+    "Instrument Design",
+    "Illustration and Painting",
+    "Singing",
+    "Sound Recording"
+   ],
+   "photoRemote": "1JRHDqVNoz9gVvYF2AxcIuHFvxRvsOoHK"
+  },
+  {
+   "id": 45,
+   "name": "Misak Samokatian",
+   "artistic": "Misak Samokatian",
+   "photo": null,
+   "role": "curator",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/__misak/",
+   "telegram": "@mmisak",
+   "project": "Installation",
+   "disciplines": [
+    "Sound Design",
+    "Music Production",
+    "Light"
+   ],
+   "tools": [
+    "Touch Designer",
+    "Unreal Engine",
+    "DIY"
+   ],
+   "skills": [],
+   "photoRemote": "1rdafOGEbGXNXOqF-PpQxYfU7FCpF7znl"
+  },
+  {
+   "id": 46,
+   "name": "Anna Terzikyan",
+   "artistic": "Anna Vahrami",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/anna_vahrami/",
+   "telegram": "@yokogeri8",
+   "project": "Installation",
+   "disciplines": [
+    "Music Production",
+    "Installation",
+    "Writing",
+    "Performance"
+   ],
+   "tools": [
+    "Ableton Live",
+    "Vocal",
+    "Piano"
+   ],
+   "skills": [
+    "Composing",
+    "Improvisation",
+    "Singing",
+    "Research"
+   ],
+   "photoRemote": "1Tv4sbO0XIQhlORQOF952fV_BcdD8a9Ww"
+  },
+  {
+   "id": 47,
+   "name": "SU JINGXIANG",
+   "artistic": "JAXTON SU",
+   "photo": null,
+   "role": "participant",
+   "country": "Singapore",
+   "instagram": "",
+   "telegram": "@jblueskyx",
+   "project": "Installation",
+   "disciplines": [
+    "Visual Art",
+    "Installation",
+    "Filming",
+    "Photography",
+    "Art Management"
+   ],
+   "tools": [],
+   "skills": [
+    "Illustration and Painting"
+   ],
+   "photoRemote": "1XgUI0K8N8vSlsbkWRYwbVy1H0U_pXRcO"
+  },
+  {
+   "id": 48,
+   "name": "Vedant Manwadkar",
+   "artistic": "Vedant Manwadkar",
+   "photo": null,
+   "role": "participant",
+   "country": "India",
+   "instagram": "https://www.instagram.com/vedmilo?igsh=MThudWhmajlsamNjeQ==",
+   "telegram": "@vedantmanwadkar",
+   "project": "Installation",
+   "disciplines": [
+    "Music Production",
+    "Animation",
+    "Installation",
+    "Filming",
+    "Media Art"
+   ],
+   "tools": [
+    "Guitar",
+    "Coding"
+   ],
+   "skills": [
+    "Composing",
+    "Coding and Patching",
+    "Design",
+    "Research",
+    "Instrumentalist"
+   ],
+   "photoRemote": "1Hg6PbwG2dAY1rYmUJ1DLkaDwRbnLyVfp"
+  },
+  {
+   "id": 49,
+   "name": "Anna Ghazaryan Vladimirskaya",
+   "artistic": "Anna Ghazaryan Vladimirskaya",
+   "photo": null,
+   "role": "participant",
+   "country": "USA / Armenia",
+   "instagram": "",
+   "telegram": "@vvvvvanna",
+   "project": "Installation",
+   "disciplines": [
+    "Visual Art",
+    "Media Art",
+    "Installation"
+   ],
+   "tools": [
+    "Coding"
+   ],
+   "skills": [
+    "Design",
+    "Sculpture",
+    "Coding and Patching",
+    "Research",
+    "3D",
+    "Engineering"
+   ],
+   "photoRemote": "1NE_o6K_CKQJbchKqujHpdABrkilhbJ32"
+  },
+  {
+   "id": 50,
+   "name": "Anna Esaian",
+   "artistic": "esai",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia / Netherlands",
+   "instagram": "https://www.instagram.com/essuricatikam?igsh=cGh2bmptcnRjZ3Zo",
+   "telegram": "@essuricatikam",
+   "project": "Installation",
+   "disciplines": [
+    "Installation",
+    "Performance",
+    "Photography",
+    "Visual Art",
+    "Media Art"
+   ],
+   "tools": [],
+   "skills": [
+    "Sculpture",
+    "Illustration and Painting"
+   ],
+   "photoRemote": "1SUUfU0VrNt1Y29W0eV2vvAzMMwHEfPET"
+  },
+  {
+   "id": 51,
+   "name": "Julia Krivosheenko",
+   "artistic": "Julia Krivosheenko",
+   "photo": null,
+   "role": "participant",
+   "country": "UK",
+   "instagram": "https://www.instagram.com/juliakrivo?igsh=MTd1OHZpbjYxdDNydw%3D%3D&utm_source=qr",
+   "telegram": "@Juliakrivo",
+   "project": "Installation",
+   "disciplines": [
+    "Media Art",
+    "Installation",
+    "Light"
+   ],
+   "tools": [
+    "Coding",
+    "Touch Designer"
+   ],
+   "skills": [
+    "Coding and Patching",
+    "Design"
+   ],
+   "photoRemote": "1MHyXipRET0vGGgDGPrPmaqAgvrtcNPTM"
+  },
+  {
+   "id": 52,
+   "name": "Arman Peshtmaljyan",
+   "artistic": "Arman Peshtmaljyan",
+   "photo": "1JrQBhlXcuoNNWfw6R5jR6wnChqImxbIN",
+   "role": "curator",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/arman_peshtmaljyan/",
+   "telegram": "@Jeff3627",
+   "project": "Music Production",
+   "disciplines": [
+    "Performance",
+    "Sound Design",
+    "Music Production",
+    "Jazz"
+   ],
+   "tools": [
+    "Piano",
+    "Ableton Live"
+   ],
+   "skills": [
+    "Composing",
+    "Instrumentalist",
+    "Arranging",
+    "Instrument Design"
+   ]
+  },
+  {
+   "id": 53,
+   "name": "Shahen Khandkaryan (Shhau)",
+   "artistic": "Shhau",
+   "photo": "1tnA3-ddYabpgdmrQEvGTpxzWlo2DVBji",
+   "role": "curator",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/shhau.then/",
+   "telegram": "@shhhau",
+   "project": "Music Production",
+   "disciplines": [
+    "Sound Design",
+    "Music Production"
+   ],
+   "tools": [
+    "Piano",
+    "Drums",
+    "Ableton Live"
+   ],
+   "skills": [
+    "Composing",
+    "Sound Recording",
+    "Instrumentalist",
+    "Arranging",
+    "Sound Synthesis",
+    "Sampling",
+    "Mixing and Mastering",
+    "Instrument Design"
+   ]
+  },
+  {
+   "id": 54,
+   "name": "Anton Shanikhin",
+   "artistic": "Tony “Everydaypony” Shanikhin",
+   "photo": null,
+   "role": "participant",
+   "country": "Russia",
+   "instagram": "https://www.instagram.com/yavalera?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@goshavronitch",
+   "project": "Music Production",
+   "disciplines": [
+    "Music Production",
+    "Sound Design",
+    "Theatre",
+    "Animation",
+    "Visual Art",
+    "Classical Music"
+   ],
+   "tools": [
+    "Guitar",
+    "Synthesizers",
+    "Piano",
+    "Bass",
+    "Max/MSP",
+    "Resolume"
+   ],
+   "skills": [
+    "Composing",
+    "Sampling",
+    "Sound Synthesis",
+    "Instrumentalist",
+    "Coding and Patching"
+   ],
+   "photoRemote": "1W1hDv1ssUVccUXnjZVrS_0FQff788ItD"
+  },
+  {
+   "id": 55,
+   "name": "Solomon Fatoma",
+   "artistic": "solo's beat",
+   "photo": null,
+   "role": "participant",
+   "country": "Sierra Leone",
+   "instagram": "",
+   "telegram": "",
+   "project": "Music Production",
+   "disciplines": [
+    "Music Production"
+   ],
+   "tools": [
+    "Piano",
+    "Bass",
+    "Drums"
+   ],
+   "skills": [
+    "Composing",
+    "Instrumentalist"
+   ]
+  },
+  {
+   "id": 56,
+   "name": "Ara Ter-Gabrielyants",
+   "artistic": "Ara Ter-Gabrielyants",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "",
+   "telegram": "@araterg",
+   "project": "Music Production",
+   "disciplines": [
+    "Acting",
+    "Production",
+    "Writing",
+    "Music Production",
+    "Performance"
+   ],
+   "tools": [
+    "Piano",
+    "Guitar",
+    "Vocal"
+   ],
+   "skills": [
+    "Singing",
+    "Instrumentalist",
+    "Composing"
+   ],
+   "photoRemote": "1zvmGpbu60ngooeWrhRfi1Yo23g1SGeAi"
+  },
+  {
+   "id": 57,
+   "name": "Artak Kostandian",
+   "artistic": "dreamy0psis",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia / Georgia",
+   "instagram": "https://www.instagram.com/dreamy0psis?igsh=MW9seHV1dHV6ZG5zOA%3D%3D&utm_source=qr",
+   "telegram": "@aartakk",
+   "project": "Music Production",
+   "disciplines": [
+    "Installation",
+    "Visual Art",
+    "Music Production"
+   ],
+   "tools": [
+    "Ableton Live"
+   ],
+   "skills": [
+    "Sculpture",
+    "3D",
+    "Composing"
+   ],
+   "photoRemote": "13nlWqr96muH6WL5qp-4l-I6WNtg3edgq"
+  },
+  {
+   "id": 58,
+   "name": "Valentin Ryzhov",
+   "artistic": "zvukofor",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "http://instagram.com/zvukofor",
+   "telegram": "@zvukofor",
+   "project": "Music Production",
+   "disciplines": [
+    "Music Production",
+    "Sound Design",
+    "Visual Art",
+    "Filming"
+   ],
+   "tools": [
+    "Synthesizers",
+    "Guitar",
+    "Electronics"
+   ],
+   "skills": [
+    "Sound Recording",
+    "Instrumentalist",
+    "Sound Synthesis",
+    "Engineering"
+   ],
+   "photoRemote": "17mzaLkkeGaK5RHr4e8x1vyD3cWByCI7n"
+  },
+  {
+   "id": 59,
+   "name": "Karine Avetisyan",
+   "artistic": "Kariné",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/karravetisyan/",
+   "telegram": "@karravetisyan",
+   "project": "Music Production",
+   "disciplines": [
+    "Electronics",
+    "Music Production"
+   ],
+   "tools": [
+    "Piano",
+    "Vocal",
+    "Electronics",
+    "Synthesizers"
+   ],
+   "skills": [
+    "Composing",
+    "Sound Synthesis",
+    "Singing",
+    "Instrumentalist"
+   ],
+   "photoRemote": "1_hBBCJsUda9CBs6e5dqtrBMUArQzZbSt"
+  },
+  {
+   "id": 60,
+   "name": "Nelli Vardanyan",
+   "artistic": "Echoes in dust",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/echoes_in_dust?igsh=cTA1NmN2cnF0MTdw",
+   "telegram": "@nellyv8",
+   "project": "Music Production",
+   "disciplines": [
+    "Music Production",
+    "Sound Design",
+    "Classical Music"
+   ],
+   "tools": [
+    "Ableton Live",
+    "Logic Pro",
+    "Qanun"
+   ],
+   "skills": [
+    "Instrumentalist",
+    "Composing",
+    "Sound Recording"
+   ],
+   "photoRemote": "1mQiX9FWWKJBKa6pfz9QyWtVNj2RjQtmz"
+  },
+  {
+   "id": 61,
+   "name": "Vahe Abrahamyan",
+   "artistic": "Nerøx",
+   "photo": "1bhtfITgzNCOA4uJq7fwmD0ujeJyw4_ug",
+   "role": "volunteer / participant",
+   "country": "Armenia / Germany",
+   "instagram": "https://www.instagram.com/vahe.abrahamyan___?igsh=MTFyanFsazB0OHJ4eg%3D%3D&utm_source=qr",
+   "telegram": "@Vahe17",
+   "project": "Music Production",
+   "disciplines": [
+    "Electronics",
+    "Music Production",
+    "Classical Music"
+   ],
+   "tools": [
+    "Ableton Live"
+   ],
+   "skills": [
+    "Composing"
+   ]
+  },
+  {
+   "id": 62,
+   "name": "Dubljević Dragan",
+   "artistic": "Dubljević Dragan",
+   "photo": null,
+   "role": "volunteer / participant",
+   "country": "Montenegro",
+   "instagram": "https://www.instagram.com/dubljevic_dragan/",
+   "telegram": "@DraganDub",
+   "project": "Music Production",
+   "disciplines": [
+    "Music Production",
+    "Production",
+    "Sound Design"
+   ],
+   "tools": [
+    "Ableton Live",
+    "Electronics"
+   ],
+   "skills": [
+    "Composing",
+    "Arranging"
+   ],
+   "photoRemote": "1UF2c2bwx4BmjZgkHCopi07ngVRXcpysf"
+  },
+  {
+   "id": 63,
+   "name": "Tigran Suchyan",
+   "artistic": "Tigran Suchyan",
+   "photo": null,
+   "role": "curator",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/tigrantoti/",
+   "telegram": "",
+   "project": "Neo-Tribes",
+   "disciplines": [
+    "Sound Design",
+    "Music Production",
+    "Performance",
+    "Jazz"
+   ],
+   "tools": [
+    "Piano",
+    "Guitar",
+    "Drums"
+   ],
+   "skills": [
+    "Composing",
+    "Sound Recording",
+    "Instrumentalist",
+    "Arranging",
+    "Sound Synthesis",
+    "Sampling"
+   ],
+   "photoRemote": "1oroJE3idyh9ohx40_2nAowZsNnWyz5UF"
+  },
+  {
+   "id": 64,
+   "name": "Mesrop Sarkisyan",
+   "artistic": "Mesrop Sarkisyan",
+   "photo": null,
+   "role": "curator",
+   "country": "USA / Armenia",
+   "instagram": "https://www.instagram.com/mesrop___/",
+   "telegram": "@mesropsarkisyan",
+   "project": "Neo-Tribes",
+   "disciplines": [
+    "Sound Design",
+    "Music Production",
+    "Performance",
+    "Jazz"
+   ],
+   "tools": [
+    "Piano",
+    "Guitar",
+    "Drums"
+   ],
+   "skills": [
+    "Composing",
+    "Sound Recording",
+    "Instrumentalist",
+    "Arranging",
+    "Sound Synthesis",
+    "Sampling"
+   ],
+   "photoRemote": "1vuzPAIAL9nmz3RitfCsbELEfAJxhEAFe"
+  },
+  {
+   "id": 65,
+   "name": "Zoya Sargsyan",
+   "artistic": "Bokusho",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/zoya_sargsyan_art/?hl=en",
+   "telegram": "",
+   "project": "Neo-Tribes",
+   "disciplines": [
+    "Music Production",
+    "Classical Music",
+    "Jazz"
+   ],
+   "tools": [],
+   "skills": [
+    "Improvisation",
+    "Instrumentalist"
+   ],
+   "photoRemote": "1w6WR8R5XsoJA5goB8LlY0a1M0_9nRlhB"
+  },
+  {
+   "id": 66,
+   "name": "Nikolai Zheltukhin",
+   "artistic": "Nikolai Zheltukhin (yomoyo)",
+   "photo": null,
+   "role": "participant",
+   "country": "Russia",
+   "instagram": "https://www.instagram.com/yomoyomus/?hl=en",
+   "telegram": "@nikozhelt",
+   "project": "Neo-Tribes",
+   "disciplines": [
+    "Music Production",
+    "Jazz"
+   ],
+   "tools": [
+    "Flute",
+    "Guitar",
+    "Bass",
+    "Piano",
+    "Saxophone"
+   ],
+   "skills": [
+    "Improvisation",
+    "Composing",
+    "Instrumentalist"
+   ],
+   "photoRemote": "1d4yL-cjTYSaMHKe_VY6OJEdvjzGdwRfO"
+  },
+  {
+   "id": 67,
+   "name": "Evgeny Bylina",
+   "artistic": "Evgeny Bylina",
+   "photo": null,
+   "role": "participant",
+   "country": "Ukraine, Georgia",
+   "instagram": "",
+   "telegram": "@bylina",
+   "project": "Neo-Tribes",
+   "disciplines": [
+    "Writing",
+    "Art Management",
+    "Jazz",
+    "Electronics",
+    "Music Production"
+   ],
+   "tools": [
+    "Piano",
+    "Max/MSP",
+    "Ableton Live",
+    "Synthesizers"
+   ],
+   "skills": [
+    "Research",
+    "Teaching",
+    "Improvisation",
+    "Instrumentalist",
+    "Sound Synthesis"
+   ],
+   "photoRemote": "1mUGJY8UjlQC1PPfVxAl_xXYa3h_x9DEU"
+  },
+  {
+   "id": 68,
+   "name": "Fernando Damon",
+   "artistic": "Fernando Damon",
+   "photo": null,
+   "role": "participant",
+   "country": "South Africa",
+   "instagram": "https://www.instagram.com/fernandofinds/",
+   "telegram": "",
+   "project": "Neo-Tribes",
+   "disciplines": [
+    "Jazz",
+    "Electronics",
+    "Music Production",
+    "Visual Art"
+   ],
+   "tools": [
+    "Drums",
+    "Synthesizers"
+   ],
+   "skills": [
+    "Sampling",
+    "Sound Synthesis",
+    "Instrumentalist",
+    "Illustration and Painting"
+   ],
+   "photoRemote": "1EwR_3rbT0DOPpjGOcF1tPG7TLf3gTJ9z"
+  },
+  {
+   "id": 69,
+   "name": "Arno Melkonyan",
+   "artistic": "Arno Melkonyan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/arnomelkonyan?igsh=MWk1d2t5eDNnMTNucQ==",
+   "telegram": "@arnomelkonyan",
+   "project": "Neo-Tribes",
+   "disciplines": [
+    "Classical Music",
+    "Jazz",
+    "Music Production"
+   ],
+   "tools": [
+    "Piano",
+    "Guitar"
+   ],
+   "skills": [
+    "Composing",
+    "Instrumentalist"
+   ],
+   "photoRemote": "1bKvyVzL6fnDbmybnz2UmSuWtNXxtufn5"
+  },
+  {
+   "id": 70,
+   "name": "Henrik Meliqyan",
+   "artistic": "Henrik Meliqyan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/henrik.meliqyan.music?igsh=MXZ6NW50cHd6OHRnNg==",
+   "telegram": "@heno_jz",
+   "project": "Neo-Tribes",
+   "disciplines": [
+    "Classical Music",
+    "Jazz"
+   ],
+   "tools": [
+    "Clarinet",
+    "Saxophone"
+   ],
+   "skills": [
+    "Instrumentalist"
+   ],
+   "photoRemote": "17ZdOWfWRzQDSAGQNAAcpxXSaTQLa0_On"
+  },
+  {
+   "id": 71,
+   "name": "Svetlana Hakobyan",
+   "artistic": "Svetlana Hakobyan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "",
+   "telegram": "@haklanna",
+   "project": "Neo-Tribes",
+   "disciplines": [],
+   "tools": [
+    "Guitar",
+    "Bass"
+   ],
+   "skills": [
+    "Instrumentalist"
+   ],
+   "photoRemote": "1H8jjVxUVdW2MHIk7wzme2CQUKe_MbHTE"
+  },
+  {
+   "id": 72,
+   "name": "Hayk Simonyan",
+   "artistic": "Hayk Simonyan",
+   "photo": null,
+   "role": "volunteer / participant",
+   "country": "",
+   "instagram": "https://www.instagram.com/hayk_dr.m_/?hl=en",
+   "telegram": "",
+   "project": "hosq team",
+   "disciplines": [],
+   "tools": [],
+   "skills": []
+  },
+  {
+   "id": 73,
+   "name": "Andriesh Gandrabur",
+   "artistic": "Andriesh Gandrabur",
+   "photo": "1BXK0SeLZX7rKYdtQiVG8ozAUHQqRWceP",
+   "role": "curator, hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/gandriesh/",
+   "telegram": "@gandriesh",
+   "project": "Reverse Tower Ritual",
+   "disciplines": [
+    "Sound Design",
+    "Music Production",
+    "Art Management",
+    "Production",
+    "Electronics"
+   ],
+   "tools": [
+    "Guitar",
+    "Ableton Live",
+    "Synthesizers"
+   ],
+   "skills": [
+    "Composing",
+    "Sound Recording",
+    "Instrumentalist",
+    "Arranging",
+    "Sound Synthesis",
+    "Sampling",
+    "Mixing and Mastering",
+    "Research",
+    "Improvisation",
+    "Teaching"
+   ]
+  },
+  {
+   "id": 74,
+   "name": "Hooman Talakian",
+   "artistic": "Hooman Talakian",
+   "photo": null,
+   "role": "participant",
+   "country": "Iran",
+   "instagram": "https://www.instagram.com/hooman.talakian/",
+   "telegram": "@Hooman_talakian",
+   "project": "Reverse Tower Ritual",
+   "disciplines": [
+    "Performance",
+    "Music Production",
+    "Sound Design",
+    "Media Art",
+    "Electronics"
+   ],
+   "tools": [
+    "Vocal",
+    "Piano",
+    "Coding"
+   ],
+   "skills": [
+    "Composing",
+    "Sampling",
+    "Mixing and Mastering",
+    "Sound Recording",
+    "Teaching",
+    "Coding and Patching",
+    "Singing",
+    "AI sound"
+   ],
+   "photoRemote": "1TV52_UZ_qClcn8j6JIhmL1_NenoTDU6R"
+  },
+  {
+   "id": 75,
+   "name": "Zhiqiang Li",
+   "artistic": "Lee",
+   "photo": null,
+   "role": "participant",
+   "country": "China / United Kingdom",
+   "instagram": "",
+   "telegram": "@Lee19931125",
+   "project": "Reverse Tower Ritual",
+   "disciplines": [
+    "Performance",
+    "Installation",
+    "Sound Design",
+    "Media Art"
+   ],
+   "tools": [
+    "Electronics",
+    "DIY"
+   ],
+   "skills": [
+    "Sound Recording",
+    "Research",
+    "Instrument Design",
+    "Engineering"
+   ],
+   "photoRemote": "111cLAjwrs8PByWgPB_SunqfR39mvL8Ve"
+  },
+  {
+   "id": 76,
+   "name": "Lia Potikyan",
+   "artistic": "pistak",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/pistak.svg/",
+   "telegram": "@liasvg",
+   "project": "Reverse Tower Ritual",
+   "disciplines": [
+    "Electronics",
+    "Music Production",
+    "Sound Design",
+    "Visual Art"
+   ],
+   "tools": [
+    "Electronics",
+    "DIY",
+    "Guitar",
+    "Coding"
+   ],
+   "skills": [
+    "Composing",
+    "Instrument Design",
+    "Engineering",
+    "Illustration and Painting",
+    "Instrumentalist"
+   ],
+   "photoRemote": "128fmir95UcmLl-A64FQKWdUik-j_iXQ0"
+  },
+  {
+   "id": 77,
+   "name": "Elena Chadaeva",
+   "artistic": "Chadaeva",
+   "photo": null,
+   "role": "participant",
+   "country": "Russia / Georgia",
+   "instagram": "https://www.instagram.com/eleolen?igsh=b3RpNTY0dGFnamkz&utm_source=qr",
+   "telegram": "@eloelen",
+   "project": "Reverse Tower Ritual",
+   "disciplines": [
+    "Media Art",
+    "Installation",
+    "Electronics",
+    "Performance",
+    "Sound Design"
+   ],
+   "tools": [
+    "Electronics",
+    "Coding"
+   ],
+   "skills": [
+    "Coding and Patching",
+    "Instrument Design",
+    "Engineering"
+   ],
+   "photoRemote": "1y1BtHpvZsT6vuqLIrFC7nOUlXhALoAbc"
+  },
+  {
+   "id": 78,
+   "name": "Ekaterina Ishkhanova",
+   "artistic": "ishkhan",
+   "photo": null,
+   "role": "participant",
+   "country": "Russia",
+   "instagram": "https://www.instagram.com/katyaishkhanova?igsh=MXBjcDBzZW9reWZmdg%3D%3D&utm_source=qr",
+   "telegram": "@katyaishkhanova",
+   "project": "Reverse Tower Ritual",
+   "disciplines": [
+    "Sound Design",
+    "Music Production"
+   ],
+   "tools": [
+    "Guitar",
+    "Piano",
+    "Ableton Live",
+    "Vocal"
+   ],
+   "skills": [
+    "Instrumentalist",
+    "Singing",
+    "Sound Synthesis"
+   ],
+   "photoRemote": "12OjHT-_EYbEKirrSCDnMVdqc3QQYrWb0"
+  },
+  {
+   "id": 79,
+   "name": "Dmitrii Nenadyshin",
+   "artistic": "Ptichka Soe",
+   "photo": null,
+   "role": "participant",
+   "country": "Russia",
+   "instagram": "https://www.instagram.com/ptichkasoe/?hl=en",
+   "telegram": "@d1mosha",
+   "project": "Reverse Tower Ritual",
+   "disciplines": [
+    "Music Production",
+    "Sound Design",
+    "Electronics",
+    "Performance",
+    "Media Art",
+    "Visual Art"
+   ],
+   "tools": [
+    "Ableton Live",
+    "Logic Pro",
+    "Vocal",
+    "Piano",
+    "Guitar",
+    "Bass",
+    "Touch Designer"
+   ],
+   "skills": [
+    "Composing",
+    "Singing",
+    "Instrumentalist",
+    "Design"
+   ],
+   "photoRemote": "1mXtPvcrya3e7McYOfbeu9nC8bdiUS5Ss"
+  },
+  {
+   "id": 80,
+   "name": "Elizabeth Telnaya",
+   "artistic": "Black Babette",
+   "photo": "1alDHy5ENkAHP5w5ZfZAFea357sW1mIfq",
+   "role": "volunteer / participant",
+   "country": "Russia",
+   "instagram": "https://www.instagram.com/babette.deziree/",
+   "telegram": "@Loverdosed25",
+   "project": "Reverse Tower Ritual",
+   "disciplines": [
+    "Music Production",
+    "Sound Design",
+    "Performance"
+   ],
+   "tools": [
+    "Ableton Live",
+    "Synthesizers",
+    "Electronics",
+    "Body"
+   ],
+   "skills": [
+    "Composing",
+    "Sound Recording",
+    "Sound Synthesis",
+    "Sampling",
+    "Singing",
+    "Improvisation"
+   ]
+  },
+  {
+   "id": 81,
+   "name": "Varvara Misyurina",
+   "artistic": "Varvara Misyurina",
+   "photo": null,
+   "role": "volunteer / participant",
+   "country": "Russia",
+   "instagram": "",
+   "telegram": "@imyapolzovatelyavarya",
+   "project": "Reverse Tower Ritual",
+   "disciplines": [
+    "Music Production"
+   ],
+   "tools": [
+    "Ableton Live"
+   ],
+   "skills": [
+    "Composing"
+   ],
+   "photoRemote": "1GDCiX7OLjhubK35WBZxRp38bDlAvsUw9"
+  },
+  {
+   "id": 82,
+   "name": "Dima Ustinov",
+   "artistic": "Dima Ustinov",
+   "photo": "11cTa59fFIoH1UI9DZPGieapseE--UYwT",
+   "role": "curator",
+   "country": "Russia / Germany",
+   "instagram": "https://www.instagram.com/domustinova/",
+   "telegram": "@dimaustinov",
+   "project": "Sama Soundbath",
+   "disciplines": [
+    "Sound Design",
+    "Music Production",
+    "Electronics"
+   ],
+   "tools": [
+    "Ableton Live",
+    "Piano"
+   ],
+   "skills": [
+    "Composing",
+    "Sound Recording",
+    "Instrumentalist",
+    "Arranging",
+    "Sound Synthesis",
+    "Sampling",
+    "Mixing and Mastering"
+   ]
+  },
+  {
+   "id": 83,
+   "name": "Hugo Pinto",
+   "artistic": "Kino Pinto",
+   "photo": null,
+   "role": "participant",
+   "country": "Portugal / Germany",
+   "instagram": "https://www.instagram.com/kino.pinto?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@Kinormpi",
+   "project": "Sama Soundbath",
+   "disciplines": [
+    "Music Production",
+    "Sound Design",
+    "Performance"
+   ],
+   "tools": [
+    "Guitar",
+    "Ableton Live",
+    "Flute",
+    "Bass"
+   ],
+   "skills": [
+    "Composing",
+    "Instrumentalist",
+    "Sound Recording"
+   ],
+   "photoRemote": "1XvThr-fhq1NP0UpJK0b2Ly7oa_yZZCwf"
+  },
+  {
+   "id": 84,
+   "name": "Maksim Sergeev",
+   "artistic": "Maksim Sergeev",
+   "photo": null,
+   "role": "participant",
+   "country": "Russia / Israel",
+   "instagram": "https://www.instagram.com/bigudix",
+   "telegram": "@late_brigade",
+   "project": "Sama Soundbath",
+   "disciplines": [
+    "Music Production",
+    "Sound Design",
+    "Theatre"
+   ],
+   "tools": [
+    "Logic Pro",
+    "Ableton Live",
+    "Guitar",
+    "Vocal"
+   ],
+   "skills": [
+    "Composing",
+    "Singing",
+    "Instrumentalist"
+   ],
+   "photoRemote": "1k2i0K-nQn0SH4azPQRw981BnI7Cf2gOJ"
+  },
+  {
+   "id": 85,
+   "name": "Nikola Chen",
+   "artistic": "Nikola Chen",
+   "photo": "1f7UXDvo41lw-67IjWrfLxD7wFE9kYWQ3",
+   "role": "volunteer / participant",
+   "country": "Russia / Armenia",
+   "instagram": "https://www.instagram.com/nikolachenmusic/",
+   "telegram": "@nikolachenmusic",
+   "project": "Sama Soundbath",
+   "disciplines": [
+    "Electronics",
+    "Music Production",
+    "Sound Design",
+    "Classical Music",
+    "Media Art",
+    "Performance"
+   ],
+   "tools": [
+    "Piano",
+    "Clarinet",
+    "Synthesizers",
+    "Electronics"
+   ],
+   "skills": [
+    "Composing",
+    "Sound Synthesis",
+    "Improvisation",
+    "Instrumentalist",
+    "Research"
+   ]
+  },
+  {
+   "id": 86,
+   "name": "Daria Sadovnikova",
+   "artistic": "Daria Sadovnikova",
+   "photo": "1oWpb0IHxyzC6y_nFuLw5TdY-MP9M9SmY",
+   "role": "verticurator",
+   "country": "Russia",
+   "instagram": "",
+   "telegram": "@doedear",
+   "project": "Set Design",
+   "disciplines": [
+    "Sound Design",
+    "Music Production"
+   ],
+   "tools": [
+    "Ableton Live"
+   ],
+   "skills": [
+    "Composing",
+    "Sound Recording",
+    "Sound Synthesis"
+   ]
+  },
+  {
+   "id": 87,
+   "name": "Karina Malik",
+   "artistic": "Karina Malik",
+   "photo": "1mEncCFoBkikcP_9tAGJdY8lHq0iKiP-B",
+   "role": "verticurator",
+   "country": "Russia / Pakistan",
+   "instagram": "",
+   "telegram": "@fybhfr",
+   "project": "Set Design",
+   "disciplines": [
+    "Set Design"
+   ],
+   "tools": [],
+   "skills": []
+  },
+  {
+   "id": 88,
+   "name": "Aleksei Leontev",
+   "artistic": "Aleksei Leontev",
+   "photo": null,
+   "role": "verticurator",
+   "country": "Russia / France",
+   "instagram": "",
+   "telegram": "@cult4",
+   "project": "Set Design",
+   "disciplines": [
+    "Set Design"
+   ],
+   "tools": [],
+   "skills": []
+  },
+  {
+   "id": 89,
+   "name": "Yurii Avdeev",
+   "artistic": "Yurii Avdeev",
+   "photo": null,
+   "role": "verticurator",
+   "country": "Russia",
+   "instagram": "",
+   "telegram": "@karlofather",
+   "project": "Set Design",
+   "disciplines": [
+    "Set Design"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1KNTQSjU4Xc5Od41MW7TrCNCQLwMcFxHd"
+  },
+  {
+   "id": 90,
+   "name": "Tanya Chizhikova",
+   "artistic": "Tanya Chizhikova",
+   "photo": null,
+   "role": "curator",
+   "country": "Russia / Germany",
+   "instagram": "https://www.instagram.com/tanya__chizhikova/",
+   "telegram": "@tatiana_chizhikova",
+   "project": "Somatic Practices",
+   "disciplines": [
+    "Acting",
+    "Choreography",
+    "Theatre"
+   ],
+   "tools": [
+    "Body"
+   ],
+   "skills": [
+    "Improvisation"
+   ],
+   "photoRemote": "1mOJgcOrAbz_aKqtyTh_kbV8XCFaGO2Le"
+  },
+  {
+   "id": 91,
+   "name": "Inna Ghazaryan",
+   "artistic": "Inna Ghazaryan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenian",
+   "instagram": "https://www.instagram.com/innaghazarian/",
+   "telegram": "@innaghazarian",
+   "project": "Somatic Practices",
+   "disciplines": [
+    "Performance",
+    "Choreography",
+    "Directing"
+   ],
+   "tools": [],
+   "skills": [
+    "Teaching",
+    "Improvisation",
+    "Research"
+   ],
+   "photoRemote": "14TjT_HXfBPqdY8ycm5sjKXot7nPeGXCT"
+  },
+  {
+   "id": 92,
+   "name": "Lubomir Andrei",
+   "artistic": "Lubomir Andrei",
+   "photo": null,
+   "role": "participant",
+   "country": "Russia",
+   "instagram": "https://www.instagram.com/lubomirandrei?igsh=NzRwZTJpemV2eW83&utm_source=qr",
+   "telegram": "@andreitikhonovdance",
+   "project": "Somatic Practices",
+   "disciplines": [
+    "Choreography",
+    "Performance",
+    "Theatre"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1G_6qpB8Fvo53ceNsMNKCqf-_ua6rocOJ"
+  },
+  {
+   "id": 93,
+   "name": "Kristine Danielyan",
+   "artistic": "Christina Danielyan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/christinadanielian/",
+   "telegram": "@christinadanielyan",
+   "project": "Somatic Practices",
+   "disciplines": [
+    "Acting",
+    "Choreography",
+    "Performance",
+    "Directing",
+    "Theatre"
+   ],
+   "tools": [],
+   "skills": [
+    "Teaching"
+   ],
+   "photoRemote": "1lp4wQh_wgczY3XZZTbVRgIWu9t9warHp"
+  },
+  {
+   "id": 94,
+   "name": "Nasrin Shojaei",
+   "artistic": "Nasrin",
+   "photo": "1M3n7v72cUK0iXEkq8xXp1c-0S7WmLdkb",
+   "role": "volunteer / participant",
+   "country": "Iran",
+   "instagram": "https://www.instagram.com/nasr.sho.injaei/",
+   "telegram": "@Nasr_sho_in_ja_ei",
+   "project": "Somatic Practices",
+   "disciplines": [
+    "Performance"
+   ],
+   "tools": [
+    "Body"
+   ],
+   "skills": [
+    "Improvisation"
+   ]
+  },
+  {
+   "id": 95,
+   "name": "Aram Hovhannisyan",
+   "artistic": "Aram Hovhannisyan",
+   "photo": null,
+   "role": "curator",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/aram84hovhannisyan/",
+   "telegram": "@aram84_h",
+   "project": "The Refrain",
+   "disciplines": [
+    "Sound Design"
+   ],
+   "tools": [
+    "Flute"
+   ],
+   "skills": [
+    "Composing",
+    "Instrumentalist"
+   ],
+   "photoRemote": "1QSpnL5c2KWuSoPFVvEXRXun2KNkCnvN4"
+  },
+  {
+   "id": 96,
+   "name": "Sergey Umroyan",
+   "artistic": "Sergey Umroyan",
+   "photo": null,
+   "role": "curator",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/umroyan/",
+   "telegram": "@s_umroyan",
+   "project": "The Refrain",
+   "disciplines": [
+    "Sound Design",
+    "Music Production"
+   ],
+   "tools": [
+    "Ableton Live",
+    "Electronics"
+   ],
+   "skills": [
+    "Composing",
+    "Instrumentalist"
+   ],
+   "photoRemote": "1BEiWObemDWDCKhP0Y4m3rBcNj-eIwIT8"
+  },
+  {
+   "id": 97,
+   "name": "Zygmund de Somogyi",
+   "artistic": "Zygmund de Somogyi",
+   "photo": null,
+   "role": "participant",
+   "country": "United Kingdom, Philippines",
+   "instagram": "https://www.instagram.com/zdscomposer/",
+   "telegram": "@agitatedworlds",
+   "project": "The Refrain",
+   "disciplines": [
+    "Theatre",
+    "Classical Music",
+    "Performance",
+    "Production"
+   ],
+   "tools": [],
+   "skills": [
+    "Composing",
+    "Teaching"
+   ],
+   "photoRemote": "1GzHxymjt2qNqKxXchZSSSUDJlBBPmOlv"
+  },
+  {
+   "id": 98,
+   "name": "Hannah Koshgarian",
+   "artistic": "Hannah Koshgarian",
+   "photo": null,
+   "role": "participant",
+   "country": "United States",
+   "instagram": "https://www.instagram.com/hannahkoshgarian/?hl=en",
+   "telegram": "@hannahkoshgarian",
+   "project": "The Refrain",
+   "disciplines": [
+    "Classical Music",
+    "Performance"
+   ],
+   "tools": [
+    "Cello"
+   ],
+   "skills": [
+    "Instrumentalist",
+    "Arranging",
+    "Research",
+    "Improvisation"
+   ],
+   "photoRemote": "1-QaxXcukCxVAk7PFOS9r_pImtBKVjPHO"
+  },
+  {
+   "id": 99,
+   "name": "Varder Baghdasaryan",
+   "artistic": "Qi",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/qi_spellsphere?igsh=dXByYmdzaGdiYTh1",
+   "telegram": "@deibeati",
+   "project": "The Refrain",
+   "disciplines": [
+    "Sound Design",
+    "Performance",
+    "Art Management",
+    "Electronics"
+   ],
+   "tools": [],
+   "skills": [
+    "Research"
+   ],
+   "photoRemote": "1OhyddVlEKpB6HBZ07G6m27W0op2PfwM6"
+  },
+  {
+   "id": 100,
+   "name": "Vardui Mirzoyan",
+   "artistic": "Vardui Mirzoyan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/vard_mirzoyan_cellist/",
+   "telegram": "@Vardui",
+   "project": "The Refrain",
+   "disciplines": [
+    "Classical Music"
+   ],
+   "tools": [
+    "Cello"
+   ],
+   "skills": [
+    "Instrumentalist"
+   ],
+   "photoRemote": "1hc9Of9ZACtnlkiN2WbcOrYbYZz53v-Vf"
+  },
+  {
+   "id": 101,
+   "name": "David Grigoryan",
+   "artistic": "David Grigoryan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/grigds/",
+   "telegram": "@dav_grig",
+   "project": "The Refrain",
+   "disciplines": [
+    "Classical Music",
+    "Set Design",
+    "Visual Art"
+   ],
+   "tools": [
+    "Saxophone"
+   ],
+   "skills": [
+    "Instrumentalist",
+    "Design"
+   ],
+   "photoRemote": "1ZtRfOWMhSYw48qSKPtsOESC9RUFW_ZX7"
+  },
+  {
+   "id": 102,
+   "name": "Davit Aydiyan",
+   "artistic": "Davit Aydiyan",
+   "photo": "140p6KeahAMugYBxZ2pjLCVtzNGNmdlyo",
+   "role": "volunteer / participant",
+   "country": "Armenia / Germany",
+   "instagram": "https://www.instagram.com/c.u.inhell/?hl=en",
+   "telegram": "@unicornwalker",
+   "project": "The Refrain",
+   "disciplines": [
+    "Classical Music"
+   ],
+   "tools": [
+    "Violin"
+   ],
+   "skills": [
+    "Instrumentalist"
+   ]
+  },
+  {
+   "id": 103,
+   "name": "Grigor Budaghyan",
+   "artistic": "Grigor Budaghyan",
+   "photo": "1SZcDtJ-zl-SfPC9lBJaRcJEFuaj_6BvT",
+   "role": "volunteer / participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/grig_budaghyan/",
+   "telegram": "@Grigor",
+   "project": "The Refrain",
+   "disciplines": [
+    "Classical Music",
+    "Jazz"
+   ],
+   "tools": [
+    "Clarinet",
+    "Saxophone"
+   ],
+   "skills": [
+    "Instrumentalist"
+   ]
+  },
+  {
+   "id": 104,
+   "name": "Mileta Ghazanchyan",
+   "artistic": "MILETA",
+   "photo": "1y9dLosRQs6KChQ6R0GI1eBDo2b1UcGo7",
+   "role": "volunteer / participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/mileta_gn?igsh=MTJrd2sxcnViYmZuZA%3D%3D&utm_source=qr",
+   "telegram": "@miletagazanchyan",
+   "project": "The Refrain",
+   "disciplines": [
+    "Jazz",
+    "Music Production"
+   ],
+   "tools": [
+    "Piano"
+   ],
+   "skills": [
+    "Composing",
+    "Instrumentalist"
+   ]
+  },
+  {
+   "id": 105,
+   "name": "Gevorg Grigoryan",
+   "artistic": "Gevorg Grigoryan",
+   "photo": null,
+   "role": "curator",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/di.iiiiiiiiiiiiiiiiiiiii/",
+   "telegram": "@dob_0",
+   "project": "Video Art",
+   "disciplines": [
+    "Visual Art",
+    "Light"
+   ],
+   "tools": [
+    "Touch Designer"
+   ],
+   "skills": [
+    "Coding and Patching",
+    "AI visual"
+   ],
+   "photoRemote": "1gD2FPz0Z2z4MqAXOFSD8HZF44rBddgBm"
+  },
+  {
+   "id": 106,
+   "name": "Mariam Gevorgyan",
+   "artistic": "Mariam Gevorgyan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/mariam.otion?igsh=MXVobW9pZ2JvaDZnMw%3D%3D&utm_source=qr",
+   "telegram": "@mar1amgevorgyan",
+   "project": "Video Art",
+   "disciplines": [
+    "Animation",
+    "Set Design"
+   ],
+   "tools": [
+    "Dragon Frame"
+   ],
+   "skills": [
+    "Design"
+   ]
+  },
+  {
+   "id": 107,
+   "name": "Grisha Tsvetkov",
+   "artistic": "Grisha Tsvetkov",
+   "photo": null,
+   "role": "participant",
+   "country": "Russia / Israel",
+   "instagram": "https://www.instagram.com/grisha.tsvet",
+   "telegram": "@g_tsvet",
+   "project": "Video Art",
+   "disciplines": [
+    "Animation",
+    "Media Art",
+    "Installation",
+    "Photography",
+    "Performance",
+    "Visual Art"
+   ],
+   "tools": [
+    "Coding",
+    "Adobe",
+    "Touch Designer"
+   ],
+   "skills": [
+    "Coding and Patching",
+    "Teaching",
+    "3D",
+    "Design"
+   ],
+   "photoRemote": "1fUU8hrYDz0kHzqffWMEYHCA2gKTfb18v"
+  },
+  {
+   "id": 108,
+   "name": "Frederick Bernas",
+   "artistic": "Freddie Fiasco",
+   "photo": null,
+   "role": "participant",
+   "country": "UK / USA",
+   "instagram": "",
+   "telegram": "@freddiefiasco",
+   "project": "Video Art",
+   "disciplines": [
+    "Filming",
+    "Media Art",
+    "Music Production",
+    "Sound Design"
+   ],
+   "tools": [
+    "Saxophone"
+   ],
+   "skills": [
+    "Instrumentalist",
+    "Composing"
+   ],
+   "photoRemote": "1Me3mBxvMyYMrg-kvPh_I8W6fLCu4ocLq"
+  },
+  {
+   "id": 109,
+   "name": "Anton Khlabov",
+   "artistic": "Anton Khlabov",
+   "photo": null,
+   "role": "participant",
+   "country": "Russia",
+   "instagram": "https://www.instagram.com/khlabov",
+   "telegram": "@antkant",
+   "project": "Video Art",
+   "disciplines": [
+    "Filming",
+    "Animation",
+    "Photography",
+    "Media Art",
+    "Visual Art"
+   ],
+   "tools": [
+    "Adobe"
+   ],
+   "skills": [
+    "Design"
+   ],
+   "photoRemote": "1mLLx_5oIp6ZLCxUrIJl9eT-OaMMgFnLD"
+  },
+  {
+   "id": 110,
+   "name": "Anna Kalenchyan",
+   "artistic": "Anna Kalenchyan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/anna.psdd?igsh=cWptaDhvMnkxNTkx",
+   "telegram": "@annapsdd",
+   "project": "Video Art",
+   "disciplines": [
+    "Animation",
+    "Visual Art",
+    "Media Art"
+   ],
+   "tools": [
+    "Adobe"
+   ],
+   "skills": [
+    "Design",
+    "3D",
+    "AI Visual"
+   ],
+   "photoRemote": "1RPQ2evAWFvmetmVS-fwUMGhOj-NqOqyU"
+  },
+  {
+   "id": 111,
+   "name": "Shahane Harutyunyan",
+   "artistic": "22194 (Shahane)",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "",
+   "telegram": "@N22195",
+   "project": "Video Art",
+   "disciplines": [
+    "Media Art",
+    "Visual Art"
+   ],
+   "tools": [
+    "Coding"
+   ],
+   "skills": [
+    "Coding and Patching"
+   ],
+   "photoRemote": "1xdlTK-DPAW0MAy8VfdHbcNiJAKVeUyAK"
+  },
+  {
+   "id": 112,
+   "name": "Kristina Iskandaryan",
+   "artistic": "Kiara",
+   "photo": null,
+   "role": "participant",
+   "country": "",
+   "instagram": "",
+   "telegram": "@Reneyrlene",
+   "project": "Video Art",
+   "disciplines": [],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1QJxCcfNLysInqk-3OhEEy0EsKYzoJSVS"
+  },
+  {
+   "id": 113,
+   "name": "Syuzanna Ginosyan",
+   "artistic": "Suzy Ginosyan",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/ginosyansuzy?igsh=MWt3Z2ltNjdhYW9ncQ==",
+   "telegram": "@GSyuzi",
+   "project": "Video Art",
+   "disciplines": [
+    "Art Management",
+    "Classical Music"
+   ],
+   "tools": [
+    "Piano"
+   ],
+   "skills": [
+    "Instrumentalist"
+   ],
+   "photoRemote": "1Ij_G2oMS-AYiSDZTIsex98XiJfJdPE-u"
+  },
+  {
+   "id": 114,
+   "name": "Emilya Nikoghosyan",
+   "artistic": "Emilya Nikoghosyan",
+   "photo": "1gJZZV93Me1kGpykvGubproq0hZrDmiN9",
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/emilnetu/",
+   "telegram": "@gnaceqcy",
+   "project": "Video Art",
+   "disciplines": [
+    "Media Art",
+    "Installation",
+    "Light"
+   ],
+   "tools": [
+    "Coding"
+   ],
+   "skills": [
+    "Coding and Patching",
+    "Design",
+    "Engineering",
+    "3D"
+   ]
+  },
+  {
+   "id": 115,
+   "name": "Arthur Atayan",
+   "artistic": "Arthur Atayan",
+   "photo": "1hw9Zx4haOw2mXmPBGoKIYuXI7yijFDwo",
+   "role": "curator, hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/arthurrosencrantz/",
+   "telegram": "@Rosencrantzzz",
+   "project": "Zine Art",
+   "disciplines": [
+    "Performance",
+    "Sound Design",
+    "Music Production",
+    "Production"
+   ],
+   "tools": [
+    "Guitar",
+    "Vocal"
+   ],
+   "skills": []
+  },
+  {
+   "id": 116,
+   "name": "Kate Sadovnikova",
+   "artistic": "Kate Sadovnikova",
+   "photo": null,
+   "role": "participant",
+   "country": "Russia",
+   "instagram": "https://www.instagram.com/_sadovnichestvo_?igsh=cjdoM2JsdW53N2Vh&utm_source=qr",
+   "telegram": "@sad0vnichestvo",
+   "project": "Zine Art",
+   "disciplines": [
+    "Photography",
+    "Theatre",
+    "Writing"
+   ],
+   "tools": [],
+   "skills": [
+    "Composing",
+    "Research"
+   ],
+   "photoRemote": "1MpKhIL46mTp_BXy8c6yz3MI_bupkZQ3X"
+  },
+  {
+   "id": 117,
+   "name": "Aleksandr Kuritsyn",
+   "artistic": "blue pencil",
+   "photo": "1otZgnzSOz26qUpbdezhHUf-dPwtJVQov",
+   "role": "participant",
+   "country": "Russia",
+   "instagram": "https://www.instagram.com/bluepenciltoo",
+   "telegram": "@becitynow",
+   "project": "Zine Art",
+   "disciplines": [
+    "Visual Art",
+    "Writing"
+   ],
+   "tools": [],
+   "skills": [
+    "Research",
+    "Illustration and Painting"
+   ]
+  },
+  {
+   "id": 118,
+   "name": "Melanya Torosyan",
+   "artistic": "Marl Superstarl",
+   "photo": null,
+   "role": "participant",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/marlsuperstarl/?hl=en",
+   "telegram": "@marlsuperstarl",
+   "project": "Zine Art",
+   "disciplines": [],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "17DAvVFkzYGa1sFxIUrVbhg45iFRPio1Y"
+  },
+  {
+   "id": 119,
+   "name": "Georgy Safarov",
+   "artistic": "Georgy Safarov",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/gsafarov?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@Goshass",
+   "project": "hosq team",
+   "disciplines": [
+    "Production",
+    "Music Production",
+    "Electronics"
+   ],
+   "tools": [
+    "Ableton Live"
+   ],
+   "skills": [
+    "Sampling"
+   ],
+   "photoRemote": "1xTgOEuuBQaZ3OkgL66qxIYxI9cIyAE83"
+  },
+  {
+   "id": 120,
+   "name": "Lusine MLKE-Galstyan",
+   "artistic": "Lusine MLKE-Galstyan",
+   "photo": "1PqsP8qp_K-0sIH175rLiaicKj-JAWBvj",
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/lusination_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@callhermoonchild",
+   "project": "hosq team",
+   "disciplines": [
+    "Sound Design",
+    "Music Production",
+    "Performance"
+   ],
+   "tools": [
+    "Piano",
+    "Flute",
+    "Ableton Live",
+    "Vocal"
+   ],
+   "skills": [
+    "Composing",
+    "Instrumentalist",
+    "Arranging"
+   ]
+  },
+  {
+   "id": 121,
+   "name": "Shoghakat MLKE-Galstyan",
+   "artistic": "Shoghakat MLKE-Galstyan",
+   "photo": "1WDQiHjnERVkiOmQxI9PBD_XNhBoSNzk7",
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/shoghakat.mlke?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@shoghakatmlke",
+   "project": "hosq team",
+   "disciplines": [
+    "Choreography",
+    "Directing",
+    "Theatre",
+    "Performance",
+    "Art Management"
+   ],
+   "tools": [],
+   "skills": []
+  },
+  {
+   "id": 122,
+   "name": "Uliana Pyadushkina",
+   "artistic": "Uliana Pyadushkina",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/junully?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@junully",
+   "project": "hosq team",
+   "disciplines": [
+    "Animation",
+    "Media Art",
+    "Sound Design",
+    "Music Production",
+    "Visual Art"
+   ],
+   "tools": [
+    "Ableton Live",
+    "Procreate",
+    "Da Vinci Resolve",
+    "Blender",
+    "Coding",
+    "AI",
+    "DIY",
+    "Max/MSP"
+   ],
+   "skills": [
+    "Sound Recording",
+    "Sound Synthesis",
+    "Sampling",
+    "Coding and Patching",
+    "AI visual",
+    "3D",
+    "Design",
+    "Illustration and Painting"
+   ],
+   "photoRemote": "1BoN4Q04FX_aITd3_35Bxt4SptdcZu-CL"
+  },
+  {
+   "id": 123,
+   "name": "Sonya Ovchinnikova",
+   "artistic": "Sonya Ovchinnikova",
+   "photo": "1Tkm2kqJeSUhgGjeV-MOWC1ZBcldOa1Ek",
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/kudruavaya",
+   "telegram": "@kudruavaya",
+   "project": "hosq team",
+   "disciplines": [
+    "Sound Design",
+    "Music Production"
+   ],
+   "tools": [
+    "Piano",
+    "Ableton Live",
+    "Vocal"
+   ],
+   "skills": [
+    "Sound Recording",
+    "Arranging",
+    "Singing"
+   ]
+  },
+  {
+   "id": 124,
+   "name": "Syuzi Juharyan",
+   "artistic": "Syuzi Juharyan",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/juharyansyuzi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@Juharyan",
+   "project": "hosq team",
+   "disciplines": [
+    "Performance"
+   ],
+   "tools": [
+    "Vocal"
+   ],
+   "skills": [
+    "Singing"
+   ],
+   "photoRemote": "19TZgq0onhYj2AU3FIpH_fCrSVSStUndu"
+  },
+  {
+   "id": 125,
+   "name": "Evgeniy Lyalin",
+   "artistic": "Evgeniy Lyalin",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/evgenylln?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@evgenylln",
+   "project": "hosq team",
+   "disciplines": [
+    "Art Management",
+    "Classical Music"
+   ],
+   "tools": [
+    "Vocal"
+   ],
+   "skills": [
+    "Singing"
+   ],
+   "photoRemote": "1Grb4yPfHx7OsngCOa56Vf1fnIIV3iHkH"
+  },
+  {
+   "id": 126,
+   "name": "Nikita Maksimenko",
+   "artistic": "Nikita Maksimenko",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/acephallus?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@acephallus",
+   "project": "hosq team",
+   "disciplines": [
+    "Performance",
+    "Set Design",
+    "Light",
+    "Media Art",
+    "Installation",
+    "Sound Design",
+    "Music Production",
+    "Electronics",
+    "Production"
+   ],
+   "tools": [
+    "Ableton Live",
+    "Max/MSP",
+    "Unreal Engine",
+    "Touch Designer",
+    "Electronics",
+    "DIY",
+    "Synthesizers"
+   ],
+   "skills": [
+    "Engineering",
+    "Sound Synthesis",
+    "Sound Recording",
+    "Composing",
+    "Sampling",
+    "Coding and Patching"
+   ],
+   "photoRemote": "1PYwiXOvT-X6-9f6zLmV9cwCjFwubWCzr"
+  },
+  {
+   "id": 127,
+   "name": "Vladimir Gurskii",
+   "artistic": "Vladimir Gurskii",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/vgursky/",
+   "telegram": "@Vgurskii",
+   "project": "hosq team",
+   "disciplines": [
+    "Production"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "134AHMwGTIrLGeIOG7nkJwKptrvw6Xjtz"
+  },
+  {
+   "id": 128,
+   "name": "Maria Makora",
+   "artistic": "Maria Makora",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "http://instagram.com/mmakora",
+   "telegram": "@maria_makora",
+   "project": "hosq team",
+   "disciplines": [
+    "Production"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1plKYuvu-IWOC0lpMCoM_tnckSG-CwH7a"
+  },
+  {
+   "id": 129,
+   "name": "Mitya Lyalin",
+   "artistic": "Mitya Lyalin",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/mitya_lyalin",
+   "telegram": "@mitya_lyalin",
+   "project": "hosq team",
+   "disciplines": [
+    "Photography",
+    "Filming"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1HIWouzRlZEe3npKKX-mfuiOemnCjfM_x"
+  },
+  {
+   "id": 130,
+   "name": "Flora Gevorgyan",
+   "artistic": "Flora Gevorgyan",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/floragevorgyan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@floragevorgyan",
+   "project": "hosq team",
+   "disciplines": [
+    "Production",
+    "Art Management"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1Ru0pQLCIAzgY3jhGamoBlx7Ax8wgdr1h"
+  },
+  {
+   "id": 131,
+   "name": "Lin Paravyan",
+   "artistic": "Lin Paravyan",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/smthinme/?utm_source=ig_web_button_share_sheet",
+   "telegram": "@smth_in_me",
+   "project": "hosq team",
+   "disciplines": [
+    "Art Management"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1U_-SWayIebZztUR6pzIaiUpKLOr0sia7"
+  },
+  {
+   "id": 132,
+   "name": "Natalia Kupriyanova",
+   "artistic": "Natalia Kupriyanova",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/nataliakupriyanova?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@kkkkk_natasha",
+   "project": "hosq team",
+   "disciplines": [
+    "Photography",
+    "Production",
+    "Art Management"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1um67HROS74W8-VZ8vLqxI8WK36VS21Pp"
+  },
+  {
+   "id": 133,
+   "name": "Daniil Yakushov",
+   "artistic": "Daniil Yakushov",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/_yakyakyak_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@skadegog64",
+   "project": "hosq team",
+   "disciplines": [
+    "Directing"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1KEA1Ru6VglL3_I2xZrxNL3QHHA8Zm6Rt"
+  },
+  {
+   "id": 134,
+   "name": "Aksanna Poghosyan",
+   "artistic": "Aksanna Poghosyan",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/aksanna_poghosyan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@aaa20_n",
+   "project": "hosq team",
+   "disciplines": [
+    "Production",
+    "Art Management"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1OlDK4SUoSRaXDEn-kQLRfX570T98NyJD"
+  },
+  {
+   "id": 135,
+   "name": "Agatha Karapetyan",
+   "artistic": "Agatha Karapetyan",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/agatha_red?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@agatha_red",
+   "project": "hosq team",
+   "disciplines": [
+    "Art Management",
+    "Production"
+   ],
+   "tools": [],
+   "skills": [],
+   "photoRemote": "1YCQo83VqwvikPRYqkmJp4cXLHXI3X7lT"
+  },
+  {
+   "id": 136,
+   "name": "Liz Victorova",
+   "artistic": "Liz Victorova",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/wjerstean?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "@liscfg",
+   "project": "hosq team",
+   "disciplines": [
+    "Visual Art"
+   ],
+   "tools": [
+    "Adobe"
+   ],
+   "skills": [
+    "Design"
+   ],
+   "photoRemote": "1eANnGI8qPi6_VTmvJ5_r3wCUkTFScfIU"
+  },
+  {
+   "id": 137,
+   "name": "Christian Ginosyan",
+   "artistic": "Christian Ginosyan",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/antarapan/?hl=en",
+   "telegram": "@antarapan",
+   "project": "hosq team",
+   "disciplines": [
+    "Writing",
+    "Multimedia  Journalism",
+    "Production"
+   ],
+   "tools": [],
+   "skills": [
+    "Research"
+   ],
+   "photoRemote": "1LgMvvAUyTfwjMjEcKhjuYeGJDPCrJR-a"
+  },
+  {
+   "id": 138,
+   "name": "Petros Goroyan",
+   "artistic": "Petros Goroyan",
+   "photo": null,
+   "role": "hosq team",
+   "country": "Armenia",
+   "instagram": "https://www.instagram.com/wjerstean?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+   "telegram": "",
+   "project": "hosq team",
+   "disciplines": [
+    "Sound Design",
+    "Set Design"
+   ],
+   "tools": [
+    "Electronics",
+    "Cubase"
+   ],
+   "skills": [
+    "Sound Recording",
+    "Mixing and Mastering",
+    "Engineering"
+   ],
+   "photoRemote": "1mUrnw7Bf9H3QR5tc4Hlj5_XK6jAjGqpb"
+  }
+ ]
+}

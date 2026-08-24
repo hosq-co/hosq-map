@@ -1,0 +1,12 @@
+{
+  "name": "hosq-map",
+  "version": "1.0.0",
+  "description": "hosq community map — Notations '26",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
