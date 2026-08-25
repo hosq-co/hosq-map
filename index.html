@@ -273,20 +273,55 @@ button.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 #help b{color:#fff;font-weight:500}
 
 @media (max-width:760px){
-  /* the panel is a bottom sheet, so every control moves into the strip of
-     map that is left above it — before this they all sat behind the sheet */
-  #panel{width:100vw;top:auto;height:58vh;box-shadow:0 -10px 30px rgba(0,0,0,.4)}
-  #panel-scroll{padding:0 22px 40px}
-  /* the sheet is short: the running head takes a third of what it does on
-     desktop, and its left edge follows the text's left edge down here too */
-  #masthead{padding:14px 22px 12px;border-bottom:1px solid var(--line)}
-  #homelogo img{width:64px}
-  #controls{flex-direction:row;left:12px;right:auto;top:12px;bottom:auto}
-  #controls button{width:34px;height:34px}
-  #statebar{top:56px;left:12px;right:12px;font-size:10.5px}
-  #navarrows{bottom:calc(58vh + 14px) !important;left:auto !important;right:12px !important}
-  #navarrows button{width:42px;height:34px}
-  #help{left:12px;right:12px;bottom:calc(58vh + 56px);font-size:11px;line-height:1.8}
+  /* THE SHEET. The map runs full-bleed behind it; the sheet floats over the
+     map at one of three heights and never covers it entirely. It opens at
+     peek, so four fifths of the screen is the field. */
+  #panel{width:100vw;top:auto;left:0;height:var(--sheet-h,22dvh);
+    border-radius:14px 14px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.45);
+    transition:height .38s cubic-bezier(.32,.72,0,1)}
+  #panel.dragging{transition:none}
+  #panel-scroll{padding:0 22px calc(40px + env(safe-area-inset-bottom))}
+
+  /* the grab strip: the one band the thumb owns, so it carries the controls */
+  #masthead{position:relative;padding:0 12px;height:52px;flex:none;
+    display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);
+    touch-action:none;cursor:grab}
+  #masthead::before{content:"";position:absolute;left:50%;top:7px;width:36px;height:4px;
+    margin-left:-18px;border-radius:2px;background:var(--line)}
+  #homelogo{padding:8px 4px}
+  #homelogo img{width:52px}
+
+  /* zoom, fullscreen and help are gone from the phone: pinch already zooms,
+     the phone is already fullscreen, and the help named a mouse and a keyboard */
+  #controls,#help{display:none}
+
+  /* the walk lives in the grab strip, inside the thumb's reach — pinned to
+     the sheet's own top edge, so it rides with the detents */
+  #navarrows{position:fixed;top:auto;
+    bottom:calc(var(--sheet-h,22dvh) - 48px);
+    right:12px;left:auto !important;z-index:22}
+  #navarrows button{width:44px;height:44px;border-radius:999px;font-size:15px}
+  #walkpos{font-size:11px;color:var(--text-soft)}
+
+  /* what holds the map, said once, above the sheet and releasable at 44px */
+  #statebar{top:auto;left:12px;right:12px;bottom:calc(var(--sheet-h,22dvh) + 10px);
+    font-size:11px;border-radius:999px}
+  #statebar .row{padding:11px 8px 11px 14px}
+  #statebar button{padding:10px 12px;font-size:14px}
+
+  /* a phone card is read at arm's length, so its type is set for that */
+  .card .cap{font-size:22px;line-height:1.2;padding:10px 2px 4px}
+  .card .tag{font-size:15px}
+  .card .tag i{font-size:17px}
+  .card.curator .cap{font-size:24px}
+  .card.team .cap{font-size:20px}
+
+  /* every target reaches 44px */
+  .pill{min-height:44px;padding:12px 14px;font-size:12.5px}
+  .pills{gap:8px}
+  .connect a{display:inline-block;padding:12px 0;margin-right:22px}
+  .backrow{padding:14px 0}
+  h1.big{font-size:32px}
 }
 </style>
 </head>
@@ -376,7 +411,7 @@ function apply(){
     const K=innerWidth<=760?.40:.62;
     world.style.setProperty('--ls',Math.max(.45,Math.min(8,K/vs)));
     // far out, the field is a map of places; close in, of people
-    world.classList.toggle('afar',vs<0.22);
+    world.classList.toggle('afar',vs<(innerWidth<=760?0.30:0.22));
   }
 }
 let lastScale=-1, rafPending=false;
@@ -670,7 +705,7 @@ function render(){
     el.dataset.id=p.id;
     el.addEventListener('click',e=>{
       e.stopPropagation();
-      if(suppressClick){suppressClick=false;return}   // that was a lift
+      if(suppressClick)return;        // that was a lift, not a tap
       select(p.id);
     });
     el.addEventListener('pointerdown',e=>beginCardGesture(e,p));
@@ -691,7 +726,9 @@ function placeCard(p){
    move on a card that is already open. The ambiguity is settled late, when
    enough is known, instead of at pointerdown when nothing is. */
 const SLOP ={mouse:4,  touch:10};    // screen px before a gesture commits
-const HOLD ={mouse:200,touch:250};   // ms to lift an unselected card
+const HOLD ={mouse:200,touch:450};   // ms to lift an unselected card
+const JITTER={mouse:3,  touch:6};    // a finger at rest wanders this much
+const STILL_FOR=140;                 // ms of quiet a lift requires
 const HOLDS={mouse:0,  touch:120};   // ms to lift one that is already open
 let pending=null, cardDrag=null, cardMoved=false, suppressClick=false;
 
@@ -703,8 +740,11 @@ function beginCardGesture(e,p){
   // no stopPropagation: the stage must see this pointer, or it can neither pan
   // nor recognise a second finger as a pinch
   const hold=(selected===p.id?HOLDS:HOLD)[touch?'touch':'mouse'];
+  suppressClick=false;               // a new gesture clears the last lift's ban
   pending={p,id:e.pointerId,touch,sx:e.clientX,sy:e.clientY,phase:'undecided',
-           instant:hold===0,slop:SLOP[touch?'touch':'mouse'],raf:0};
+           instant:hold===0,slop:SLOP[touch?'touch':'mouse'],
+           jitter:JITTER[touch?'touch':'mouse'],maxMoved:0,seen:0,
+           lastMoveAt:performance.now(),raf:0};
   if(hold>0){
     pending.armTimer=setTimeout(()=>p._el.classList.add('arming'),hold*.45);
     pending.holdTimer=setTimeout(()=>commitLift(),hold);
@@ -712,6 +752,12 @@ function beginCardGesture(e,p){
 }
 function commitLift(){
   if(!pending||pending.phase==='lift')return;
+  // A hold is stillness, not merely elapsed time. If the finger has moved at
+  // all in the last breath, this is a journey in progress and the card stays
+  // where it is — otherwise a slow pan that began on a card walks off with
+  // the person under it.
+  if(performance.now()-(pending.lastMoveAt||0)<STILL_FOR)return;
+  if(pending.touch&&navigator.vibrate)navigator.vibrate(8);
   const p=pending.p;
   clearTimeout(pending.armTimer);clearTimeout(pending.holdTimer);
   pending.phase='lift';
@@ -736,8 +782,18 @@ function abortCardGesture(){
 window.addEventListener('pointermove',e=>{
   if(!pending||e.pointerId!==pending.id)return;
   const sdx=e.clientX-pending.sx, sdy=e.clientY-pending.sy;
+  const travelled=Math.hypot(sdx,sdy);
+  if(travelled>(pending.seen||0)+1.5){          // real movement, not sensor noise
+    pending.seen=travelled; pending.lastMoveAt=performance.now();
+  }
+  pending.maxMoved=Math.max(pending.maxMoved||0,travelled);
   if(pending.phase==='undecided'){
-    if(Math.hypot(sdx,sdy)<=pending.slop)return;   // still a press: touch nothing
+    if(travelled>pending.jitter&&pending.holdTimer){
+      // the finger set off, so this is a journey, not a press
+      clearTimeout(pending.armTimer);clearTimeout(pending.holdTimer);
+      pending.holdTimer=0;pending.p._el.classList.remove('arming');
+    }
+    if(travelled<=pending.slop)return;              // still a press: touch nothing
     if(pending.instant||e.altKey){commitLift()}
     else{                                           // it is a pan, and the stage
       pending.phase='pan';                          // already owns this pointer
@@ -886,10 +942,12 @@ function animateTo(tx,ty,ts){
 function fitAll(anim){ fitPeople(PEOPLE,anim) }
 function flyTo(x,y,s){
   const r=liveRect(); if(!r)return;
+  s=Math.max(ZMIN,Math.min(ZMAX,s));
   animateTo(r.x+r.w/2-x*s, r.y+r.h/2-y*s, s);
 }
 function flyToCluster(c){
   const r=liveRect(); if(!r)return;
+  peekSheet();
   let minX=1e9,minY=1e9,maxX=-1e9,maxY=-1e9;
   c.members.forEach(p=>{minX=Math.min(minX,p._x);maxX=Math.max(maxX,p._x);
     minY=Math.min(minY,p._y);maxY=Math.max(maxY,p._y)});
@@ -911,9 +969,10 @@ function select(id,noFly){
     // scale so the thread stays composed instead of flying off the edges
     const r=mapRect(), sx=p._x*vs+vx, sy=p._y*vs+vy, m=90;
     const onScreen=sx>r.x+m&&sx<r.x+r.w-m&&sy>r.y+m&&sy<r.y+r.h-m;
-    if(!onScreen)flyTo(p._x,p._y-40,activeTag?vs:Math.max(vs,.85));
+    if(!onScreen)flyTo(p._x,p._y-40,activeTag?vs:Math.max(vs,innerWidth<=760?.50:.85));
   }
   history.replaceState(null,'','#p/'+id);   // the URL follows, history stays clean
+  halfSheet();
   renderProfile(p);
   document.getElementById('panel-scroll').scrollTop=0;
   const h1=content.querySelector('h1.big'); if(h1)h1.focus({preventScroll:true});
@@ -1016,8 +1075,19 @@ function showTag(tag){
     p._el.classList.toggle('member',ids.has(p.id));
   });
   refreshThreads();
-  fitPeople([...ids].map(id=>BY_ID[id]));
+  const members=[...ids].map(id=>BY_ID[id]);
+  if(innerWidth<=760){
+    // surveying 57 people on a phone puts them at 7px; walk the thread instead
+    const r=liveRect();
+    if(r&&members.length){
+      const cx=r.x+r.w/2, cy=r.y+r.h/2;
+      const near=members.reduce((a,b)=>
+        Math.hypot(a._x*vs+vx-cx,a._y*vs+vy-cy)<Math.hypot(b._x*vs+vx-cx,b._y*vs+vy-cy)?a:b);
+      flyTo(near._x,near._y-40,vs);
+    }
+  }else fitPeople(members);
   renderTagPanel(tag);
+  peekSheet();
 }
 function clearTag(){
   activeTag=null;
@@ -1032,7 +1102,9 @@ function fitPeople(list,anim){
   list.forEach(p=>{minX=Math.min(minX,p._x-190);maxX=Math.max(maxX,p._x+190);
     minY=Math.min(minY,p._y-230);maxY=Math.max(maxY,p._y+190)});
   const w=r.w-90, h=r.h-90;
-  const s=Math.min(1.0, w/(maxX-minX), h/(maxY-minY));
+  // clamp first: deriving tx,ty from a scale the renderer will then clamp
+  // leaves the whole field parked behind the panel
+  const s=Math.max(ZMIN,Math.min(1.0, w/(maxX-minX), h/(maxY-minY)));
   const tx=r.x+45+w/2-((minX+maxX)/2)*s, ty=r.y+45+h/2-((minY+maxY)/2)*s;
   if(anim===false){vx=tx;vy=ty;vs=s;apply()} else animateTo(tx,ty,s);
 }
@@ -1139,6 +1211,68 @@ addEventListener('resize',()=>{
   },160);
 });
 
+
+/* ================= the sheet, on a phone =================
+   Three heights, not one. It opens at peek so the map has four fifths of the
+   screen, and it is dragged by its own top strip — never by the map, which
+   keeps its pan. The camera is left alone when the height changes: re-framing
+   under a moving sheet is what makes these things feel sick. */
+const PANEL=document.getElementById('panel'), STRIP=document.getElementById('masthead');
+const isPhone=()=>innerWidth<=760;
+const DETENTS=()=>{const h=innerHeight;return [Math.max(112,h*.22), h*.52, h*.92]};
+let sheetH=0, sheetDrag=null;
+function setSheet(px,animate){
+  const d=DETENTS();
+  sheetH=Math.max(d[0]-40,Math.min(d[2]+40,px));
+  PANEL.classList.toggle('dragging',!animate);
+  document.documentElement.style.setProperty('--sheet-h',sheetH+'px');
+}
+function settleSheet(v){
+  const d=DETENTS();
+  let i=d.reduce((best,h,k)=>Math.abs(h-sheetH)<Math.abs(d[best]-sheetH)?k:best,0);
+  if(Math.abs(v)>.5)i=Math.max(0,Math.min(2,i+(v<0?1:-1)));   // a flick carries one step
+  PANEL.classList.remove('dragging');
+  document.documentElement.style.setProperty('--sheet-h',d[i]+'px');
+  sheetH=d[i];
+  requestAnimationFrame(()=>setTimeout(keepSelectedInView,400));
+}
+/* if the person you are reading has slipped behind the sheet, slide the field
+   — never rescale it */
+function keepSelectedInView(){
+  if(!isPhone()||!selected)return;
+  const p=BY_ID[selected], r=liveRect(); if(!r)return;
+  const sy=p._y*vs+vy;
+  if(sy>r.y+r.h-70||sy<r.y+70) animateTo(vx, r.y+r.h*.38-p._y*vs, vs);
+}
+if(STRIP){
+  STRIP.addEventListener('pointerdown',e=>{
+    if(!isPhone()||e.target.closest('#navarrows,#homelogo'))return;
+    sheetDrag={y:e.clientY,t:performance.now(),h:PANEL.getBoundingClientRect().height,last:e.clientY,v:0};
+    setSheet(sheetDrag.h,false);
+    try{STRIP.setPointerCapture(e.pointerId)}catch(_){}
+  });
+  addEventListener('pointermove',e=>{
+    if(!sheetDrag)return;
+    const now=performance.now(), dt=Math.max(1,now-sheetDrag.t);
+    sheetDrag.v=(e.clientY-sheetDrag.last)/dt; sheetDrag.last=e.clientY; sheetDrag.t=now;
+    setSheet(sheetDrag.h-(e.clientY-sheetDrag.y),false);
+  },{passive:true});
+  const endSheet=()=>{if(!sheetDrag)return;const v=sheetDrag.v;sheetDrag=null;settleSheet(v)};
+  addEventListener('pointerup',endSheet);
+  addEventListener('pointercancel',endSheet);
+}
+/* a sheet opened past peek should come back when you go to the map */
+function peekSheet(){if(isPhone())settleSheet(1)}
+function halfSheet(){if(isPhone()){sheetH=DETENTS()[1];PANEL.classList.remove('dragging');
+  document.documentElement.style.setProperty('--sheet-h',sheetH+'px')}}
+function initSheet(){
+  if(!isPhone()){document.documentElement.style.removeProperty('--sheet-h');return}
+  const d=DETENTS(); sheetH=d[0];
+  document.documentElement.style.setProperty('--sheet-h',d[0]+'px');
+}
+addEventListener('resize',initSheet);
+addEventListener('orientationchange',()=>setTimeout(initSheet,150));
+
 /* ================= boot ================= */
 let framed=false;
 function frameInitial(){
@@ -1147,7 +1281,7 @@ function frameInitial(){
   const r=liveRect(); if(framed||!r||!CLUSTERS.length)return;
   framed=true;
   const c=CLUSTERS[0];
-  vs=.42; vx=r.x+r.w/2-c.x*vs; vy=r.y+r.h/2-c.y*vs; apply();
+  vs=innerWidth<=760?.50:.42; vx=r.x+r.w/2-c.x*vs; vy=r.y+r.h/2-c.y*vs; apply();
   const m=location.hash.match(/^#p\/(\d+)$/);
   if(m&&BY_ID[+m[1]])select(+m[1]);
 }
@@ -1160,6 +1294,7 @@ fetch('data/people.json')
     DATA=d; PEOPLE=d.people;
     PEOPLE.forEach(p=>BY_ID[p.id]=p);
     layout(); buildTagIndex(); render(); buildMenu(); placeArrows();
+    initSheet();
     const m=location.hash.match(/^#p\/(\d+)$/);
     if(m&&BY_ID[+m[1]])renderProfile(BY_ID[+m[1]]); else renderHome();
     frameInitial();
