@@ -34,6 +34,7 @@ const JUNK = new Set(['portrait', 'photo', 'foto', 'pic', 'picture', 'image', 'i
   'jpeg', 'jpg', 'png', 'heic', 'scan', 'new', 'orig', 'original', 'avatar', 'profile']);
 
 const words = s => (s || '')
+  .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')   // ć → c, ё → e
   .toLowerCase()
   .replace(/\.[a-z0-9]+$/, '')          // extension
   .replace(/[’'`]/g, '')
@@ -81,7 +82,7 @@ for (const f of files) {
 }
 
 const slug = p => (p.photo || p.photoRemote ||
-  norm(p.name).replace(/ /g, '-') + '-' + p.id);
+  words(p.name).join('-') + '-' + p.id);
 
 console.log(`${files.length} files in folder · ${matched.length} matched · ${unmatched.length} unmatched`);
 if (collisions.length) console.log('\nTWO FILES FOR ONE PERSON:\n  ' + collisions.join('\n  '));
