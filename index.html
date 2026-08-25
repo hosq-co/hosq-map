@@ -158,14 +158,14 @@ a{color:inherit}
 .card.team .ph .init::after{color:#7d6c4b}
 
 /* ---------- controls ---------- */
-#controls{position:fixed;left:18px;bottom:18px;display:flex;flex-direction:column;gap:6px;z-index:30}
+#controls{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:6px;z-index:30}
 #controls button{width:30px;height:30px;background:rgba(238,231,211,.08);border:1px solid rgba(238,231,211,.18);
   color:rgba(238,231,211,.8);font-family:'IBM Plex Mono',monospace;font-size:13px;border-radius:2px;
   transition:background .15s}
 #controls button:hover{background:rgba(238,231,211,.18)}
 
 /* what is holding the map right now, and how to let go of it */
-#statebar{position:fixed;left:18px;top:18px;z-index:32;display:none;
+#statebar{position:fixed;right:18px;top:18px;z-index:32;display:none;
   font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;
   background:rgba(35,31,32,.92);border:1px solid rgba(235,226,214,.16);border-radius:3px;
   color:rgba(235,226,214,.85);overflow:hidden}
@@ -183,8 +183,8 @@ a{color:inherit}
 #navarrows button:hover{background:#fff;border-color:var(--coral)}
 
 /* ---------- panel ---------- */
-#panel{position:fixed;top:0;right:0;bottom:0;width:min(460px,94vw);background:var(--paper);
-  z-index:20;display:flex;flex-direction:column;box-shadow:-14px 0 40px rgba(0,0,0,.35)}
+#panel{position:fixed;top:0;left:0;bottom:0;width:min(460px,94vw);background:var(--paper);
+  z-index:20;display:flex;flex-direction:column;box-shadow:14px 0 40px rgba(0,0,0,.35)}
 #panel-scroll{overflow-y:auto;flex:1;padding:0 34px 60px;scrollbar-width:thin}
 #content{padding-top:6px}
 
@@ -192,7 +192,7 @@ a{color:inherit}
    is cropped to the drawing, so its left edge sits on the text's left edge. */
 #masthead{flex:none;padding:26px 34px 22px}
 #homelogo{display:block;padding:0;line-height:0;cursor:pointer;transition:opacity .15s}
-#homelogo img{display:block;width:83px;height:auto;user-select:none;-webkit-user-drag:none}
+#homelogo img{display:block;width:66px;height:auto;user-select:none;-webkit-user-drag:none}
 #homelogo:hover{opacity:.6}
 
 .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;
@@ -266,7 +266,7 @@ button.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   letter-spacing:.18em;text-transform:uppercase;color:var(--text-soft)}
 
 /* help overlay */
-#help{position:fixed;left:60px;bottom:18px;z-index:40;background:rgba(23,21,15,.92);
+#help{position:fixed;right:60px;bottom:18px;z-index:40;background:rgba(23,21,15,.92);
   border:1px solid rgba(238,231,211,.2);color:rgba(238,231,211,.85);padding:16px 18px;
   font-family:'IBM Plex Mono',monospace;font-size:11.5px;line-height:1.9;border-radius:3px;display:none}
 #help.open{display:block}
@@ -281,10 +281,10 @@ button.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
      desktop, and its left edge follows the text's left edge down here too */
   #masthead{padding:14px 22px 12px;border-bottom:1px solid var(--line)}
   #homelogo img{width:64px}
-  #controls{flex-direction:row;left:12px;top:12px;bottom:auto}
+  #controls{flex-direction:row;left:12px;right:auto;top:12px;bottom:auto}
   #controls button{width:34px;height:34px}
   #statebar{top:56px;left:12px;right:12px;font-size:10.5px}
-  #navarrows{bottom:calc(58vh + 14px) !important;right:12px !important}
+  #navarrows{bottom:calc(58vh + 14px) !important;left:auto !important;right:12px !important}
   #navarrows button{width:42px;height:34px}
   #help{left:12px;right:12px;bottom:calc(58vh + 56px);font-size:11px;line-height:1.8}
 }
@@ -869,7 +869,7 @@ function mapRect(){
   const r=document.getElementById('panel').getBoundingClientRect();
   return innerWidth<=760
     ? {x:0,y:0,w:innerWidth,h:Math.max(0,r.top)}
-    : {x:0,y:0,w:Math.max(0,innerWidth-r.width),h:innerHeight};
+    : {x:r.width,y:0,w:Math.max(0,innerWidth-r.width),h:innerHeight};
 }
 function visibleW(){return mapRect().w}
 function liveRect(){const r=mapRect();return r.w>=200&&r.h>=200?r:null}
@@ -1118,11 +1118,11 @@ function renderWalk(){
 document.getElementById('homelogo').addEventListener('click',()=>{goHome();fitAll(true)});
 function buildMenu(){}
 
-/* position nav arrows just left of panel */
+/* the arrows sit just inside the map, beside the panel's edge */
 function placeArrows(){
   const el=document.getElementById('navarrows');
-  if(innerWidth<=760){el.style.right='';return}   // the sheet layout places them
-  el.style.right=(document.getElementById('panel').offsetWidth+18)+'px';
+  if(innerWidth<=760){el.style.left='';return}    // the sheet layout places them
+  el.style.left=(document.getElementById('panel').offsetWidth+18)+'px';
 }
 let wasNarrow=innerWidth<=760, resizeTimer=null;
 addEventListener('resize',()=>{
