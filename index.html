@@ -337,8 +337,7 @@ button.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 }
 
 /* ---------- two states: guest / member ---------- */
-/* a guest sees the face and the standing, never the name */
-body.guest .card .cap{display:none}
+/* a guest's card is built without a name at all — nothing to unhide */
 body.guest .card .ph .init{font-size:26px}
 body.guest .card .tag{padding-top:7px}
 #authbar{flex:none;border-top:1px solid var(--line);padding:16px 34px 18px;
@@ -929,7 +928,7 @@ function render(){
     // one name, the real one; the stage name and the links live in the profile
     el.innerHTML=`<div class="ph">${img}
       <div class="init" data-note="${(p.disciplines[0]||p.skills[0]||role)}"${p.photo?' style="display:none"':''}>${MEMBER?initials(p.name):icon}</div></div>
-      <div class="cap">${p.name}</div>
+      ${MEMBER?`<div class="cap">${p.name}</div>`:''}
       <div class="tag"><i>${icon}</i>${role}</div>`;
     if(p.photo){
       const im=el.querySelector('img');
@@ -1630,6 +1629,7 @@ function lightUp(ids){
   PEOPLE.forEach(p=>{p._el.classList.toggle('faded',set.size>0&&!set.has(p.id));p._el.classList.toggle('hit',set.has(p.id))});
 }
 function onSearch(){
+  if(!MEMBER)return;                    // search is a member's tool: nothing is built for a guest
   const box=document.getElementById('search'), inp=document.getElementById('q'), sg=document.getElementById('sugg');
   const q=inp.value; box.classList.toggle('has',!!q);
   const m=searchMatches(q);
@@ -1648,7 +1648,7 @@ function onSearch(){
   sg.innerHTML=h; sg.classList.add('open');
 }
 function pick(i){
-  const e=SEARCH_IDX[i]; if(!e)return;
+  const e=SEARCH_IDX[i]; if(!e||!MEMBER)return;
   document.getElementById('sugg').classList.remove('open');
   document.getElementById('q').value=e.label; document.getElementById('search').classList.add('has');
   lightUp([]);
@@ -1657,11 +1657,13 @@ function pick(i){
   if(e.kind==='project'){SEARCH_HOLD=e.label;SEARCH_KIND='project';lightUp(e.ids);renderState()}
 }
 function showCountry(c){
+  if(!MEMBER)return;
   const ids=PEOPLE.filter(p=>countriesOf(p).includes(c)).map(p=>p.id);
   SEARCH_HOLD=c; SEARCH_KIND='country'; lightUp(ids); fitPeople(ids.map(i=>BY_ID[i]));
   renderCountryPanel(c);
 }
 function renderCountryPanel(c){
+  if(!MEMBER)return;
   if(selected){BY_ID[selected]._el.classList.remove('sel');selected=null}
   const people=PEOPLE.filter(p=>countriesOf(p).includes(c));
   const byProj={}; people.forEach(p=>{(byProj[p.project]=byProj[p.project]||[]).push(p)});
