@@ -359,7 +359,7 @@ body.wall.expose .card.lit{transform:translate(-50%,-50%) rotate(var(--rot,0deg)
 body.wall.expose .card::after{display:none}
 body.wall.fix .card{transition:opacity 28s linear}
 /* the thread is a hair, not a rope */
-body.wall #edges path{vector-effect:non-scaling-stroke;stroke-width:1.25px;stroke-opacity:.9}
+body.wall #edges path{vector-effect:non-scaling-stroke;stroke-width:2px;stroke-opacity:.92}
 body.wall #edges path.halo{display:none}
 body.wall #edges circle{display:none}
 /* roll call: one face, one line, a scale of 138 marks */
@@ -383,6 +383,14 @@ body.wall.roll #stage::before{content:"";position:absolute;left:0;right:0;bottom
 #wallmark{position:fixed;right:3vw;bottom:4vh;z-index:35;display:none;opacity:.32;pointer-events:none}
 #wallmark img{width:clamp(48px,4.5vw,84px);display:block}
 body.wall #wallmark{display:block}
+/* a fullscreen mark you have to know about: top-right, twelve pixels, nearly paper-coloured */
+#wallfs{position:fixed;top:14px;right:14px;z-index:36;display:none;width:22px;height:22px;padding:5px;
+  opacity:.14;cursor:pointer;transition:opacity .3s}
+#wallfs:hover,#wallfs:focus-visible{opacity:.7;outline:none}
+#wallfs svg{width:12px;height:12px;display:block;fill:none;stroke:var(--paper);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
+body.wall #wallfs{display:block}
+body.wall #stage{cursor:none}
+body.wall:has(#wallfs:hover) #stage{cursor:default}
 @media (prefers-reduced-motion:reduce){body.wall #paper{animation:none}}
 
 /* ---------- two states: guest / member ---------- */
@@ -514,6 +522,7 @@ body.member #search{display:block}
 <div id="wallcap" aria-hidden="true"></div>
 <div id="wallscale" aria-hidden="true"></div>
 <div id="wallmark" aria-hidden="true"><img src="assets/hosq-logo.svg" alt=""></div>
+<button id="wallfs" title="Fullscreen" aria-label="Fullscreen"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8"/></svg></button>
 <div id="navarrows">
   <button id="prev" title="Previous entry" aria-label="Previous entry">←</button>
   <span id="walkpos"></span>
@@ -1546,6 +1555,8 @@ function setFolded(on){
   try{localStorage.setItem('hosq-map-folded',on?'1':'0')}catch(e){}
   setTimeout(()=>{placeArrows();refreshThreads()},300);
 }
+document.getElementById('wallfs').addEventListener('click',()=>{
+  document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()});
 document.getElementById('fold').addEventListener('click',()=>setFolded(!document.body.classList.contains('folded')));
 try{if(localStorage.getItem('hosq-map-folded')==='1'&&innerWidth>760)setFolded(true)}catch(e){}
 /* anything that puts a reading in the panel opens it first */
@@ -1846,7 +1857,10 @@ async function longExposure(){
     for(const [t,ids] of tags){r-=weightOf(ids.length);if(r<=0)return t}return tags[0][0]};
   let shutterAt=performance.now()+W.shutter;
   while(true){
-    const tag=pickTag(); W.phase='tag:'+tag; W.n=(W.n||0)+1;
+    // every third thread is a long one (a craft ≥ 15 people); the rest lean rare
+    const big=tags.filter(([,ids])=>ids.length>=15);
+    const tag=QS.get('tag')&&TAGINDEX[QS.get('tag')]?QS.get('tag'):((W.n||0)%3===2&&big.length?wpick(big)[0]:pickTag());
+    W.phase='tag:'+tag; W.n=(W.n||0)+1;
     const members=wshuffle((TAGINDEX[tag]||[]).map(id=>BY_ID[id]).filter(Boolean));
     const color=BRAND[hash32(tag)%BRAND.length];
     const list=stitch(members,color);
