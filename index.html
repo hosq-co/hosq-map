@@ -130,6 +130,7 @@ a{color:inherit}
 .card.sel{outline:2px solid var(--coral);outline-offset:3px}
 .card .ph{position:relative;width:100%;height:138px;background:#2a2620;overflow:hidden}
 .card .ph img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:grayscale(1) sepia(.28) contrast(1.04) brightness(.97);
   /* the photograph is part of the card, not a thing you can peel off it */
   -webkit-user-drag:none;user-drag:none;pointer-events:none}
 .card .ph .init{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
@@ -272,7 +273,7 @@ button.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   box-shadow:0 2px 6px rgba(0,0,0,.12),0 14px 30px rgba(0,0,0,.12);
   transform:rotate(var(--prot,-1deg))}   /* leans the same way its card does */
 .pphoto .platecap{position:absolute;left:12px;right:12px;bottom:10px;margin:0}
-.pphoto img{width:100%;display:block}
+.pphoto img{width:100%;display:block;filter:grayscale(1) sepia(.25) contrast(1.04)}
 .pphoto .no{height:240px;display:flex;align-items:center;justify-content:center;
   font-family:'IBM Plex Mono',monospace;font-size:44px;color:#6b5c3e;
   background:linear-gradient(160deg,#d3c6a8,#c6b592)}
@@ -366,7 +367,11 @@ body.wall.expose #paper{opacity:.55;animation-duration:240s}   /* the grid steps
 body.wall.roll #paper{animation-duration:240s}
 body.wall .cluster-label b{font-size:17px}
 /* long exposure: every card starts as unexposed paper and only gains light */
-body.wall.expose .card{background:#0f0e0d;transition:transform .6s}
+body.wall .card{background:#0f0e0d}
+body.wall .card .face{background:var(--frame)}
+body.wall .card.curator .face{background:#f4f0e4}
+body.wall .card.team .face{background:var(--kraft)}
+body.wall.expose .card{transition:transform .6s}
 body.wall.expose .card .face{opacity:var(--exp,.05);transition:opacity 1.6s ease-out}
 body.wall.expose .card.lit{transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.03)}
 body.wall.expose .card::after{display:none}
@@ -395,7 +400,6 @@ body.wall #edges circle{display:none}
 body.wall.roll #wallcap,body.wall.roll #wallscale{display:block}
 body.wall.roll #wallscale{display:flex}
 /* the one being called stands in the light; the rest of the room waits */
-body.wall.roll .card{background:#0f0e0d}
 body.wall.roll .card .face{transition:opacity 2.4s}
 body.wall.roll.calling .card:not(.now) .face{opacity:.3}
 body.wall.roll .card::after{display:none}
