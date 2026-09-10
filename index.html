@@ -110,7 +110,7 @@ a{color:inherit}
   box-shadow:0 6px 18px rgba(0,0,0,.5);
   /* centred on its own point, so the three widths all sit true */
   transform:translate(-50%,-50%) rotate(var(--rot,0deg));
-  transition:opacity .25s, transform .11s ease;
+  transition:box-shadow .2s, opacity .25s, transform .11s ease;
 }
 .card .face{padding:8px 8px 7px}
 .card:hover{box-shadow:0 12px 28px rgba(0,0,0,.6)}
@@ -389,7 +389,7 @@ body.wall.expose #breath{will-change:transform;animation:breathe 258s ease-in-ou
 @keyframes breathe{0%{transform:translate(0,0) scale(1)}25%{transform:translate(38px,-22px) scale(1.04)}
   50%{transform:translate(0,28px) scale(1)}75%{transform:translate(-38px,-10px) scale(.96)}100%{transform:translate(0,0) scale(1)}}
 /* the thread is a hair, not a rope */
-body.wall #edges{opacity:1}
+body.wall #edges{opacity:var(--eop,1)}
 body.wall #edges path{vector-effect:non-scaling-stroke;stroke-width:3px;stroke-opacity:1}
 body.wall #edges path.halo{display:none}
 body.wall #edges circle{display:none}
@@ -422,7 +422,7 @@ body.wall #wallmark{display:block}
 body.wall #wallfs{display:block}
 body.wall #stage{cursor:none}
 body.wall:has(#wallfs:hover) #stage{cursor:default}
-/* the wall is a projector, not a person: it turns even where the OS asks for less motion */
+/* the wall is a projector, not a person: it turns whatever the OS prefers */
 body.wall #paper{animation-name:turn;
   background-image:linear-gradient(var(--mm-10) 1px,transparent 1px),linear-gradient(90deg,var(--mm-10) 1px,transparent 1px),
     linear-gradient(var(--mm-5) 1px,transparent 1px),linear-gradient(90deg,var(--mm-5) 1px,transparent 1px);
@@ -1312,7 +1312,7 @@ const content=document.getElementById('content');
 
 function select(id,noFly){
   const p=BY_ID[id]; if(!p)return;
-  unfold();
+  const wasFolded=document.body.classList.contains('folded'); unfold();
   if(selected)BY_ID[selected]?._el.classList.remove('sel');
   selected=id;
   p._el.classList.add('sel');
@@ -1321,7 +1321,7 @@ function select(id,noFly){
     // scale so the thread stays composed instead of flying off the edges
     const r=mapRect(), sx=p._x*vs+vx, sy=p._y*vs+vy, m=90;
     const onScreen=sx>r.x+m&&sx<r.x+r.w-m&&sy>r.y+m&&sy<r.y+r.h-m;
-    if(!onScreen)flyTo(p._x,p._y-40,activeTag?vs:Math.max(vs,innerWidth<=760?.50:.85));
+    if(!onScreen||wasFolded){const go=()=>flyTo(p._x,p._y-40,activeTag?vs:Math.max(vs,innerWidth<=760?.50:.85));wasFolded?setTimeout(go,320):go()}
   }
   history.replaceState(null,'','#p/'+id);   // the URL follows, history stays clean
   halfSheet();
@@ -1443,7 +1443,7 @@ function tagPill(t){
 }
 function showTag(tag){
   if(activeTag===tag){clearTag();return}
-  unfold();
+  const wasFolded=document.body.classList.contains('folded'); unfold();
   activeTag=tag;
   THREAD_MODE={kind:'tag',tag};
   // a thread and a role filter may hold at once — the state bar names both,
@@ -1465,7 +1465,7 @@ function showTag(tag){
         Math.hypot(a._x*vs+vx-cx,a._y*vs+vy-cy)<Math.hypot(b._x*vs+vx-cx,b._y*vs+vy-cy)?a:b);
       flyTo(near._x,near._y-40,vs);
     }
-  }else fitPeople(members);
+  }else wasFolded?setTimeout(()=>fitPeople(members),320):fitPeople(members);
   renderTagPanel(tag);
   peekSheet();
 }
@@ -1564,7 +1564,7 @@ function toggleRole(r){
     p._el.classList.toggle('dim',!!filterRole&&mine!==filterRole);
   });
   refreshThreads();
-  if(filterRole&&!activeTag&&!selected)fitPeople(PEOPLE.filter(p=>ROLE_ICON(p.role)[1]===filterRole));
+  if(filterRole&&!activeTag&&!selected&&!isPhone())fitPeople(PEOPLE.filter(p=>ROLE_ICON(p.role)[1]===filterRole));
   if(!activeTag&&!selected)renderHome(); else renderState();
 }
 
@@ -1588,7 +1588,7 @@ function renderWalk(){
 
 /* the logo takes you home; the project list lives in the panel below, so
    there is no second copy of it up here */
-document.getElementById('homelogo').addEventListener('click',()=>{unfold();goHome();fitAll(true)});
+document.getElementById('homelogo').addEventListener('click',()=>{const was=document.body.classList.contains('folded');unfold();goHome();was?setTimeout(()=>fitAll(true),320):fitAll(true)});
 function buildMenu(){}
 
 /* the arrows sit just inside the map, beside the panel's edge */
@@ -1617,6 +1617,7 @@ addEventListener('resize',()=>{
   clearTimeout(resizeTimer);
   resizeTimer=setTimeout(()=>{
     const narrow=innerWidth<=760;
+    if(narrow&&document.body.classList.contains('folded'))setFolded(false);
     if(narrow!==wasNarrow){        // the map's rectangle changed meaning — re-aim
       wasNarrow=narrow;
       if(activeTag)fitPeople((TAGINDEX[activeTag]||[]).map(id=>BY_ID[id]));
@@ -1827,13 +1828,13 @@ function clearSearch(){
    Runs by itself: no pointer, no keys, nothing to touch — it plays for hours.
    Tunables: ?black=0.05 (floor), ?shutter=900 (s), ?hold=7 (s, roll), ?speed=1. */
 const W={
-  black:Math.max(0,Math.min(.4,parseFloat(QS.get('black')??'0'))),
+  black:Math.max(0,Math.min(.4,parseFloat(QS.get('black'))||0)),
   shutter:(parseFloat(QS.get('shutter'))||900)*1000,
   hold:(parseFloat(QS.get('hold'))||7)*1000,
   step:.14, first:.45, timers:[], raf:0, t0:0,
   speed:Math.max(.1,Math.min(50,parseFloat(QS.get('speed'))||1))   // ?speed=8 rehearses an hour in minutes
 };
-const wsleep=ms=>new Promise(r=>{W.timers.push(setTimeout(r,ms/W.speed))});
+const wsleep=ms=>new Promise(r=>setTimeout(r,ms/W.speed));
 const wpick=arr=>arr[Math.floor(Math.random()*arr.length)];
 function wshuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function wallFly(tx,ty,ts,D){
@@ -1903,17 +1904,19 @@ async function longExposure(){
   while(true){
     // every third thread is a long one (a craft ≥ 15 people); the rest lean rare
     const big=tags.filter(([,ids])=>ids.length>=15);
-    const tag=QS.get('tag')&&TAGINDEX[QS.get('tag')]?QS.get('tag'):((W.n||0)%3===2&&big.length?wpick(big)[0]:pickTag());
+    const pinned=QS.get('tag')&&Object.keys(TAGINDEX).find(t=>t.toLowerCase()===QS.get('tag').toLowerCase());
+    const tag=pinned&&(TAGINDEX[pinned]||[]).length>=2?pinned:((W.n||0)%3===2&&big.length?wpick(big)[0]:pickTag());
     W.phase='tag:'+tag; W.n=(W.n||0)+1;
     const members=wshuffle((TAGINDEX[tag]||[]).map(id=>BY_ID[id]).filter(Boolean));
     const color=BRAND[hash32(tag)%BRAND.length];
     const list=stitch(members,color);
     const per=Math.max(600,Math.min(1800,40000/Math.max(1,list.length)));  // one stitch every 0.6–1.8 s
+    world.style.setProperty('--eop','1');
     // frame the people this thread will reach — close enough to see faces gain light
     const fr=wallFrame(members,.55); if(fr)await wallGo(fr,4500);
     // the first touch develops a face out of the paper; every later one adds a little
     const expose=p=>{exp[p.id]=Math.min(1,exp[p.id]<=W.black?W.first:exp[p.id]+W.step);p._el.style.setProperty('--exp',exp[p.id]);
-      p._el.classList.add('lit');setTimeout(()=>p._el.classList.remove('lit'),1400)};
+      p._el.classList.add('lit');setTimeout(()=>p._el.classList.remove('lit'),1400/W.speed)};
     if(list.length){expose(list[0].a)}
     for(let i=1;i<=list.length;i++){
       i===1?drawThreads([list[0]]):appendThreads([list[i-1]]);
@@ -1922,7 +1925,7 @@ async function longExposure(){
       if(performance.now()>shutterAt)break;
     }
     W.phase='breathe'; await wsleep(7000);                              // the finished thread breathes
-    const svg=document.getElementById('edges'); if(svg){svg.style.transition='opacity 2s';svg.style.setProperty('--eop','0')}
+    const svg=document.getElementById('edges'); if(svg){svg.style.transition='opacity 2s';svg.style.opacity='0'}
     await wsleep(2200); drawThreads([]);
     // between threads, the whole field: what has been exposed so far
     W.phase='field'; await wallGo(wallFrameAll(),6000);
@@ -1964,7 +1967,7 @@ async function rollCall(){
       const tx=r.x+r.w*.5-p._x*faceScale, ty=r.y+r.h*.42-(p._y-20)*faceScale;
       const far=Math.hypot(tx-vx,ty-vy);
       await wallFly(tx,ty,faceScale,Math.min(1600,Math.max(800,far*.8)));
-      const role=ROLE_ICON(p.role)[1], crafts=[...p.disciplines,...p.tools].slice(0,4).join(', ');
+      const role=ROLE_ICON(p.role)[1], crafts=[...p.disciplines,...p.skills].slice(0,4).join(', ');
       cap.innerHTML=`<div class="eb">${role}</div>${[p.country,crafts].filter(Boolean).join(' · ')}`;
       cap.classList.add('on'); ticks[i].classList.add('done');
       await wsleep(W.hold);
