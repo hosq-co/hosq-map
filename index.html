@@ -391,11 +391,12 @@ body.wall.expose #breath{will-change:transform;animation:breathe 258s ease-in-ou
   50%{transform:translate(0,28px) scale(1)}75%{transform:translate(-38px,-10px) scale(.96)}100%{transform:translate(0,0) scale(1)}}
 /* the thread is a hair, not a rope */
 body.wall #edges{opacity:var(--eop,1)}
-body.wall #edges path{vector-effect:non-scaling-stroke;stroke-width:3.5px;stroke-opacity:1;transition:stroke-opacity 3s}
+body.wall #edges path{vector-effect:non-scaling-stroke;stroke-width:3.5px;stroke-opacity:1}
 body.wall #edges path.halo{stroke-width:11px;stroke-opacity:.22}
-/* a finished thread does not leave: it settles into the web at a quarter strength */
-body.wall #edges path.settled{stroke-opacity:.28;stroke-width:2px}
-body.wall #edges path.halo.settled{stroke-opacity:0}
+/* the web: every finished thread, still, one frame, a third of its strength.
+   A separate static layer, so the tremble of the live thread never touches it */
+#web{pointer-events:none;overflow:visible;transition:opacity 3s}
+#web path{fill:none;stroke-linecap:round;vector-effect:non-scaling-stroke;stroke-width:2px;stroke-opacity:.34}
 body.wall #edges circle{display:none}
 /* roll call: one face, one line, a scale of 138 marks */
 #wallcap{position:fixed;left:6vw;right:6vw;bottom:9vh;z-index:35;display:none;pointer-events:none;
@@ -1894,6 +1895,22 @@ function startWall(){
   document.body.classList.contains('roll')?rollCall():longExposure();
 }
 
+/* the web keeps its own svg, sized like the live one, placed under it */
+function settleIntoWeb(){
+  if(!THREADS.length)return;
+  let web=document.getElementById('web');
+  if(!web){
+    const bx=worldBox(); web=document.createElementNS(NS,'svg'); web.id='web';
+    web.setAttribute('viewBox',`${bx.x} ${bx.y} ${bx.w} ${bx.h}`);
+    web.style.cssText=`position:absolute;left:${bx.x}px;top:${bx.y}px;width:${bx.w}px;height:${bx.h}px`;
+    world.appendChild(web);
+  }
+  for(const t of THREADS){
+    const el=document.createElementNS(NS,'path');
+    el.setAttribute('d',t.variants[0]); el.setAttribute('stroke',t.paths[0].getAttribute('stroke'));
+    web.appendChild(el);
+  }
+}
 /* ---- long exposure ---- */
 async function longExposure(){
   const exp={}; PEOPLE.forEach(p=>{exp[p.id]=W.black;p._el.style.setProperty('--exp',W.black)});
@@ -1932,8 +1949,8 @@ async function longExposure(){
       if(performance.now()>shutterAt)break;
     }
     W.phase='breathe'; await wsleep(7000);                              // the finished thread breathes
-    // then settles into the web: every thread so far stays, at a quarter strength
-    document.querySelectorAll('#edges path:not(.settled)').forEach(el=>el.classList.add('settled'));
+    // then settles into the web: one still copy of every stitch, the live layer emptied
+    settleIntoWeb(); drawThreads([]);
     await wsleep(2200);
     // between threads, the whole field: what has been exposed so far
     W.phase='field'; await wallGo(wallFrameAll(),6000);
@@ -1941,7 +1958,7 @@ async function longExposure(){
       // the shutter: hold the frame, then bleach it back to paper
       await wsleep(14000);
       document.body.classList.add('fix');
-      const web=document.getElementById('edges'); if(web){web.style.transition='opacity 12s';web.style.opacity='0';setTimeout(()=>drawThreads([]),12500)}
+      drawThreads([]); const web=document.getElementById('web'); if(web){web.style.transition='opacity 12s';web.style.opacity='0';setTimeout(()=>web.remove(),12500)}
       PEOPLE.forEach(p=>{exp[p.id]=W.black;p._el.style.setProperty('--exp',W.black)});
       await wsleep(29000);
       document.body.classList.remove('fix');
