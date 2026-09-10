@@ -367,15 +367,12 @@ body.wall.expose #paper{opacity:.55;animation-duration:240s}   /* the grid steps
 body.wall.roll #paper{animation-duration:240s}
 body.wall .cluster-label b{font-size:17px}
 /* long exposure: every card starts as unexposed paper and only gains light */
-body.wall .card{background:#0f0e0d}
-body.wall .card .face{background:var(--frame)}
-body.wall .card.curator .face{background:#f4f0e4}
-body.wall .card.team .face{background:var(--kraft)}
-body.wall.expose .card{transition:transform .6s}
-body.wall.expose .card .face{opacity:var(--exp,.05);transition:opacity 1.6s ease-out}
+/* an unexposed card is glass, not black: the paper shows through, and the
+   more threads pass through a face the more solid it becomes */
+body.wall.expose .card{opacity:var(--exp,.05);transition:opacity 1.6s ease-out,transform .6s}
 body.wall.expose .card.lit{transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.03)}
 body.wall.expose .card::after{display:none}
-body.wall.fix .card .face{transition:opacity 28s linear}
+body.wall.fix .card{transition:opacity 28s linear}
 /* the camera's breath on the wall: a compositor animation on a wrapper, so
    the field is rasterised once and only moved */
 #breath{position:absolute;inset:0;transform-origin:50% 50%}
@@ -400,8 +397,8 @@ body.wall #edges circle{display:none}
 body.wall.roll #wallcap,body.wall.roll #wallscale{display:block}
 body.wall.roll #wallscale{display:flex}
 /* the one being called stands in the light; the rest of the room waits */
-body.wall.roll .card .face{transition:opacity 2.4s}
-body.wall.roll.calling .card:not(.now) .face{opacity:.3}
+body.wall.roll .card{transition:opacity 2.4s}
+body.wall.roll.calling .card:not(.now){opacity:.3}
 body.wall.roll .card::after{display:none}
 body.wall.roll #stage::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34vh;z-index:34;pointer-events:none;
   background:linear-gradient(to top,rgba(35,31,32,.92),rgba(35,31,32,0))}
