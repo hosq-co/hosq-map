@@ -165,7 +165,14 @@ a{color:inherit}
 #controls button:hover{background:rgba(238,231,211,.18)}
 
 /* what is holding the map right now, and how to let go of it */
-#statebar{position:fixed;right:18px;top:18px;z-index:32;display:none;
+/* two doors to the wall: a polaroid and a net, quiet in the corner of the map */
+#walldoors{position:fixed;right:18px;top:16px;z-index:32;display:flex;gap:4px}
+#walldoors a{display:block;width:28px;height:28px;padding:6px;border-radius:6px;opacity:.42;transition:opacity .15s,background .15s}
+#walldoors a:hover,#walldoors a:focus-visible{opacity:1;background:rgba(238,231,211,.1);outline:none}
+#walldoors svg{width:16px;height:16px;display:block;fill:none;stroke:var(--paper);stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
+body.wall #walldoors{display:none}
+@media (max-width:760px){#walldoors{top:10px;right:10px}}
+#statebar{position:fixed;right:18px;top:52px;z-index:32;display:none;
   font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;
   background:rgba(35,31,32,.92);border:1px solid rgba(235,226,214,.16);border-radius:3px;
   color:rgba(235,226,214,.85);overflow:hidden}
@@ -351,13 +358,14 @@ body.wall #panel,body.wall #controls,body.wall #navarrows,body.wall #statebar,
 body.wall #help,body.wall #veil{display:none!important}
 body.wall #stage{cursor:none;pointer-events:none}
 body.wall .cluster-label{opacity:.55}
-body.wall.expose #paper{opacity:.55}     /* the grid steps back so a face at 5% still reads as a face */
+body.wall.expose #paper{opacity:.55;animation-duration:240s}   /* the grid steps back, and turns once in four minutes */
+body.wall.roll #paper{animation-duration:240s}
 body.wall .cluster-label b{font-size:17px}
 /* long exposure: every card starts as unexposed paper and only gains light */
-body.wall.expose .card{opacity:var(--exp,.05);transition:opacity 1.6s ease-out,transform .6s}
+body.wall.expose .card{filter:brightness(var(--exp,.05));transition:filter 1.6s ease-out,transform .6s}
 body.wall.expose .card.lit{transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.03)}
 body.wall.expose .card::after{display:none}
-body.wall.fix .card{transition:opacity 28s linear}
+body.wall.fix .card{transition:filter 28s linear}
 /* the thread is a hair, not a rope */
 body.wall #edges path{vector-effect:non-scaling-stroke;stroke-width:2px;stroke-opacity:.92}
 body.wall #edges path.halo{display:none}
@@ -375,16 +383,16 @@ body.wall #edges circle{display:none}
 body.wall.roll #wallcap,body.wall.roll #wallscale{display:block}
 body.wall.roll #wallscale{display:flex}
 /* the one being called stands in the light; the rest of the room waits */
-body.wall.roll .card{transition:opacity 2.4s}
-body.wall.roll.calling .card:not(.now){opacity:.28}
+body.wall.roll .card{transition:filter 2.4s}
+body.wall.roll.calling .card:not(.now){filter:brightness(.3)}
 body.wall.roll .card::after{display:none}
 body.wall.roll #stage::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34vh;z-index:34;pointer-events:none;
   background:linear-gradient(to top,rgba(35,31,32,.92),rgba(35,31,32,0))}
-#wallmark{position:fixed;right:3vw;bottom:4vh;z-index:35;display:none;opacity:.32;pointer-events:none}
+#wallmark{position:fixed;right:48px;bottom:4vh;z-index:35;display:none;opacity:.32;pointer-events:none}
 #wallmark img{width:clamp(48px,4.5vw,84px);display:block}
 body.wall #wallmark{display:block}
 /* a fullscreen mark you have to know about: top-right, twelve pixels, nearly paper-coloured */
-#wallfs{position:fixed;top:14px;right:14px;z-index:36;display:none;width:22px;height:22px;padding:5px;
+#wallfs{position:fixed;bottom:14px;right:14px;z-index:36;display:none;width:22px;height:22px;padding:5px;
   opacity:.14;cursor:pointer;transition:opacity .3s}
 #wallfs:hover,#wallfs:focus-visible{opacity:.7;outline:none}
 #wallfs svg{width:12px;height:12px;display:block;fill:none;stroke:var(--paper);stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
@@ -517,6 +525,12 @@ body.member #search{display:block}
   <b>esc</b> — release the thread<br>
   <b>◎</b> — see everyone<br>
   <b>[</b> — fold or open the panel
+</div>
+<div id="walldoors" aria-label="Wall modes">
+  <a href="?mode=wall&scene=roll" target="_blank" rel="noopener" title="Roll call — one face at a time, for a wall" aria-label="Roll call wall mode">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="1.5" width="11" height="13" rx="1"/><rect x="4.5" y="3.5" width="7" height="6.5"/><path d="M4.5 12.5h4"/></svg></a>
+  <a href="?mode=wall" target="_blank" rel="noopener" title="Long exposure — the threads, for a wall" aria-label="Long exposure wall mode">
+    <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="3" cy="12" r="1.6"/><circle cx="8" cy="4" r="1.6"/><circle cx="13" cy="10" r="1.6"/><path d="M4.2 10.6 6.9 5.4M9.4 5.1l2.4 3.8M4.6 12h6.9"/></svg></a>
 </div>
 <div id="statebar" role="status"></div>
 <div id="wallcap" aria-hidden="true"></div>
@@ -1780,11 +1794,11 @@ function clearSearch(){
    ROLL CALL — one face at a time, no names; the camera walks to the
    neighbour instead of cutting. ?scene=roll.
    Runs by itself: no pointer, no keys, nothing to touch — it plays for hours.
-   Tunables: ?black=0.05 (floor), ?shutter=900 (s), ?hold=26 (s, roll), ?speed=1. */
+   Tunables: ?black=0.05 (floor), ?shutter=900 (s), ?hold=13 (s, roll), ?speed=1. */
 const W={
   black:Math.max(.02,Math.min(.4,parseFloat(QS.get('black'))||.05)),
   shutter:(parseFloat(QS.get('shutter'))||900)*1000,
-  hold:(parseFloat(QS.get('hold'))||26)*1000,
+  hold:(parseFloat(QS.get('hold'))||13)*1000,
   step:.14, first:.45, timers:[], raf:0, t0:0,
   speed:Math.max(.1,Math.min(50,parseFloat(QS.get('speed'))||1))   // ?speed=8 rehearses an hour in minutes
 };
@@ -1913,16 +1927,15 @@ async function rollCall(){
       const p=path[i]; W.cur=p;
       if(i%12===0&&i){                                    // every twelve, the whole field again
         cap.classList.remove('on'); document.body.classList.remove('calling'); const b=wallFrameAll();
-        await wallFly(b.r.x+b.r.w/2-b.cx*b.s,b.r.y+b.r.h/2-b.cy*b.s,b.s,5000); await wsleep(7000);
+        await wallFly(b.r.x+b.r.w/2-b.cx*b.s,b.r.y+b.r.h/2-b.cy*b.s,b.s,2500); await wsleep(3500);
       }
       cap.classList.remove('on');
       PEOPLE.forEach(q=>q._el.classList.toggle('now',q===p)); document.body.classList.add('calling');
       const tx=r.x+r.w*.5-p._x*faceScale, ty=r.y+r.h*.42-(p._y-20)*faceScale;
       const far=Math.hypot(tx-vx,ty-vy);
-      await wallFly(tx,ty,faceScale,Math.min(6000,Math.max(2500,far*3)));
+      await wallFly(tx,ty,faceScale,Math.min(3000,Math.max(1300,far*1.5)));
       const role=ROLE_ICON(p.role)[1], crafts=[...p.disciplines,...p.tools].slice(0,4).join(', ');
-      const eb=p.project.toLowerCase()===role.toLowerCase()?'':`<div class="eb">${p.project}</div>`;
-      cap.innerHTML=`${eb}${role}${p.country?' · '+p.country:''}${crafts?' · '+crafts:''}`;
+      cap.innerHTML=`<div class="eb">${role}</div>${[p.country,crafts].filter(Boolean).join(' · ')}`;
       cap.classList.add('on'); ticks[i].classList.add('done');
       await wsleep(W.hold);
     }
