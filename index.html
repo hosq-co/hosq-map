@@ -391,8 +391,11 @@ body.wall.expose #breath{will-change:transform;animation:breathe 258s ease-in-ou
   50%{transform:translate(0,28px) scale(1)}75%{transform:translate(-38px,-10px) scale(.96)}100%{transform:translate(0,0) scale(1)}}
 /* the thread is a hair, not a rope */
 body.wall #edges{opacity:var(--eop,1)}
-body.wall #edges path{vector-effect:non-scaling-stroke;stroke-width:3.5px;stroke-opacity:1}
+body.wall #edges path{vector-effect:non-scaling-stroke;stroke-width:3.5px;stroke-opacity:1;transition:stroke-opacity 3s}
 body.wall #edges path.halo{stroke-width:11px;stroke-opacity:.22}
+/* a finished thread does not leave: it settles into the web at a quarter strength */
+body.wall #edges path.settled{stroke-opacity:.28;stroke-width:2px}
+body.wall #edges path.halo.settled{stroke-opacity:0}
 body.wall #edges circle{display:none}
 /* roll call: one face, one line, a scale of 138 marks */
 #wallcap{position:fixed;left:6vw;right:6vw;bottom:9vh;z-index:35;display:none;pointer-events:none;
@@ -1923,20 +1926,22 @@ async function longExposure(){
       p._el.classList.add('lit');setTimeout(()=>p._el.classList.remove('lit'),1400/W.speed)};
     if(list.length){expose(list[0].a)}
     for(let i=1;i<=list.length;i++){
-      i===1?drawThreads([list[0]]):appendThreads([list[i-1]]);
+      appendThreads([list[i-1]]);            // onto the web, never in place of it
       expose(list[i-1].b);
       await wsleep(per);
       if(performance.now()>shutterAt)break;
     }
     W.phase='breathe'; await wsleep(7000);                              // the finished thread breathes
-    const svg=document.getElementById('edges'); if(svg){svg.style.transition='opacity 2s';svg.style.opacity='0'}
-    await wsleep(2200); drawThreads([]);
+    // then settles into the web: every thread so far stays, at a quarter strength
+    document.querySelectorAll('#edges path:not(.settled)').forEach(el=>el.classList.add('settled'));
+    await wsleep(2200);
     // between threads, the whole field: what has been exposed so far
     W.phase='field'; await wallGo(wallFrameAll(),6000);
     if(performance.now()>shutterAt){
       // the shutter: hold the frame, then bleach it back to paper
       await wsleep(14000);
       document.body.classList.add('fix');
+      const web=document.getElementById('edges'); if(web){web.style.transition='opacity 12s';web.style.opacity='0';setTimeout(()=>drawThreads([]),12500)}
       PEOPLE.forEach(p=>{exp[p.id]=W.black;p._el.style.setProperty('--exp',W.black)});
       await wsleep(29000);
       document.body.classList.remove('fix');
