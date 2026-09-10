@@ -189,15 +189,21 @@ a{color:inherit}
 /* the panel folds to a rail: the logo stays as the way back, the map takes the room */
 /* the fold sits in the masthead's corner, quiet as a page number; the rail
    shows it under the logo, where the eye lands to open the panel again */
-#fold{position:absolute;right:22px;top:30px;width:30px;height:30px;border-radius:999px;
-  font-family:'IBM Plex Mono',monospace;font-size:15px;line-height:1;letter-spacing:-.05em;
-  color:var(--text-soft);opacity:.45;z-index:21;transition:opacity .15s,color .15s,background .15s}
-#fold:hover,#fold:focus-visible{opacity:1;color:var(--ink);background:#fff;outline:none}
-body.folded #fold{right:auto;left:50%;top:84px;transform:translateX(-50%);opacity:.7}
+/* a tab the height of a line of text, centred on the logo's axis (logo: top 26, 43.6 tall → axis 47.8) */
+#fold{position:absolute;right:-16px;top:33px;width:16px;height:30px;border-radius:0 8px 8px 0;
+  background:var(--paper);color:var(--text-soft);font-family:'IBM Plex Mono',monospace;
+  z-index:21;padding:0;display:flex;align-items:center;justify-content:center;
+  transition:color .15s,width .15s,right .15s}
+#fold svg{width:9px;height:9px;display:block;stroke:currentColor;stroke-width:1.6;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;transform:translateX(-1px)}   /* the eye reads the chevrons' weight to the right; a pixel back squares it */
+body.folded #fold svg{transform:translateX(-1px) scaleX(-1)}
+#fold:hover,#fold:focus-visible{color:var(--ink);width:22px;right:-22px;outline:none}
+body.folded #masthead{padding-top:26px}
+body.folded #fold{top:26px}   /* folded logo: top 26, 29 tall → axis 40.5 */
 #panel{transition:width .28s cubic-bezier(.2,.7,.2,1)}
 body.folded #panel{width:72px;overflow:visible}
 body.folded #panel-scroll,body.folded #authbar,body.folded #search{display:none}
-body.folded #masthead{padding:22px 0 0;display:flex;justify-content:center}
+body.folded #masthead{padding:26px 0 0;display:flex;justify-content:center}
 body.folded #homelogo img{width:44px}
 @media (max-width:760px){#fold{display:none}}
 #content{padding-top:6px}
@@ -338,6 +344,47 @@ button.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   h1.big{font-size:32px}
 }
 
+/* ---------- the wall: ?mode=wall ----------
+   No panel, no cursor, no hand. Two scenes under one door:
+   Long Exposure (default) and Roll Call (?scene=roll). */
+body.wall #panel,body.wall #controls,body.wall #navarrows,body.wall #statebar,
+body.wall #help,body.wall #veil{display:none!important}
+body.wall #stage{cursor:none;pointer-events:none}
+body.wall .cluster-label{opacity:.55}
+body.wall.expose #paper{opacity:.55}     /* the grid steps back so a face at 5% still reads as a face */
+body.wall .cluster-label b{font-size:17px}
+/* long exposure: every card starts as unexposed paper and only gains light */
+body.wall.expose .card{opacity:var(--exp,.05);transition:opacity 1.6s ease-out,transform .6s}
+body.wall.expose .card.lit{transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.03)}
+body.wall.expose .card::after{display:none}
+body.wall.fix .card{transition:opacity 40s linear}
+/* the thread is a hair, not a rope */
+body.wall #edges path{vector-effect:non-scaling-stroke;stroke-width:1.25px;stroke-opacity:.9}
+body.wall #edges path.halo{display:none}
+body.wall #edges circle{display:none}
+/* roll call: one face, one line, a scale of 138 marks */
+#wallcap{position:fixed;left:6vw;right:6vw;bottom:9vh;z-index:35;display:none;pointer-events:none;
+  font-family:'Cera Pro',sans-serif;font-weight:400;font-size:clamp(22px,2.6vw,48px);line-height:1.3;
+  color:var(--paper);letter-spacing:.005em;opacity:0;transition:opacity 1.2s}
+#wallcap.on{opacity:1}
+#wallcap .eb{font-family:'IBM Plex Mono',monospace;font-size:.42em;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(235,226,214,.55);margin-bottom:.35em}
+#wallscale{position:fixed;left:6vw;right:6vw;bottom:5vh;z-index:35;display:none;gap:3px;pointer-events:none}
+#wallscale i{flex:1;height:2px;background:rgba(235,226,214,.16)}
+#wallscale i.done{background:var(--coral)}
+body.wall.roll #wallcap,body.wall.roll #wallscale{display:block}
+body.wall.roll #wallscale{display:flex}
+/* the one being called stands in the light; the rest of the room waits */
+body.wall.roll .card{transition:opacity 2.4s}
+body.wall.roll.calling .card:not(.now){opacity:.28}
+body.wall.roll .card::after{display:none}
+body.wall.roll #stage::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34vh;z-index:34;pointer-events:none;
+  background:linear-gradient(to top,rgba(35,31,32,.92),rgba(35,31,32,0))}
+#wallmark{position:fixed;right:3vw;bottom:4vh;z-index:35;display:none;opacity:.32;pointer-events:none}
+#wallmark img{width:clamp(48px,4.5vw,84px);display:block}
+body.wall #wallmark{display:block}
+@media (prefers-reduced-motion:reduce){body.wall #paper{animation:none}}
+
 /* ---------- two states: guest / member ---------- */
 /* a guest's card is built without a name at all — nothing to unhide */
 body.guest .card .ph .init{font-size:26px}
@@ -345,8 +392,12 @@ body.guest .card .tag{padding-top:7px}
 #authbar{flex:none;border-top:1px solid var(--line);padding:16px 34px 18px;
   display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--paper)}
 /* the guest's door: one coral block, one verb, the way in underlined beneath */
-#authbar.guest{border-top:0;padding:0 18px 18px;display:block}
-.cta{background:#fff;border-radius:18px;padding:20px 22px 18px}
+#authbar.guest{border-top:0;padding:0 18px 18px;display:block;position:absolute;left:0;right:0;bottom:0;
+  background:transparent;pointer-events:none}
+#authbar.guest .cta{pointer-events:auto}
+body.guest #panel-scroll{padding-bottom:210px}   /* room to scroll the last pill out from under the door */
+.cta{background:rgba(255,255,255,.38);border-radius:18px;padding:20px 22px 18px;
+  -webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px)}
 .cta .eyebrow{margin-bottom:8px}
 .cta p{font-size:17px;line-height:1.4;font-weight:500;margin-bottom:16px}
 .btn.dark{display:flex;justify-content:space-between;align-items:center;width:100%;
@@ -360,6 +411,7 @@ body.guest .card .tag{padding-top:7px}
 @media (max-height:640px){.cta p{display:none}.cta{padding:14px 16px 12px}}
 @media (max-width:760px){
   #authbar.guest{padding:8px 12px calc(10px + env(safe-area-inset-bottom))}
+  body.guest #panel-scroll{padding-bottom:110px}
   .cta{padding:12px 14px;display:flex;align-items:center;gap:12px}
   .cta .eyebrow,.cta p{display:none}
   .btn.dark{flex:1;padding:12px 16px}
@@ -459,6 +511,9 @@ body.member #search{display:block}
   <b>[</b> — fold or open the panel
 </div>
 <div id="statebar" role="status"></div>
+<div id="wallcap" aria-hidden="true"></div>
+<div id="wallscale" aria-hidden="true"></div>
+<div id="wallmark" aria-hidden="true"><img src="assets/hosq-logo.svg" alt=""></div>
 <div id="navarrows">
   <button id="prev" title="Previous entry" aria-label="Previous entry">←</button>
   <span id="walkpos"></span>
@@ -466,7 +521,7 @@ body.member #search{display:block}
 </div>
 
 <div id="panel">
-  <button id="fold" title="Fold the panel" aria-label="Fold the panel" aria-expanded="true">«</button>
+  <button id="fold" title="Fold the panel" aria-label="Fold the panel" aria-expanded="true"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M5.5 1.5 2 5l3.5 3.5M9 1.5 5.5 5 9 8.5"/></svg></button>
   <!-- a running head: the way home never scrolls away -->
   <div id="masthead">
     <button id="homelogo" aria-label="hosq — back to the whole map">
@@ -523,14 +578,18 @@ const initials=n=>n.split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCas
    are for members. Membership here is a DEMO switch: nothing is verified,
    nothing is stored beyond this browser — the real door is built elsewhere. */
 let MEMBER=false, MEMBER_EMAIL='';
+const QS=new URLSearchParams(location.search);
+const WALL=QS.get('mode')==='wall';
 (function(){
-  const q=new URLSearchParams(location.search).get('preview');
+  if(WALL)return;                       // the wall shows faces, never names
+  const q=QS.get('preview');
   if(q==='member'){MEMBER=true;MEMBER_EMAIL='preview@hosq.co';return}
   if(q==='guest')return;
   try{const v=JSON.parse(localStorage.getItem('hosq-map-member')||'null');
       if(v&&v.email){MEMBER=true;MEMBER_EMAIL=v.email}}catch(e){}
 })();
 function applyMode(){
+  if(WALL){document.body.classList.add('wall',QS.get('scene')==='roll'?'roll':'expose');}
   document.body.classList.toggle('guest',!MEMBER);
   document.body.classList.toggle('member',MEMBER);
   renderAuth();
@@ -1159,6 +1218,7 @@ stage.addEventListener('keydown',e=>{
    sheet, not a side column — measuring only its width there gives zero, which
    used to silently kill every camera move. */
 function mapRect(){
+  if(WALL)return {x:0,y:0,w:innerWidth,h:innerHeight};   // the wall has no panel and no phone
   const r=document.getElementById('panel').getBoundingClientRect();
   return innerWidth<=760
     ? {x:0,y:0,w:innerWidth,h:Math.max(0,r.top)}
@@ -1481,7 +1541,7 @@ function buildMenu(){}
 function setFolded(on){
   document.body.classList.toggle('folded',on);
   const b=document.getElementById('fold');
-  b.textContent=on?'»':'«'; b.setAttribute('aria-expanded',String(!on));
+  b.setAttribute('aria-expanded',String(!on));
   b.title=b.ariaLabel=on?'Open the panel':'Fold the panel';
   try{localStorage.setItem('hosq-map-folded',on?'1':'0')}catch(e){}
   setTimeout(()=>{placeArrows();refreshThreads()},300);
@@ -1597,6 +1657,7 @@ fetch('data/people.json')
     const m=location.hash.match(/^#p\/(\d+)$/);
     if(m&&BY_ID[+m[1]])renderProfile(BY_ID[+m[1]]); else renderHome();
     frameInitial();
+    if(WALL)setTimeout(startWall,600);
   })
   .catch(err=>{
     console.error(err);
@@ -1698,6 +1759,160 @@ function clearSearch(){
   document.getElementById('qclear').addEventListener('click',()=>{if(activeTag)clearTag();clearSearch();inp.focus()});
   document.addEventListener('click',e=>{if(!e.target.closest('#search'))document.getElementById('sugg').classList.remove('open')});
 })();
+
+/* ================= the wall =================
+   LONG EXPOSURE — "development instead of ranking". Every card begins as
+   unexposed paper. Nameless threads cross the field one stitch at a time;
+   every face a thread passes through gains a little light and keeps it.
+   Once every turn of the paper the frame is fixed, held, then bleached
+   back to black, and a new exposure begins in a new order.
+   ROLL CALL — one face at a time, no names; the camera walks to the
+   neighbour instead of cutting. ?scene=roll.
+   Tunables: ?black=0.05 (floor), ?shutter=900 (s), ?hold=40 (s, roll), ?speed=1. */
+const W={
+  black:Math.max(.02,Math.min(.4,parseFloat(QS.get('black'))||.05)),
+  shutter:(parseFloat(QS.get('shutter'))||900)*1000,
+  hold:(parseFloat(QS.get('hold'))||40)*1000,
+  step:.14, first:.45, timers:[], raf:0, t0:0,
+  speed:Math.max(.1,Math.min(50,parseFloat(QS.get('speed'))||1))   // ?speed=8 rehearses an hour in minutes
+};
+const wsleep=ms=>new Promise(r=>{W.timers.push(setTimeout(r,ms/W.speed))});
+const wpick=arr=>arr[Math.floor(Math.random()*arr.length)];
+function wshuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function wallFly(tx,ty,ts,D){
+  D/=W.speed;
+  return new Promise(res=>{
+    const sx=vx,sy=vy,ss=vs,t0=performance.now();
+    (function step(t){
+      let k=Math.min(1,(t-t0)/D); k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;   // ease in-out
+      vx=sx+(tx-sx)*k; vy=sy+(ty-sy)*k; vs=ss+(ts-ss)*k; apply();
+      if(k<1)requestAnimationFrame(step); else res();
+    })(t0);
+  });
+}
+function wallFrame(list,smax){
+  // the same fit as ◎, computed without moving: returned, not applied
+  const r=liveRect(); if(!r)return null;
+  let minX=1e9,minY=1e9,maxX=-1e9,maxY=-1e9;
+  list.forEach(p=>{minX=Math.min(minX,p._x-190);maxX=Math.max(maxX,p._x+190);minY=Math.min(minY,p._y-230);maxY=Math.max(maxY,p._y+190)});
+  const w=r.w-60, h=r.h-60;
+  const s=Math.max(ZMIN,Math.min(smax||1,w/(maxX-minX),h/(maxY-minY)));
+  return {cx:(minX+maxX)/2, cy:(minY+maxY)/2, s, r};
+}
+const wallFrameAll=()=>wallFrame(PEOPLE);
+/* the camera in long exposure: a base frame the flights move, and a slow
+   breath around it that never stops */
+function wallBreathe(){
+  W.t0=performance.now();
+  const tick=t=>{
+    const b=W.base, k=(t-W.t0)/1000, r=b.r;
+    const s=b.s*(1+.04*Math.sin(k/41)), cx=b.cx+(60/b.s)*Math.sin(k/67), cy=b.cy+(40/b.s)*Math.cos(k/53);
+    vs=s; vx=r.x+r.w/2-cx*s; vy=r.y+r.h/2-cy*s; apply();
+    W.raf=requestAnimationFrame(tick);
+  };
+  W.raf=requestAnimationFrame(tick);
+}
+function wallGo(target,D){
+  D/=W.speed;
+  return new Promise(res=>{
+    const from={...W.base}, t0=performance.now();
+    (function step(t){
+      let k=Math.min(1,(t-t0)/D); k=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+      W.base={r:target.r, cx:from.cx+(target.cx-from.cx)*k, cy:from.cy+(target.cy-from.cy)*k,
+              s:Math.exp(Math.log(from.s)+(Math.log(target.s)-Math.log(from.s))*k)};
+      if(k<1)requestAnimationFrame(step); else res();
+    })(t0);
+  });
+}
+function startWall(){
+  if(!PEOPLE.length)return;
+  if(!liveRect()){setTimeout(startWall,400);return}   // a hidden tab has no viewport yet: wait for one
+  document.body.classList.contains('roll')?rollCall():longExposure();
+}
+
+/* ---- long exposure ---- */
+async function longExposure(){
+  const exp={}; PEOPLE.forEach(p=>{exp[p.id]=W.black;p._el.style.setProperty('--exp',W.black)});
+  // the camera opens on the whole field, then goes to live where the thread is sewn
+  W.base=wallFrameAll(); if(!W.base)return;
+  wallBreathe();
+  await wsleep(4000);
+  // tags weighted toward the rare: a craft three people hold comes up
+  // more often than one held by fifty-seven, and takes less time to sew
+  const tags=Object.entries(TAGINDEX).filter(([,ids])=>ids.length>=2);
+  const weightOf=n=>1/Math.sqrt(n);
+  const pickTag=()=>{let tot=tags.reduce((a,[,ids])=>a+weightOf(ids.length),0), r=Math.random()*tot;
+    for(const [t,ids] of tags){r-=weightOf(ids.length);if(r<=0)return t}return tags[0][0]};
+  let shutterAt=performance.now()+W.shutter;
+  while(true){
+    const tag=pickTag(); W.phase='tag:'+tag; W.n=(W.n||0)+1;
+    const members=wshuffle((TAGINDEX[tag]||[]).map(id=>BY_ID[id]).filter(Boolean));
+    const color=BRAND[hash32(tag)%BRAND.length];
+    const list=stitch(members,color);
+    const per=Math.max(900,Math.min(2600,60000/Math.max(1,list.length)));  // one stitch every 0.9–2.6 s
+    // frame the people this thread will reach — close enough to see faces gain light
+    const fr=wallFrame(members,.55); if(fr)await wallGo(fr,7000);
+    // the first touch develops a face out of the paper; every later one adds a little
+    const expose=p=>{exp[p.id]=Math.min(1,exp[p.id]<=W.black?W.first:exp[p.id]+W.step);p._el.style.setProperty('--exp',exp[p.id]);
+      p._el.classList.add('lit');setTimeout(()=>p._el.classList.remove('lit'),1400)};
+    if(list.length){expose(list[0].a)}
+    for(let i=1;i<=list.length;i++){
+      drawThreads(list.slice(0,i));
+      expose(list[i-1].b);
+      await wsleep(per);
+      if(performance.now()>shutterAt)break;
+    }
+    W.phase='breathe'; await wsleep(12000);                              // the finished thread breathes
+    const svg=document.getElementById('edges'); if(svg){svg.style.transition='opacity 3s';svg.style.setProperty('--eop','0')}
+    await wsleep(3200); drawThreads([]);
+    // between threads, the whole field: what has been exposed so far
+    W.phase='field'; await wallGo(wallFrameAll(),9000);
+    if(performance.now()>shutterAt){
+      // the shutter: hold the frame, then bleach it back to paper
+      await wsleep(20000);
+      document.body.classList.add('fix');
+      PEOPLE.forEach(p=>{exp[p.id]=W.black;p._el.style.setProperty('--exp',W.black)});
+      await wsleep(41000);
+      document.body.classList.remove('fix');
+      shutterAt=performance.now()+W.shutter;
+      await wsleep(4000);
+    }else await wsleep(4000+Math.random()*5000);
+  }
+}
+
+/* ---- roll call ---- */
+async function rollCall(){
+  const cap=document.getElementById('wallcap'), scale=document.getElementById('wallscale');
+  scale.innerHTML=PEOPLE.map(()=>'<i></i>').join('');
+  const ticks=[...scale.children];
+  const r=liveRect(); if(!r)return;
+  const faceScale=Math.min(2.2,(r.h*.58)/230);          // a card ~60% of the wall's height
+  while(true){
+    // nearest-neighbour walk from a random start: the camera travels, never cuts
+    const left=new Set(PEOPLE.map(p=>p.id)); let cur=wpick(PEOPLE); const path=[];
+    while(left.size){path.push(cur);left.delete(cur.id);
+      let best=null,bd=Infinity;left.forEach(id=>{const q=BY_ID[id];const d=(q._x-cur._x)**2+(q._y-cur._y)**2;if(d<bd){bd=d;best=q}});
+      cur=best}
+    ticks.forEach(t=>t.classList.remove('done'));
+    for(let i=0;i<path.length;i++){
+      const p=path[i]; W.cur=p;
+      if(i%12===0&&i){                                    // every twelve, the whole field again
+        cap.classList.remove('on'); document.body.classList.remove('calling'); const b=wallFrameAll();
+        await wallFly(b.r.x+b.r.w/2-b.cx*b.s,b.r.y+b.r.h/2-b.cy*b.s,b.s,7000); await wsleep(10000);
+      }
+      cap.classList.remove('on');
+      PEOPLE.forEach(q=>q._el.classList.toggle('now',q===p)); document.body.classList.add('calling');
+      const tx=r.x+r.w*.5-p._x*faceScale, ty=r.y+r.h*.42-(p._y-20)*faceScale;
+      const far=Math.hypot(tx-vx,ty-vy);
+      await wallFly(tx,ty,faceScale,Math.min(9000,Math.max(3500,far*4)));
+      const role=ROLE_ICON(p.role)[1], crafts=[...p.disciplines,...p.tools].slice(0,4).join(', ');
+      const eb=p.project.toLowerCase()===role.toLowerCase()?'':`<div class="eb">${p.project}</div>`;
+      cap.innerHTML=`${eb}${role}${p.country?' · '+p.country:''}${crafts?' · '+crafts:''}`;
+      cap.classList.add('on'); ticks[i].classList.add('done');
+      await wsleep(W.hold);
+    }
+  }
+}
 
 // empty field: first click releases the thread, the next one goes home
 stage.addEventListener('click',()=>{
