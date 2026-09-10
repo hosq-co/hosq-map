@@ -52,8 +52,8 @@ a{color:inherit}
 /* The sheet itself: one layer, rasterised once, turned by the compositor.
    Oversized by √2 so no corner ever swings into view. The browser animates
    a transform matrix — no repaint, no layout, nothing per frame on the CPU. */
-#paper{position:fixed;left:50%;top:50%;width:220vmax;height:220vmax;
-  margin:-110vmax 0 0 -110vmax;pointer-events:none;z-index:0;
+#paper{position:fixed;left:50%;top:50%;width:150vmax;height:150vmax;
+  margin:-75vmax 0 0 -75vmax;pointer-events:none;z-index:0;
   will-change:transform;transform:translateZ(0);
   animation:turn 900s linear infinite;
   background:
@@ -74,7 +74,9 @@ a{color:inherit}
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 #world{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;z-index:1}
-#edges{opacity:var(--eop,1);transition:opacity .25s}
+#edges{opacity:var(--eop,1);transition:opacity .25s;will-change:transform}   /* its own layer: a tremble never re-rasters the cards */
+#edges[data-f="0"] .f1,#edges[data-f="0"] .f2,#edges[data-f="1"] .f0,#edges[data-f="1"] .f2,
+#edges[data-f="2"] .f0,#edges[data-f="2"] .f1{visibility:hidden}
 #edges path{stroke-width:var(--esw,1.6px)}
 #edges path.halo{stroke-width:calc(var(--esw,1.6px) * 2.6)}
 
@@ -104,12 +106,13 @@ a{color:inherit}
 
 /* ---------- cards ---------- */
 .card{position:absolute;width:150px;cursor:pointer;user-select:none;-webkit-user-select:none;
-  background:var(--frame);padding:8px 8px 7px;border-radius:1px;
+  background:var(--frame);border-radius:1px;contain:layout style;
   box-shadow:0 6px 18px rgba(0,0,0,.5);
   /* centred on its own point, so the three widths all sit true */
   transform:translate(-50%,-50%) rotate(var(--rot,0deg));
-  transition:box-shadow .2s, opacity .25s, transform .11s ease;
+  transition:opacity .25s, transform .11s ease;
 }
+.card .face{padding:8px 8px 7px}
 .card:hover{box-shadow:0 12px 28px rgba(0,0,0,.6)}
 /* the card wakes under a held pointer — this is how the rule teaches itself */
 .card.arming{transform:translate(-50%,-52%) rotate(var(--rot,0deg)) scale(1.015);
@@ -127,7 +130,6 @@ a{color:inherit}
 .card.sel{outline:2px solid var(--coral);outline-offset:3px}
 .card .ph{position:relative;width:100%;height:138px;background:#2a2620;overflow:hidden}
 .card .ph img{width:100%;height:100%;object-fit:cover;display:block;
-  filter:grayscale(1) sepia(.28) contrast(1.04) brightness(.97);
   /* the photograph is part of the card, not a thing you can peel off it */
   -webkit-user-drag:none;user-drag:none;pointer-events:none}
 .card .ph .init{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
@@ -145,12 +147,14 @@ a{color:inherit}
 
 /* ---- the three kinds of card ---- */
 /* a curator's print sits in a wider, lighter mat */
-.card.curator{width:172px;background:#f4f0e4;padding:11px 11px 9px}
+.card.curator{width:172px;background:#f4f0e4}
+.card.curator .face{padding:11px 11px 9px}
 .card.curator .ph{height:150px}
 .card.curator .cap{font-size:13.5px;font-weight:700}
 .card.curator .tag{color:#5d5644}
 /* the hosq team on kraft stock */
-.card.team{width:140px;background:var(--kraft);padding:7px 7px 6px}
+.card.team{width:140px;background:var(--kraft)}
+.card.team .face{padding:7px 7px 6px}
 .card.team .ph{height:124px}
 .card.team .cap{font-size:11.5px;color:#2e2617}
 .card.team .given,.card.team .tag{color:#6d5c3c}
@@ -268,7 +272,7 @@ button.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   box-shadow:0 2px 6px rgba(0,0,0,.12),0 14px 30px rgba(0,0,0,.12);
   transform:rotate(var(--prot,-1deg))}   /* leans the same way its card does */
 .pphoto .platecap{position:absolute;left:12px;right:12px;bottom:10px;margin:0}
-.pphoto img{width:100%;display:block;filter:grayscale(1) sepia(.25) contrast(1.04)}
+.pphoto img{width:100%;display:block}
 .pphoto .no{height:240px;display:flex;align-items:center;justify-content:center;
   font-family:'IBM Plex Mono',monospace;font-size:44px;color:#6b5c3e;
   background:linear-gradient(160deg,#d3c6a8,#c6b592)}
@@ -362,12 +366,20 @@ body.wall.expose #paper{opacity:.55;animation-duration:240s}   /* the grid steps
 body.wall.roll #paper{animation-duration:240s}
 body.wall .cluster-label b{font-size:17px}
 /* long exposure: every card starts as unexposed paper and only gains light */
-body.wall.expose .card{filter:brightness(var(--exp,.05));transition:filter 1.6s ease-out,transform .6s}
+body.wall.expose .card{background:#0f0e0d;transition:transform .6s}
+body.wall.expose .card .face{opacity:var(--exp,.05);transition:opacity 1.6s ease-out}
 body.wall.expose .card.lit{transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.03)}
 body.wall.expose .card::after{display:none}
-body.wall.fix .card{transition:filter 28s linear}
+body.wall.fix .card .face{transition:opacity 28s linear}
+/* the camera's breath on the wall: a compositor animation on a wrapper, so
+   the field is rasterised once and only moved */
+#breath{position:absolute;inset:0;transform-origin:50% 50%}
+body.wall.expose #breath{will-change:transform;animation:breathe 258s ease-in-out infinite}
+@keyframes breathe{0%{transform:translate(0,0) scale(1)}25%{transform:translate(38px,-22px) scale(1.04)}
+  50%{transform:translate(0,28px) scale(1)}75%{transform:translate(-38px,-10px) scale(.96)}100%{transform:translate(0,0) scale(1)}}
 /* the thread is a hair, not a rope */
-body.wall #edges path{vector-effect:non-scaling-stroke;stroke-width:2px;stroke-opacity:.92}
+body.wall #edges{opacity:1}
+body.wall #edges path{vector-effect:non-scaling-stroke;stroke-width:3px;stroke-opacity:1}
 body.wall #edges path.halo{display:none}
 body.wall #edges circle{display:none}
 /* roll call: one face, one line, a scale of 138 marks */
@@ -383,8 +395,9 @@ body.wall #edges circle{display:none}
 body.wall.roll #wallcap,body.wall.roll #wallscale{display:block}
 body.wall.roll #wallscale{display:flex}
 /* the one being called stands in the light; the rest of the room waits */
-body.wall.roll .card{transition:filter 2.4s}
-body.wall.roll.calling .card:not(.now){filter:brightness(.3)}
+body.wall.roll .card{background:#0f0e0d}
+body.wall.roll .card .face{transition:opacity 2.4s}
+body.wall.roll.calling .card:not(.now) .face{opacity:.3}
 body.wall.roll .card::after{display:none}
 body.wall.roll #stage::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34vh;z-index:34;pointer-events:none;
   background:linear-gradient(to top,rgba(35,31,32,.92),rgba(35,31,32,0))}
@@ -399,7 +412,11 @@ body.wall #wallmark{display:block}
 body.wall #wallfs{display:block}
 body.wall #stage{cursor:none}
 body.wall:has(#wallfs:hover) #stage{cursor:default}
-@media (prefers-reduced-motion:reduce){body.wall #paper{animation:none}}
+/* the wall is a projector, not a person: it turns even where the OS asks for less motion */
+body.wall #paper{animation-name:turn;
+  background-image:linear-gradient(var(--mm-10) 1px,transparent 1px),linear-gradient(90deg,var(--mm-10) 1px,transparent 1px),
+    linear-gradient(var(--mm-5) 1px,transparent 1px),linear-gradient(90deg,var(--mm-5) 1px,transparent 1px);
+  background-size:110px 110px,110px 110px,55px 55px,55px 55px}
 
 /* ---------- two states: guest / member ---------- */
 /* a guest's card is built without a name at all — nothing to unhide */
@@ -505,7 +522,7 @@ body.member #search{display:block}
      is the same data as geometry, so screen readers are spared 935 loose divs -->
 <div id="stage" tabindex="0" role="application" aria-label="Map of the hosq community — arrow keys pan, plus and minus zoom, 0 shows everyone">
   <div id="paper" aria-hidden="true"></div>
-  <div id="world" aria-hidden="true"></div>
+  <div id="breath"><div id="world" aria-hidden="true"></div></div>
 </div>
 
 <div id="controls">
@@ -697,21 +714,26 @@ function apply(){
   world.style.transform=`translate(${vx}px,${vy}px) scale(${vs})`;
   // these vars invalidate every child's style, so only write them when the
   // scale really changed — panning must stay a pure transform
-  if(vs!==lastScale){
+  // a 1.5% step is invisible; writing these every frame is not — each write
+  // restyles every card, so a breathing camera would restyle 138 cards per frame
+  if(lastScale<0||Math.abs(vs/lastScale-1)>0.015){
     lastScale=vs;
     const near=Math.max(0,Math.min(1,(vs-.09)/.30));
     // never thinner than 2.6 screen px — the thread is the gesture, it has to read
-    world.style.setProperty('--esw',Math.min(Math.max(2.6,1+near*.75)/vs,34)+'px');
-    world.style.setProperty('--eop',.82+near*.18);
+    world.style.setProperty('--esw',Math.min(Math.max(2.6,1+near*.75)/vs,34).toFixed(2)+'px');
+    world.style.setProperty('--eop',(.82+near*.18).toFixed(3));
     // a place-name keeps a constant size on screen; on a narrow phone the
     // constant is smaller so 17 of them don't crowd each other
     const K=innerWidth<=760?.40:.62;
-    world.style.setProperty('--ls',Math.max(.45,Math.min(8,K/vs)));
-    // far out, the field is a map of places; close in, of people
-    world.classList.toggle('afar',vs<(innerWidth<=760?0.30:0.22));
+    world.style.setProperty('--ls',Math.max(.45,Math.min(8,K/vs)).toFixed(3));
   }
+  // far out, the field is a map of places; close in, of people — with a band
+  // of hysteresis so a breath around the threshold never flips it
+  const thr=innerWidth<=760?0.30:0.22;
+  const next=afarState===null?vs<thr:(afarState?vs<thr*1.08:vs<thr*0.92);
+  if(next!==afarState){afarState=next;world.classList.toggle('afar',next)}
 }
-let lastScale=-1, rafPending=false;
+let lastScale=-1, afarState=null, rafPending=false;
 function applySoon(){                 // at most one transform write per frame
   if(rafPending)return;
   rafPending=true;
@@ -868,8 +890,7 @@ function retieThreads(p){
   for(const t of THREADS){
     if(t.a.id!==p.id&&t.b.id!==p.id)continue;
     t.variants=[0,1,2].map(f=>threadPath(t.a,t.b,t.seed,f));
-    t.path.setAttribute('d',t.variants[boilFrame]);
-    t.halo.setAttribute('d',t.variants[boilFrame]);
+    t.variants.forEach((d,f)=>{t.paths[f].setAttribute('d',d);t.halos[f].setAttribute('d',d)});
   }
   for(const pin of PINS){
     if(pin.p.id!==p.id)continue;
@@ -879,44 +900,47 @@ function retieThreads(p){
 function drawThreads(list){
   if(!list.length){                     // nothing to draw: drop the layer entirely
     const old=document.getElementById('edges'); if(old)old.remove();
-    THREADS=[]; setBoil(false); return;
+    THREADS=[]; PINS=[]; setBoil(false); return;
   }
-  const svg=svgLayer();
-  THREADS=[];
-  const pins=new Map();
+  const svg=svgLayer(); svg.dataset.f=boilFrame;
+  THREADS=[]; PINS=[];
+  world.appendChild(svg); // threads read on top of the cards, like real string
+  addThreads(svg,list);
+  setBoil(true);
+}
+/* a thread is three paths — one per frame of the tremble — and the tick only
+   flips which frame is visible: one attribute on the svg, not 2N rewrites */
+function mkPath(d,cls,color,op){
+  const el=document.createElementNS(NS,'path');
+  el.setAttribute('d',d); el.setAttribute('class',cls); el.setAttribute('fill','none');
+  el.setAttribute('stroke',color); el.setAttribute('stroke-opacity',op); el.setAttribute('stroke-linecap','round');
+  return el;
+}
+function addThreads(svg,list){
+  const seen=new Set(PINS.map(x=>x.p.id));
   list.forEach(({a,b,color,op})=>{
     const seed=a.id+'|'+b.id;
     const variants=[0,1,2].map(f=>threadPath(a,b,seed,f)); // three frames of the same thread
     // the string is drawn twice: a soft halo under a firm line, so it holds
     // against the dark field instead of dissolving into it
-    const halo=document.createElementNS(NS,'path');
-    halo.setAttribute('d',variants[0]);
-    halo.setAttribute('class','halo');
-    halo.setAttribute('fill','none');
-    halo.setAttribute('stroke',color);
-    halo.setAttribute('stroke-opacity','.16');
-    halo.setAttribute('stroke-linecap','round');
-    svg.appendChild(halo);
-    const path=document.createElementNS(NS,'path');
-    path.setAttribute('d',variants[0]);
-    path.setAttribute('fill','none');
-    path.setAttribute('stroke',color);
-    path.setAttribute('stroke-opacity',op==null?.6:op);
-    path.setAttribute('stroke-linecap','round');
-    svg.appendChild(path);
-    THREADS.push({path,halo,variants,a,b,seed});
-    pins.set(a.id,{p:a,color});pins.set(b.id,{p:b,color});
+    const halos=variants.map((d,f)=>mkPath(d,'halo f'+f,color,'.16'));
+    const paths=variants.map((d,f)=>mkPath(d,'f'+f,color,op==null?.6:op));
+    svg.append(...halos,...paths);
+    THREADS.push({paths,halos,variants,a,b,seed});
+    for(const p of [a,b]){
+      if(seen.has(p.id))continue; seen.add(p.id);
+      const c=document.createElementNS(NS,'circle');
+      c.setAttribute('cx',p._x);c.setAttribute('cy',p._y-PIN_Y);
+      c.setAttribute('r','5');c.setAttribute('fill',color);
+      svg.appendChild(c);
+      PINS.push({el:c,p});
+    }
   });
-  PINS=[];
-  pins.forEach(({p,color})=>{
-    const c=document.createElementNS(NS,'circle');
-    c.setAttribute('cx',p._x);c.setAttribute('cy',p._y-PIN_Y);
-    c.setAttribute('r','5');c.setAttribute('fill',color);
-    svg.appendChild(c);
-    PINS.push({el:c,p});
-  });
-  world.appendChild(svg); // threads read on top of the cards, like real string
-  setBoil(true);
+}
+function appendThreads(list){          // grow a living thread without rebuilding it
+  const svg=document.getElementById('edges');
+  if(!svg){drawThreads(list);return}
+  addThreads(svg,list); setBoil(true);
 }
 /* the boil: the line breathes without ever leaving its place.
    It ticks only while threads are on screen. */
@@ -934,10 +958,7 @@ function setBoil(on){
       if(t-boilLast>190&&!dragging&&!cardDrag){
         boilLast=t;
         boilFrame=(boilFrame+1)%3;
-        for(const th of THREADS){
-          th.path.setAttribute('d',th.variants[boilFrame]);
-          th.halo.setAttribute('d',th.variants[boilFrame]);
-        }
+        const svg=document.getElementById('edges'); if(svg)svg.dataset.f=boilFrame;
       }
       boilRaf=requestAnimationFrame(tick);
     };
@@ -1011,10 +1032,10 @@ function render(){
     // only files we actually hold are requested — no speculative fetches
     const img=p.photo?`<img loading="lazy" decoding="async" draggable="false" src="photos/${p.photo}.jpg" alt="">`:'';
     // one name, the real one; the stage name and the links live in the profile
-    el.innerHTML=`<div class="ph">${img}
+    el.innerHTML=`<div class="face"><div class="ph">${img}
       <div class="init" data-note="${(p.disciplines[0]||p.skills[0]||role)}"${p.photo?' style="display:none"':''}>${MEMBER?initials(p.name):icon}</div></div>
       ${MEMBER?`<div class="cap">${p.name}</div>`:''}
-      <div class="tag"><i>${icon}</i>${role}</div>`;
+      <div class="tag"><i>${icon}</i>${role}</div></div>`;
     if(p.photo){
       const im=el.querySelector('img');
       im.addEventListener('error',()=>{
@@ -1794,11 +1815,11 @@ function clearSearch(){
    ROLL CALL — one face at a time, no names; the camera walks to the
    neighbour instead of cutting. ?scene=roll.
    Runs by itself: no pointer, no keys, nothing to touch — it plays for hours.
-   Tunables: ?black=0.05 (floor), ?shutter=900 (s), ?hold=13 (s, roll), ?speed=1. */
+   Tunables: ?black=0.05 (floor), ?shutter=900 (s), ?hold=7 (s, roll), ?speed=1. */
 const W={
   black:Math.max(.02,Math.min(.4,parseFloat(QS.get('black'))||.05)),
   shutter:(parseFloat(QS.get('shutter'))||900)*1000,
-  hold:(parseFloat(QS.get('hold'))||13)*1000,
+  hold:(parseFloat(QS.get('hold'))||7)*1000,
   step:.14, first:.45, timers:[], raf:0, t0:0,
   speed:Math.max(.1,Math.min(50,parseFloat(QS.get('speed'))||1))   // ?speed=8 rehearses an hour in minutes
 };
@@ -1829,11 +1850,10 @@ const wallFrameAll=()=>wallFrame(PEOPLE);
 /* the camera in long exposure: a base frame the flights move, and a slow
    breath around it that never stops */
 function wallBreathe(){
-  W.t0=performance.now();
-  const tick=t=>{
-    const b=W.base, k=(t-W.t0)/1000, r=b.r;
-    const s=b.s*(1+.04*Math.sin(k/41)), cx=b.cx+(60/b.s)*Math.sin(k/67), cy=b.cy+(40/b.s)*Math.cos(k/53);
-    vs=s; vx=r.x+r.w/2-cx*s; vy=r.y+r.h/2-cy*s; apply();
+  // the breath itself is CSS on #breath; this only follows the base when a flight moves it
+  const tick=()=>{
+    const b=W.base, r=b.r, nx=r.x+r.w/2-b.cx*b.s, ny=r.y+r.h/2-b.cy*b.s;
+    if(b.s!==vs||nx!==vx||ny!==vy){vs=b.s;vx=nx;vy=ny;apply()}
     W.raf=requestAnimationFrame(tick);
   };
   W.raf=requestAnimationFrame(tick);
@@ -1886,7 +1906,7 @@ async function longExposure(){
       p._el.classList.add('lit');setTimeout(()=>p._el.classList.remove('lit'),1400)};
     if(list.length){expose(list[0].a)}
     for(let i=1;i<=list.length;i++){
-      drawThreads(list.slice(0,i));
+      i===1?drawThreads([list[0]]):appendThreads([list[i-1]]);
       expose(list[i-1].b);
       await wsleep(per);
       if(performance.now()>shutterAt)break;
@@ -1927,13 +1947,13 @@ async function rollCall(){
       const p=path[i]; W.cur=p;
       if(i%12===0&&i){                                    // every twelve, the whole field again
         cap.classList.remove('on'); document.body.classList.remove('calling'); const b=wallFrameAll();
-        await wallFly(b.r.x+b.r.w/2-b.cx*b.s,b.r.y+b.r.h/2-b.cy*b.s,b.s,2500); await wsleep(3500);
+        await wallFly(b.r.x+b.r.w/2-b.cx*b.s,b.r.y+b.r.h/2-b.cy*b.s,b.s,1600); await wsleep(2000);
       }
       cap.classList.remove('on');
       PEOPLE.forEach(q=>q._el.classList.toggle('now',q===p)); document.body.classList.add('calling');
       const tx=r.x+r.w*.5-p._x*faceScale, ty=r.y+r.h*.42-(p._y-20)*faceScale;
       const far=Math.hypot(tx-vx,ty-vy);
-      await wallFly(tx,ty,faceScale,Math.min(3000,Math.max(1300,far*1.5)));
+      await wallFly(tx,ty,faceScale,Math.min(1600,Math.max(800,far*.8)));
       const role=ROLE_ICON(p.role)[1], crafts=[...p.disciplines,...p.tools].slice(0,4).join(', ');
       cap.innerHTML=`<div class="eb">${role}</div>${[p.country,crafts].filter(Boolean).join(' · ')}`;
       cap.classList.add('on'); ticks[i].classList.add('done');
