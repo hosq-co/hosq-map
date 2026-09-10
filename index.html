@@ -187,16 +187,18 @@ a{color:inherit}
   z-index:20;display:flex;flex-direction:column;box-shadow:14px 0 40px rgba(0,0,0,.35)}
 #panel-scroll{overflow-y:auto;flex:1;padding:0 34px 60px;scrollbar-width:thin}
 /* the panel folds to a rail: the logo stays as the way back, the map takes the room */
-#fold{position:absolute;right:-16px;top:50%;transform:translateY(-50%);width:32px;height:56px;
-  border-radius:0 12px 12px 0;background:var(--paper);color:var(--text-soft);font-size:22px;line-height:1;
-  z-index:21;transition:color .15s,background .15s}
-#fold:hover{color:var(--coral)}
+/* the fold sits in the masthead's corner, quiet as a page number; the rail
+   shows it under the logo, where the eye lands to open the panel again */
+#fold{position:absolute;right:22px;top:30px;width:30px;height:30px;border-radius:999px;
+  font-family:'IBM Plex Mono',monospace;font-size:15px;line-height:1;letter-spacing:-.05em;
+  color:var(--text-soft);opacity:.45;z-index:21;transition:opacity .15s,color .15s,background .15s}
+#fold:hover,#fold:focus-visible{opacity:1;color:var(--ink);background:#fff;outline:none}
+body.folded #fold{right:auto;left:50%;top:84px;transform:translateX(-50%);opacity:.7}
 #panel{transition:width .28s cubic-bezier(.2,.7,.2,1)}
 body.folded #panel{width:72px;overflow:visible}
 body.folded #panel-scroll,body.folded #authbar,body.folded #search{display:none}
 body.folded #masthead{padding:22px 0 0;display:flex;justify-content:center}
 body.folded #homelogo img{width:44px}
-body.folded #fold{right:-16px}
 @media (max-width:760px){#fold{display:none}}
 #content{padding-top:6px}
 
@@ -453,7 +455,8 @@ body.member #search{display:block}
   <b>scroll / pinch</b> — zoom<br>
   <b>click a tag</b> — pull the thread of a shared craft<br>
   <b>esc</b> — release the thread<br>
-  <b>◎</b> — see everyone
+  <b>◎</b> — see everyone<br>
+  <b>[</b> — fold or open the panel
 </div>
 <div id="statebar" role="status"></div>
 <div id="navarrows">
@@ -463,7 +466,7 @@ body.member #search{display:block}
 </div>
 
 <div id="panel">
-  <button id="fold" title="Fold the panel" aria-label="Fold the panel" aria-expanded="true">‹</button>
+  <button id="fold" title="Fold the panel" aria-label="Fold the panel" aria-expanded="true">«</button>
   <!-- a running head: the way home never scrolls away -->
   <div id="masthead">
     <button id="homelogo" aria-label="hosq — back to the whole map">
@@ -1435,6 +1438,7 @@ addEventListener('keydown',e=>{
     return;
   }
   if(e.target.closest('input,textarea'))return;
+  if(e.key==='['&&!isPhone()){setFolded(!document.body.classList.contains('folded'));e.preventDefault()}
   if(e.key==='ArrowRight'){stepSel(1);e.preventDefault()}
   if(e.key==='ArrowLeft'){stepSel(-1);e.preventDefault()}
 });
@@ -1477,7 +1481,7 @@ function buildMenu(){}
 function setFolded(on){
   document.body.classList.toggle('folded',on);
   const b=document.getElementById('fold');
-  b.textContent=on?'›':'‹'; b.setAttribute('aria-expanded',String(!on));
+  b.textContent=on?'»':'«'; b.setAttribute('aria-expanded',String(!on));
   b.title=b.ariaLabel=on?'Open the panel':'Fold the panel';
   try{localStorage.setItem('hosq-map-folded',on?'1':'0')}catch(e){}
   setTimeout(()=>{placeArrows();refreshThreads()},300);
