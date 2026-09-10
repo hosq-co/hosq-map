@@ -323,6 +323,79 @@ button.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   .backrow{padding:14px 0}
   h1.big{font-size:32px}
 }
+
+/* ---------- two states: guest / member ---------- */
+/* a guest sees the face and the standing, never the name */
+body.guest .card .cap{display:none}
+body.guest .card .ph .init{font-size:26px}
+body.guest .card .tag{padding-top:7px}
+#authbar{flex:none;border-top:1px solid var(--line);padding:16px 34px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--paper)}
+#authbar .who{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn{font-family:'Cera Pro',sans-serif;font-weight:700;font-size:14px;padding:10px 18px;
+  border-radius:999px;border:1.5px solid var(--ink);color:var(--ink);cursor:pointer;
+  transition:background .15s,color .15s,border-color .15s;white-space:nowrap}
+.btn:hover{background:#fff}
+.btn.primary{background:var(--coral);border-color:var(--coral);color:var(--ink)}
+.btn.primary:hover{background:#ff8a74;border-color:#ff8a74}
+.btn.quiet{border-color:transparent;color:var(--text-soft);padding:10px 8px}
+.btn.quiet:hover{background:transparent;color:var(--coral)}
+.lock{margin-top:36px;padding:20px 22px;border-radius:14px;background:#fff}
+.lock h3{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--text-soft);font-weight:400;margin-bottom:10px}
+.lock p{font-size:15.5px;line-height:1.55;margin-bottom:16px}
+.lock .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+/* the modal: the map keeps living behind it */
+#veil{position:fixed;inset:0;background:rgba(35,31,32,.55);z-index:40;display:none;
+  align-items:center;justify-content:center;padding:20px}
+#veil.open{display:flex}
+#modal{width:min(440px,100%);background:var(--paper);border-radius:18px;padding:30px 34px 28px;
+  position:relative}
+#modal .tabs{display:flex;gap:6px;margin-bottom:22px}
+#modal .tabs button{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;
+  text-transform:uppercase;padding:8px 14px;border-radius:999px;color:var(--text-soft);border:1px solid transparent}
+#modal .tabs button.on{background:var(--ink);color:var(--paper)}
+#modal h2{font-size:28px;line-height:1.15;font-weight:700;margin-bottom:12px}
+#modal p{font-size:15.5px;line-height:1.55;color:var(--text);margin-bottom:14px}
+#modal ul{list-style:none;margin:0 0 20px}
+#modal li{font-size:15.5px;line-height:1.5;padding:9px 0;border-top:1px solid var(--line)}
+#modal li b{font-weight:700}
+#modal label{display:block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--text-soft);margin:6px 0 8px}
+#modal input{width:100%;font:inherit;font-size:16px;padding:12px 14px;border-radius:12px;
+  border:1px solid var(--line);background:#fff;color:var(--ink);margin-bottom:14px;outline:none}
+#modal input:focus{border-color:var(--coral)}
+#modal .actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#modal .close{position:absolute;top:18px;right:20px;font-size:18px;color:var(--text-soft);padding:6px}
+#modal .close:hover{color:var(--coral)}
+#modal .demo{margin-top:18px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-soft)}
+/* search: one line, members only */
+#search{position:relative;margin-top:18px;display:none}
+body.member #search{display:block}
+#q{width:100%;font:inherit;font-size:15px;padding:11px 40px 11px 14px;border-radius:999px;
+  border:1px solid var(--line);background:#fff;color:var(--ink);outline:none}
+#q:focus{border-color:var(--coral)}
+#q::placeholder{color:#9a9596}
+#qclear{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:15px;
+  color:var(--text-soft);padding:6px 8px;display:none}
+#search.has #qclear{display:block}
+#sugg{position:absolute;left:0;right:0;top:calc(100% + 8px);background:#fff;border-radius:16px;
+  padding:12px 14px;z-index:30;display:none;max-height:min(60vh,420px);overflow:auto;
+  box-shadow:0 14px 40px rgba(0,0,0,.18)}
+#sugg.open{display:block}
+#sugg h4{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--text-soft);font-weight:400;margin:10px 0 7px}
+#sugg h4:first-child{margin-top:0}
+#sugg .pill{background:var(--paper);border-color:var(--paper);margin:0 6px 6px 0}
+#sugg .pill.first{border-color:var(--coral)}
+#sugg .none{font-size:14px;color:var(--text-soft)}
+.card.hit{outline:2px solid var(--green);outline-offset:3px}
+@media (max-width:760px){
+  #authbar{padding:12px 22px calc(12px + env(safe-area-inset-bottom))}
+  #search{margin:4px 12px 8px}
+}
 </style>
 </head>
 <body>
@@ -363,9 +436,28 @@ button.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
     <button id="homelogo" aria-label="hosq — back to the whole map">
       <img src="assets/hosq-logo.svg" alt="hosq" draggable="false">
     </button>
+    <div id="search">
+      <input id="q" type="search" autocomplete="off" spellcheck="false"
+        placeholder="name, craft, tool, country, project…" aria-label="Search the community">
+      <button id="qclear" aria-label="clear search">✕</button>
+      <div id="sugg" role="listbox"></div>
+    </div>
   </div>
   <div id="panel-scroll">
     <div id="content"></div>
+  </div>
+  <!-- the way in: a guest sees the doors, a member sees their own name -->
+  <div id="authbar"></div>
+</div>
+
+<div id="veil" onclick="if(event.target===this)closeModal()">
+  <div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="close" onclick="closeModal()" aria-label="close">✕</button>
+    <div class="tabs">
+      <button id="tab-join" onclick="openModal('join')">Join hosq</button>
+      <button id="tab-login" onclick="openModal('login')">Log in</button>
+    </div>
+    <div id="modal-body"></div>
   </div>
 </div>
 
@@ -388,6 +480,76 @@ const ROLE_ICON=r=>{
   return['○','participant'];
 };
 const initials=n=>n.split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase();
+
+/* ================= guest / member =================
+   Two readings of the same map. A guest sees faces, standing and the threads
+   between crafts — the shape of the community. Names, skills and contacts
+   are for members. Membership here is a DEMO switch: nothing is verified,
+   nothing is stored beyond this browser — the real door is built elsewhere. */
+let MEMBER=false, MEMBER_EMAIL='';
+(function(){
+  const q=new URLSearchParams(location.search).get('preview');
+  if(q==='member'){MEMBER=true;MEMBER_EMAIL='preview@hosq.co';return}
+  if(q==='guest')return;
+  try{const v=JSON.parse(localStorage.getItem('hosq-map-member')||'null');
+      if(v&&v.email){MEMBER=true;MEMBER_EMAIL=v.email}}catch(e){}
+})();
+function applyMode(){
+  document.body.classList.toggle('guest',!MEMBER);
+  document.body.classList.toggle('member',MEMBER);
+  renderAuth();
+}
+function setMember(on,email){
+  MEMBER=!!on; MEMBER_EMAIL=on?(email||'member@hosq.co'):'';
+  try{ if(on)localStorage.setItem('hosq-map-member',JSON.stringify({email:MEMBER_EMAIL}));
+       else localStorage.removeItem('hosq-map-member') }catch(e){}
+  closeModal(); applyMode();
+  if(!PEOPLE.length)return;
+  const keep=selected;
+  render(); goHome(); clearSearch();
+  if(keep&&BY_ID[keep])select(keep,true);
+}
+function renderAuth(){
+  const bar=document.getElementById('authbar'); if(!bar)return;
+  bar.innerHTML=MEMBER
+    ? `<span class="who">member · ${MEMBER_EMAIL}</span><button class="btn quiet" onclick="setMember(false)">Log out</button>`
+    : `<button class="btn" onclick="openModal('login')">Log in</button><button class="btn primary" onclick="openModal('join')">Join hosq</button>`;
+}
+function openModal(tab){
+  document.getElementById('veil').classList.add('open');
+  document.getElementById('tab-join').classList.toggle('on',tab==='join');
+  document.getElementById('tab-login').classList.toggle('on',tab==='login');
+  const b=document.getElementById('modal-body');
+  b.innerHTML= tab==='join'
+   ? `<h2 id="modal-title">Become a member of hosq.</h2>
+      <p>The map is open to everyone. The people on it are open to members.</p>
+      <ul>
+        <li><b>A direct line</b> — Instagram and Telegram of every member, and a private channel inside the community.</li>
+        <li><b>Full profiles and search</b> — tools, skills, what each person is building now.</li>
+        <li><b>Your own card on the map</b> — and next season's open calls and residencies first.</li>
+      </ul>
+      <form onsubmit="event.preventDefault();setMember(true,this.email.value.trim()||'new member')">
+        <label for="email-join">Email</label>
+        <input id="email-join" name="email" type="email" placeholder="you@example.com" required>
+        <div class="actions"><button class="btn primary" type="submit">Apply to join →</button>
+          <button class="btn quiet" type="button" onclick="openModal('login')">already a member? log in</button></div>
+      </form>
+      <div class="demo">demo · no account is created — the switch only shows the logic</div>`
+   : `<h2 id="modal-title">Welcome back.</h2>
+      <p>We will send a one-time link to the email you joined with.</p>
+      <form onsubmit="event.preventDefault();setMember(true,this.email.value.trim()||'member')">
+        <label for="email-login">Email</label>
+        <input id="email-login" name="email" type="email" placeholder="you@example.com" required>
+        <div class="actions"><button class="btn primary" type="submit">Send the link →</button>
+          <button class="btn quiet" type="button" onclick="openModal('join')">not a member yet? join</button></div>
+      </form>
+      <div class="demo">demo · any email opens the member view on this browser</div>`;
+  setTimeout(()=>{const i=b.querySelector('input');i&&i.focus()},30);
+}
+function closeModal(){document.getElementById('veil').classList.remove('open')}
+/* what a guest may read of a person: standing, project, country, craft */
+const publicName=p=>{const r=ROLE_ICON(p.role)[1];return r.charAt(0).toUpperCase()+r.slice(1)};
+applyMode();
 
 
 /* view state */
@@ -693,7 +855,7 @@ function render(){
     const img=p.photo?`<img loading="lazy" decoding="async" draggable="false" src="photos/${p.photo}.jpg" alt="">`:'';
     // one name, the real one; the stage name and the links live in the profile
     el.innerHTML=`<div class="ph">${img}
-      <div class="init" data-note="${(p.disciplines[0]||p.skills[0]||role)}"${p.photo?' style="display:none"':''}>${initials(p.name)}</div></div>
+      <div class="init" data-note="${(p.disciplines[0]||p.skills[0]||role)}"${p.photo?' style="display:none"':''}>${MEMBER?initials(p.name):icon}</div></div>
       <div class="cap">${p.name}</div>
       <div class="tag"><i>${icon}</i>${role}</div>`;
     if(p.photo){
@@ -984,6 +1146,7 @@ function clusterOf(name){return CLUSTERS.find(c=>c.name===name)}
    printed once — the project in the eyebrow, the role beside it, the country
    under the plate, the disciplines in their own pills and nowhere else. */
 function renderProfile(p){
+  if(!MEMBER){renderGuestProfile(p);return}
   const role=ROLE_ICON(p.role)[1];
   const art=p.artistic, given=p.name!==p.artistic?p.name:'';
   const group=clusterOf(p.project);
@@ -1031,6 +1194,38 @@ function renderProfile(p){
   renderState(); renderWalk();
 }
 
+/* A guest's reading of a person: the face, the standing, the country, the
+   crafts — enough to see who is here, not enough to reach them. The lock
+   stands exactly where the contacts would: that is where the wish to join
+   is born, so that is where the door is. */
+function renderGuestProfile(p){
+  const role=ROLE_ICON(p.role)[1];
+  const group=clusterOf(p.project);
+  let h='';
+  if(activeTag){
+    h+=`<button class="backrow" onclick="renderTagPanel('${esc(activeTag)}')">← ${activeTag} · ${(TAGINDEX[activeTag]||[]).length} people</button>`;
+  }
+  h+=`<div class="eyebrow">${p.project.toLowerCase()===role.toLowerCase()?role:p.project+' · '+role}</div>`;
+  h+=`<h1 class="big" tabindex="-1">${publicName(p)}</h1>`;
+  h+=`<div class="pphoto" style="--prot:${(p._rot*.22).toFixed(2)}deg">`+
+     (p.photo?`<img src="photos/${p.photo}.jpg" alt="${publicName(p)}" onerror="this.outerHTML='<div class=no>${ROLE_ICON(p.role)[0]}</div>'">`
+             :`<div class="no">${ROLE_ICON(p.role)[0]}</div>`)+
+     (p.country?`<div class="platecap">${p.country}</div>`:'')+`</div>`;
+  const tagPills=arr=>arr.map(d=>tagPill(NORM(d))).join('');
+  if(p.disciplines.length){h+=`<div class="sect"><h3>Discipline</h3><div class="pills">${tagPills(p.disciplines)}</div></div>`}
+  else if(p.skills.length){h+=`<div class="sect"><h3>Craft</h3><div class="pills">${tagPills(p.skills.slice(0,4))}</div></div>`}
+  const others=(group?group.members.length-1:0);
+  h+=`<div class="lock"><h3>Name · skills · connect</h3>
+      <p>The name, the tools and the Instagram and Telegram of this ${role} are shared inside the hosq community only${others?` — together with the ${others} others in ${p.project}`:''}.</p>
+      <div class="row"><button class="btn primary" onclick="openModal('join')">Join hosq →</button>
+      <button class="btn quiet" onclick="openModal('login')">already a member? log in</button></div></div>`;
+  h+=`<div class="footline">notations '26 — hosq community</div>`;
+  content.innerHTML=h;
+  renderState(); renderWalk();
+  document.getElementById('panel-scroll').scrollTop=0;
+  const t=content.querySelector('h1'); t&&t.focus({preventScroll:true});
+}
+
 function renderHome(){
   if(selected){BY_ID[selected]?._el.classList.remove('sel');selected=null}
   history.replaceState(null,'','#');
@@ -1038,11 +1233,16 @@ function renderHome(){
   PEOPLE.forEach(p=>{const r=ROLE_ICON(p.role)[1];nRoles[r]=(nRoles[r]||0)+1});
   let h='';
   h+=`<p class="display">hosq is a community of <span class="lk" onclick="fitAll(true)">${PEOPLE.length} people</span> — musicians, artists, engineers and curators — building <b style="font-weight:500">Notations '26</b> across ${CLUSTERS.length} projects.</p>`;
-  h+=`<p class="lead">Everyone stands in a ring around the name of their project. Drag across the field, zoom in, and open a card. Press and hold one to pick it up.</p>`;
-  h+=`<div class="sect"><h3>Projects</h3><div class="pills">`+
-     CLUSTERS.map((c,i)=>`<button class="pill" onclick="flyToCluster(CLUSTERS[${i}])">${c.name} · ${c.members.length}</button>`).join('')+
-     `</div></div>`;
-  const top=Object.entries(TAGINDEX).sort((a,b)=>b[1].length-a[1].length).slice(0,18);
+  if(MEMBER){
+    h+=`<p class="lead">Everyone stands in a ring around the name of their project. Drag across the field, zoom in, and open a card. Press and hold one to pick it up.</p>`;
+    h+=`<div class="sect"><h3>Projects</h3><div class="pills">`+
+       CLUSTERS.map((c,i)=>`<button class="pill" onclick="flyToCluster(CLUSTERS[${i}])">${c.name} · ${c.members.length}</button>`).join('')+
+       `</div></div>`;
+  }else{
+    const nCraft=Object.keys(TAGINDEX).length, nCountry=new Set(PEOPLE.flatMap(countriesOf)).size;
+    h+=`<p class="lead">${nCraft} crafts, tools and skills held across ${nCountry} countries. Pull a craft below and a thread stitches together everyone who holds it, whatever project they belong to. Names and contacts open to <span class="lk" onclick="openModal('join')">members</span>.</p>`;
+  }
+  const top=Object.entries(TAGINDEX).sort((a,b)=>b[1].length-a[1].length).slice(0,MEMBER?18:24);
   h+=`<div class="sect"><h3>Shared craft — pull a thread</h3><div class="pills">`+
      top.map(([t])=>tagPill(t)).join('')+`</div></div>`;
   h+=`<div class="sect"><h3>Roles</h3><div class="pills">`+
@@ -1117,11 +1317,26 @@ function renderTagPanel(tag){
   h+=`<div class="eyebrow">Shared craft</div>`;
   h+=`<h1 class="big">${tag}</h1>`;
   h+= people.length===1
-    ? `<p class="lead">Only ${people[0].artistic} holds this one. Here they are.</p>`
+    ? `<p class="lead">Only ${MEMBER?people[0].artistic:'one '+ROLE_ICON(people[0].role)[1]} holds this one. Here they are.</p>`
     : `<p class="lead">${people.length} people across ${projs.length} ${projs.length===1?'project':'projects'} hold this in common.</p>`;
-  h+=`<div class="rel"><h3>Everyone who holds it</h3>`+
-     people.map(p=>`<button class="r" onclick="select(${p.id})"><span>${p.artistic}</span><small>${p.project}</small></button>`).join('')+
-     `</div>`;
+  if(MEMBER){
+    h+=`<div class="rel"><h3>Everyone who holds it</h3>`+
+       people.map(p=>`<button class="r" onclick="select(${p.id})"><span>${p.artistic}</span><small>${p.project}</small></button>`).join('')+
+       `</div>`;
+  }else{
+    // a guest reads the thread by project and by standing, not by name
+    const nRoles={}; people.forEach(p=>{const r=ROLE_ICON(p.role)[1];nRoles[r]=(nRoles[r]||0)+1});
+    h+=`<div class="rel"><h3>Where the thread runs</h3>`+
+       projs.map(([name,list])=>{const c=clusterOf(name);
+         return `<button class="r" onclick="${c?`flyToCluster(clusterOf('${esc(name)}'))`:''}"><span>${name}</span><small>${list.length} ${list.length===1?'person':'people'}</small></button>`}).join('')+
+       `</div>`;
+    h+=`<div class="sect"><h3>Standing</h3><div class="pills">`+
+       Object.entries(nRoles).map(([r,n])=>`<span class="pill">${r} · ${n}</span>`).join('')+`</div></div>`;
+    h+=`<div class="lock"><h3>Reach them</h3>
+        <p>Members can open every one of these ${people.length} by name, see their tools and write to them directly.</p>
+        <div class="row"><button class="btn primary" onclick="openModal('join')">Join hosq →</button>
+        <button class="btn quiet" onclick="openModal('login')">log in</button></div></div>`;
+  }
   h+=`<div class="footline">notations '26 — hosq community</div>`;
   content.innerHTML=h;
   renderState(); renderWalk();
@@ -1140,14 +1355,17 @@ function renderState(){
   const rows=[];
   if(activeTag)rows.push([`thread · ${activeTag} · ${(TAGINDEX[activeTag]||[]).length}`,'clearTag()']);
   if(filterRole)rows.push([`role · ${filterRole}`,`toggleRole('${esc(filterRole)}')`]);
-  if(selected)rows.push([`open · ${BY_ID[selected].artistic}`,'goHome()']);
+  if(selected)rows.push([`open · ${MEMBER?BY_ID[selected].artistic:publicName(BY_ID[selected]).toLowerCase()}`,'goHome()']);
+  if(SEARCH_HOLD)rows.push([`search · ${SEARCH_HOLD}`,'clearSearch()']);
   box.innerHTML=rows.map(([t,fn])=>
     `<div class="row"><span>${t}</span><button onclick="${fn}" aria-label="release">✕</button></div>`).join('');
   box.style.display=rows.length?'block':'none';
 }
 addEventListener('keydown',e=>{
   if(e.key==='Escape'){
-    if(document.getElementById('help').classList.contains('open'))document.getElementById('help').classList.remove('open');
+    if(document.getElementById('veil').classList.contains('open'))closeModal();
+    else if(document.getElementById('help').classList.contains('open'))document.getElementById('help').classList.remove('open');
+    else if(SEARCH_HOLD||document.getElementById('sugg').classList.contains('open'))clearSearch();
     else if(activeTag)clearTag();
     else if(filterRole)toggleRole(filterRole);
     else if(selected)goHome();
@@ -1293,7 +1511,7 @@ fetch('data/people.json')
   .then(d=>{
     DATA=d; PEOPLE=d.people;
     PEOPLE.forEach(p=>BY_ID[p.id]=p);
-    layout(); buildTagIndex(); render(); buildMenu(); placeArrows();
+    layout(); buildTagIndex(); buildSearch(); render(); buildMenu(); placeArrows();
     initSheet();
     const m=location.hash.match(/^#p\/(\d+)$/);
     if(m&&BY_ID[+m[1]])renderProfile(BY_ID[+m[1]]); else renderHome();
@@ -1306,9 +1524,97 @@ fetch('data/people.json')
       <p class="lead">The community file could not be read — <code>${String(err.message||err)}</code>.</p>
       <div class="sect"><button class="pill" onclick="location.reload()">try again</button></div>`;
   });
+/* ================= search (members) =================
+   One line. Every word typed is matched against names, crafts, tools,
+   skills, countries and projects at once; the matches light up on the map
+   while you type, and picking one turns it into the thing it already is —
+   a thread, a person, a ring, a country. */
+let SEARCH_HOLD=null, SEARCH_IDX=[];
+const countriesOf=p=>(p.country||'').split('/').map(c=>c.trim()).filter(Boolean);
+const fold=s=>(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+function buildSearch(){
+  SEARCH_IDX=[];
+  PEOPLE.forEach(p=>SEARCH_IDX.push({kind:'person',label:p.artistic,sub:p.project,key:fold(p.artistic+' '+p.name),ids:[p.id],act:`select(${p.id})`}));
+  Object.entries(TAGINDEX).forEach(([t,ids])=>SEARCH_IDX.push({kind:'craft',label:t,n:ids.length,key:fold(t),ids,act:`showTag('${esc(t)}')`}));
+  CLUSTERS.forEach((c,i)=>SEARCH_IDX.push({kind:'project',label:c.name,n:c.members.length,key:fold(c.name),ids:c.members.map(m=>m.id),act:`flyToCluster(CLUSTERS[${i}])`}));
+  // "Russia / Armenia" belongs to both countries, not to a third one
+  const byC={}; PEOPLE.forEach(p=>countriesOf(p).forEach(c=>(byC[c]=byC[c]||[]).push(p.id)));
+  Object.entries(byC).forEach(([c,ids])=>SEARCH_IDX.push({kind:'country',label:c,n:ids.length,key:fold(c),ids,act:`showCountry('${esc(c)}')`}));
+}
+function searchMatches(q){
+  q=fold(q.trim()); if(q.length<2)return [];
+  const words=q.split(/\s+/);
+  return SEARCH_IDX.filter(e=>words.every(w=>e.key.includes(w)))
+    .sort((a,b)=>(a.key.startsWith(q)?0:1)-(b.key.startsWith(q)?0:1)||(b.n||1)-(a.n||1));
+}
+function lightUp(ids){
+  const set=new Set(ids);
+  PEOPLE.forEach(p=>{p._el.classList.toggle('faded',set.size>0&&!set.has(p.id));p._el.classList.toggle('hit',set.has(p.id))});
+}
+function onSearch(){
+  const box=document.getElementById('search'), inp=document.getElementById('q'), sg=document.getElementById('sugg');
+  const q=inp.value; box.classList.toggle('has',!!q);
+  const m=searchMatches(q);
+  if(!q.trim()){sg.classList.remove('open');if(!activeTag&&!SEARCH_HOLD)lightUp([]);return}
+  if(activeTag)clearTag();
+  SEARCH_HOLD=null;
+  const ids=new Set(); m.forEach(e=>e.ids.forEach(i=>ids.add(i)));
+  lightUp([...ids]); renderState();
+  const groups={person:'People',craft:'Crafts · tools · skills',project:'Projects',country:'Countries'};
+  let h='';
+  if(!m.length)h=`<div class="none">Nobody and nothing by that name — try a craft, a tool or a country.</div>`;
+  Object.entries(groups).forEach(([k,title])=>{
+    const list=m.filter(e=>e.kind===k).slice(0,8); if(!list.length)return;
+    h+=`<h4>${title}</h4>`+list.map(e=>`<button class="pill tag-pill${e===m[0]?' first':''}" onclick="pick(${SEARCH_IDX.indexOf(e)})">${e.label}${e.n?`<span class="ct">${e.n}</span>`:e.sub?`<span class="ct">${e.sub}</span>`:''}</button>`).join('');
+  });
+  sg.innerHTML=h; sg.classList.add('open');
+}
+function pick(i){
+  const e=SEARCH_IDX[i]; if(!e)return;
+  document.getElementById('sugg').classList.remove('open');
+  document.getElementById('q').value=e.label; document.getElementById('search').classList.add('has');
+  lightUp([]);
+  if(e.kind==='person'||e.kind==='project'){SEARCH_HOLD=null}
+  eval(e.act);
+  if(e.kind==='project'){SEARCH_HOLD=e.label;lightUp(e.ids);renderState()}
+}
+function showCountry(c){
+  const ids=PEOPLE.filter(p=>countriesOf(p).includes(c)).map(p=>p.id);
+  SEARCH_HOLD=c; lightUp(ids); fitPeople(ids.map(i=>BY_ID[i]));
+  const people=ids.map(i=>BY_ID[i]);
+  const byProj={}; people.forEach(p=>{(byProj[p.project]=byProj[p.project]||[]).push(p)});
+  let h=`<div class="eyebrow">Country</div><h1 class="big">${c}</h1>`;
+  h+=`<p class="lead">${people.length} ${people.length===1?'person':'people'} across ${Object.keys(byProj).length} projects.</p>`;
+  h+=`<div class="rel"><h3>Everyone from here</h3>`+
+     people.map(p=>`<button class="r" onclick="select(${p.id})"><span>${p.artistic}</span><small>${p.project}</small></button>`).join('')+`</div>`;
+  h+=`<div class="footline">notations '26 — hosq community</div>`;
+  content.innerHTML=h; renderState(); renderWalk();
+  document.getElementById('panel-scroll').scrollTop=0;
+}
+function clearSearch(){
+  const inp=document.getElementById('q'); if(inp)inp.value='';
+  document.getElementById('search').classList.remove('has');
+  document.getElementById('sugg').classList.remove('open');
+  SEARCH_HOLD=null;
+  if(!activeTag)lightUp([]); else PEOPLE.forEach(p=>p._el.classList.remove('hit'));
+  renderState();
+}
+(function(){
+  const inp=document.getElementById('q'); if(!inp)return;
+  inp.addEventListener('input',onSearch);
+  inp.addEventListener('focus',()=>{if(inp.value.trim())onSearch()});
+  inp.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){e.stopPropagation();clearSearch();inp.blur()}
+    if(e.key==='Enter'){e.preventDefault();const m=searchMatches(inp.value);if(m.length)pick(SEARCH_IDX.indexOf(m[0]))}
+  });
+  document.getElementById('qclear').addEventListener('click',()=>{clearSearch();inp.focus()});
+  document.addEventListener('click',e=>{if(!e.target.closest('#search'))document.getElementById('sugg').classList.remove('open')});
+})();
+
 // empty field: first click releases the thread, the next one goes home
 stage.addEventListener('click',()=>{
   if(moved)return;
+  if(SEARCH_HOLD)clearSearch();
   if(activeTag)clearTag();
   else if(selected||filterRole)goHome();
 });
