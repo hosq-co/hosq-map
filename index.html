@@ -357,7 +357,7 @@ body.wall .cluster-label b{font-size:17px}
 body.wall.expose .card{opacity:var(--exp,.05);transition:opacity 1.6s ease-out,transform .6s}
 body.wall.expose .card.lit{transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.03)}
 body.wall.expose .card::after{display:none}
-body.wall.fix .card{transition:opacity 40s linear}
+body.wall.fix .card{transition:opacity 28s linear}
 /* the thread is a hair, not a rope */
 body.wall #edges path{vector-effect:non-scaling-stroke;stroke-width:1.25px;stroke-opacity:.9}
 body.wall #edges path.halo{display:none}
@@ -1768,11 +1768,12 @@ function clearSearch(){
    back to black, and a new exposure begins in a new order.
    ROLL CALL — one face at a time, no names; the camera walks to the
    neighbour instead of cutting. ?scene=roll.
-   Tunables: ?black=0.05 (floor), ?shutter=900 (s), ?hold=40 (s, roll), ?speed=1. */
+   Runs by itself: no pointer, no keys, nothing to touch — it plays for hours.
+   Tunables: ?black=0.05 (floor), ?shutter=900 (s), ?hold=26 (s, roll), ?speed=1. */
 const W={
   black:Math.max(.02,Math.min(.4,parseFloat(QS.get('black'))||.05)),
   shutter:(parseFloat(QS.get('shutter'))||900)*1000,
-  hold:(parseFloat(QS.get('hold'))||40)*1000,
+  hold:(parseFloat(QS.get('hold'))||26)*1000,
   step:.14, first:.45, timers:[], raf:0, t0:0,
   speed:Math.max(.1,Math.min(50,parseFloat(QS.get('speed'))||1))   // ?speed=8 rehearses an hour in minutes
 };
@@ -1836,7 +1837,7 @@ async function longExposure(){
   // the camera opens on the whole field, then goes to live where the thread is sewn
   W.base=wallFrameAll(); if(!W.base)return;
   wallBreathe();
-  await wsleep(4000);
+  await wsleep(2500);
   // tags weighted toward the rare: a craft three people hold comes up
   // more often than one held by fifty-seven, and takes less time to sew
   const tags=Object.entries(TAGINDEX).filter(([,ids])=>ids.length>=2);
@@ -1849,9 +1850,9 @@ async function longExposure(){
     const members=wshuffle((TAGINDEX[tag]||[]).map(id=>BY_ID[id]).filter(Boolean));
     const color=BRAND[hash32(tag)%BRAND.length];
     const list=stitch(members,color);
-    const per=Math.max(900,Math.min(2600,60000/Math.max(1,list.length)));  // one stitch every 0.9–2.6 s
+    const per=Math.max(600,Math.min(1800,40000/Math.max(1,list.length)));  // one stitch every 0.6–1.8 s
     // frame the people this thread will reach — close enough to see faces gain light
-    const fr=wallFrame(members,.55); if(fr)await wallGo(fr,7000);
+    const fr=wallFrame(members,.55); if(fr)await wallGo(fr,4500);
     // the first touch develops a face out of the paper; every later one adds a little
     const expose=p=>{exp[p.id]=Math.min(1,exp[p.id]<=W.black?W.first:exp[p.id]+W.step);p._el.style.setProperty('--exp',exp[p.id]);
       p._el.classList.add('lit');setTimeout(()=>p._el.classList.remove('lit'),1400)};
@@ -1862,21 +1863,21 @@ async function longExposure(){
       await wsleep(per);
       if(performance.now()>shutterAt)break;
     }
-    W.phase='breathe'; await wsleep(12000);                              // the finished thread breathes
-    const svg=document.getElementById('edges'); if(svg){svg.style.transition='opacity 3s';svg.style.setProperty('--eop','0')}
-    await wsleep(3200); drawThreads([]);
+    W.phase='breathe'; await wsleep(7000);                              // the finished thread breathes
+    const svg=document.getElementById('edges'); if(svg){svg.style.transition='opacity 2s';svg.style.setProperty('--eop','0')}
+    await wsleep(2200); drawThreads([]);
     // between threads, the whole field: what has been exposed so far
-    W.phase='field'; await wallGo(wallFrameAll(),9000);
+    W.phase='field'; await wallGo(wallFrameAll(),6000);
     if(performance.now()>shutterAt){
       // the shutter: hold the frame, then bleach it back to paper
-      await wsleep(20000);
+      await wsleep(14000);
       document.body.classList.add('fix');
       PEOPLE.forEach(p=>{exp[p.id]=W.black;p._el.style.setProperty('--exp',W.black)});
-      await wsleep(41000);
+      await wsleep(29000);
       document.body.classList.remove('fix');
       shutterAt=performance.now()+W.shutter;
-      await wsleep(4000);
-    }else await wsleep(4000+Math.random()*5000);
+      await wsleep(2500);
+    }else await wsleep(2500+Math.random()*3000);
   }
 }
 
@@ -1898,13 +1899,13 @@ async function rollCall(){
       const p=path[i]; W.cur=p;
       if(i%12===0&&i){                                    // every twelve, the whole field again
         cap.classList.remove('on'); document.body.classList.remove('calling'); const b=wallFrameAll();
-        await wallFly(b.r.x+b.r.w/2-b.cx*b.s,b.r.y+b.r.h/2-b.cy*b.s,b.s,7000); await wsleep(10000);
+        await wallFly(b.r.x+b.r.w/2-b.cx*b.s,b.r.y+b.r.h/2-b.cy*b.s,b.s,5000); await wsleep(7000);
       }
       cap.classList.remove('on');
       PEOPLE.forEach(q=>q._el.classList.toggle('now',q===p)); document.body.classList.add('calling');
       const tx=r.x+r.w*.5-p._x*faceScale, ty=r.y+r.h*.42-(p._y-20)*faceScale;
       const far=Math.hypot(tx-vx,ty-vy);
-      await wallFly(tx,ty,faceScale,Math.min(9000,Math.max(3500,far*4)));
+      await wallFly(tx,ty,faceScale,Math.min(6000,Math.max(2500,far*3)));
       const role=ROLE_ICON(p.role)[1], crafts=[...p.disciplines,...p.tools].slice(0,4).join(', ');
       const eb=p.project.toLowerCase()===role.toLowerCase()?'':`<div class="eb">${p.project}</div>`;
       cap.innerHTML=`${eb}${role}${p.country?' · '+p.country:''}${crafts?' · '+crafts:''}`;
