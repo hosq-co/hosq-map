@@ -363,6 +363,7 @@ body.wall #panel,body.wall #controls,body.wall #navarrows,body.wall #statebar,
 body.wall #help,body.wall #veil{display:none!important}
 body.wall #stage{cursor:none;pointer-events:none}
 body.wall .cluster-label{opacity:.55}
+body.wall.expose .cluster-label{display:none}
 body.wall.expose #paper{opacity:.55;animation-duration:240s}   /* the grid steps back, and turns once in four minutes */
 body.wall.roll #paper{animation-duration:240s}
 body.wall .cluster-label b{font-size:17px}
@@ -400,7 +401,7 @@ body.wall #edges circle{display:none}
 #wallcap.on{opacity:1}
 #wallcap .eb{font-family:'IBM Plex Mono',monospace;font-size:.42em;letter-spacing:.18em;text-transform:uppercase;
   color:rgba(235,226,214,.55);margin-bottom:.35em}
-#wallscale{position:fixed;left:6vw;right:6vw;bottom:5vh;z-index:35;display:none;gap:3px;pointer-events:none}
+#wallscale{position:fixed;left:6vw;right:calc(48px + 3.15vw + 28px);bottom:5vh;z-index:35;display:none;gap:3px;pointer-events:none}
 #wallscale i{flex:1;height:2px;background:rgba(235,226,214,.16)}
 #wallscale i.done{background:var(--coral)}
 body.wall.roll #wallcap,body.wall.roll #wallscale{display:block}
@@ -412,7 +413,7 @@ body.wall.roll .card::after{display:none}
 body.wall.roll #stage::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34vh;z-index:34;pointer-events:none;
   background:linear-gradient(to top,rgba(35,31,32,.92),rgba(35,31,32,0))}
 #wallmark{position:fixed;right:48px;bottom:4vh;z-index:35;display:none;opacity:.32;pointer-events:none}
-#wallmark img{width:clamp(48px,4.5vw,84px);display:block;filter:brightness(0) invert(1)}   /* the black mark, printed light */
+#wallmark img{width:clamp(34px,3.15vw,59px);display:block;filter:brightness(0) invert(1)}   /* the black mark, printed light */
 body.wall #wallmark{display:block}
 /* a fullscreen mark you have to know about: top-right, twelve pixels, nearly paper-coloured */
 #wallfs{position:fixed;bottom:14px;right:14px;z-index:36;display:none;width:22px;height:22px;padding:5px;
@@ -427,6 +428,7 @@ body.wall #paper{animation-name:turn;
   background-image:linear-gradient(var(--mm-10) 1px,transparent 1px),linear-gradient(90deg,var(--mm-10) 1px,transparent 1px),
     linear-gradient(var(--mm-5) 1px,transparent 1px),linear-gradient(90deg,var(--mm-5) 1px,transparent 1px);
   background-size:110px 110px,110px 110px,55px 55px,55px 55px}
+body.wall.expose #paper{background-size:55px 55px,55px 55px,27.5px 27.5px,27.5px 27.5px}
 
 /* ---------- two states: guest / member ---------- */
 /* a guest's card is built without a name at all — nothing to unhide */
@@ -546,8 +548,7 @@ body.member #search{display:block}
 <div id="help">
   <b>drag anywhere</b> — move across the map<br>
   <b>click a card</b> — open a profile<br>
-  <b>press and hold a card</b> — pick it up<br>
-  <b>alt-drag</b> — pick it up at once<br>
+  <b>drag a card</b> — move it (touch: press and hold first)<br>
   <b>scroll / pinch</b> — zoom<br>
   <b>click a tag</b> — pull the thread of a shared craft<br>
   <b>esc</b> — release the thread<br>
@@ -1077,7 +1078,7 @@ function placeCard(p){
    move on a card that is already open. The ambiguity is settled late, when
    enough is known, instead of at pointerdown when nothing is. */
 const SLOP ={mouse:4,  touch:10};    // screen px before a gesture commits
-const HOLD ={mouse:200,touch:450};   // ms to lift an unselected card
+const HOLD ={mouse:0,  touch:450};   // ms to lift an unselected card: a mouse lifts at once, a finger holds
 const JITTER={mouse:3,  touch:6};    // a finger at rest wanders this much
 const STILL_FOR=140;                 // ms of quiet a lift requires
 const HOLDS={mouse:0,  touch:120};   // ms to lift one that is already open
@@ -1107,7 +1108,8 @@ function commitLift(){
   // all in the last breath, this is a journey in progress and the card stays
   // where it is — otherwise a slow pan that began on a card walks off with
   // the person under it.
-  if(performance.now()-(pending.lastMoveAt||0)<STILL_FOR)return;
+  // an instant lift is a drag by definition: the stillness rule is for holds only
+  if(!pending.instant&&performance.now()-(pending.lastMoveAt||0)<STILL_FOR)return;
   if(pending.touch&&navigator.vibrate)navigator.vibrate(8);
   const p=pending.p;
   clearTimeout(pending.armTimer);clearTimeout(pending.holdTimer);
@@ -1415,7 +1417,7 @@ function renderHome(){
   let h='';
   h+=`<p class="display">Talent Map is a community of <span class="lk" onclick="fitAll(true)">${PEOPLE.length} people</span> — musicians, artists, engineers and curators — gathered around the <b style="font-weight:500">hosq</b> foundation.</p>`;
   if(MEMBER){
-    h+=`<p class="lead">Everyone stands in a ring around the name of their project in Notations '26 — ${CLUSTERS.length} projects in all. Drag across the field, zoom in, and open a card. Press and hold one to pick it up.</p>`;
+    h+=`<p class="lead">Everyone stands in a ring around the name of their project in Notations '26 — ${CLUSTERS.length} projects in all. Drag across the field, zoom in, and open a card. Drag a card to move it.</p>`;
     h+=`<div class="sect"><h3>Projects</h3><div class="pills">`+
        CLUSTERS.map((c,i)=>`<button class="pill" onclick="flyToCluster(CLUSTERS[${i}])">${c.name} · ${c.members.length}</button>`).join('')+
        `</div></div>`;
