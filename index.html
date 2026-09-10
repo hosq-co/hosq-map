@@ -186,6 +186,18 @@ a{color:inherit}
 #panel{position:fixed;top:0;left:0;bottom:0;width:min(460px,94vw);background:var(--paper);
   z-index:20;display:flex;flex-direction:column;box-shadow:14px 0 40px rgba(0,0,0,.35)}
 #panel-scroll{overflow-y:auto;flex:1;padding:0 34px 60px;scrollbar-width:thin}
+/* the panel folds to a rail: the logo stays as the way back, the map takes the room */
+#fold{position:absolute;right:-16px;top:50%;transform:translateY(-50%);width:32px;height:56px;
+  border-radius:0 12px 12px 0;background:var(--paper);color:var(--text-soft);font-size:22px;line-height:1;
+  z-index:21;transition:color .15s,background .15s}
+#fold:hover{color:var(--coral)}
+#panel{transition:width .28s cubic-bezier(.2,.7,.2,1)}
+body.folded #panel{width:72px;overflow:visible}
+body.folded #panel-scroll,body.folded #authbar,body.folded #search{display:none}
+body.folded #masthead{padding:22px 0 0;display:flex;justify-content:center}
+body.folded #homelogo img{width:44px}
+body.folded #fold{right:-16px}
+@media (max-width:760px){#fold{display:none}}
 #content{padding-top:6px}
 
 /* masthead: the logo itself is the way home — no box around it. Its artboard
@@ -333,15 +345,15 @@ body.guest .card .tag{padding-top:7px}
   display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--paper)}
 /* the guest's door: one coral block, one verb, the way in underlined beneath */
 #authbar.guest{border-top:0;padding:0 18px 18px;display:block}
-.cta{background:var(--coral);border-radius:18px;padding:20px 22px 18px}
-.cta .eyebrow{color:rgba(35,31,32,.7);margin-bottom:8px}
+.cta{background:#fff;border-radius:18px;padding:20px 22px 18px}
+.cta .eyebrow{margin-bottom:8px}
 .cta p{font-size:17px;line-height:1.4;font-weight:500;margin-bottom:16px}
 .btn.dark{display:flex;justify-content:space-between;align-items:center;width:100%;
   background:var(--ink);border-color:var(--ink);color:var(--paper);font-size:16px;padding:14px 18px}
 .btn.dark:hover{background:#000}
 .btn.dark span{font-weight:400}
 .loginlink{display:block;width:100%;text-align:center;margin-top:10px;font-size:13.5px;
-  color:rgba(35,31,32,.75);padding:6px}
+  color:var(--text-soft);padding:6px}
 .loginlink u{text-underline-offset:3px}
 .loginlink:hover{color:var(--ink)}
 @media (max-height:640px){.cta p{display:none}.cta{padding:14px 16px 12px}}
@@ -362,10 +374,10 @@ body.guest .card .tag{padding-top:7px}
 .btn.primary:hover{background:#ff8a74;border-color:#ff8a74}
 .btn.quiet{border-color:transparent;color:var(--text-soft);padding:10px 8px}
 .btn.quiet:hover{background:transparent;color:var(--coral)}
-.lock{margin-top:36px;padding:20px 22px;border-radius:14px;background:#fff}
+.lock{margin-top:36px;padding:18px 0 0;border-top:1px solid var(--line)}
 .lock h3{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;
   text-transform:uppercase;color:var(--text-soft);font-weight:400;margin-bottom:10px}
-.lock p{font-size:15.5px;line-height:1.55;margin-bottom:16px}
+.lock p{font-size:15.5px;line-height:1.55;color:var(--text-soft)}
 .lock .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 /* the modal: the map keeps living behind it */
 #veil{position:fixed;inset:0;background:rgba(35,31,32,.55);z-index:40;display:none;
@@ -452,6 +464,7 @@ body.member #search{display:block}
 </div>
 
 <div id="panel">
+  <button id="fold" title="Fold the panel" aria-label="Fold the panel" aria-expanded="true">‹</button>
   <!-- a running head: the way home never scrolls away -->
   <div id="masthead">
     <button id="homelogo" aria-label="hosq — back to the whole map">
@@ -630,11 +643,26 @@ function layout(){
   const names=Object.keys(groups).sort((a,b)=>groups[b].length-groups[a].length);
   const centers=[];
   const GA=2.399963;
+  const ringsFor=n=>{let placed=0,ring=1;while(placed<n){placed+=Math.floor(ring*5.2);ring++}return ring-1};
   names.forEach((name,i)=>{
-    const r= i===0?0: 1050*Math.sqrt(i);   // wide enough that no two groups touch
+    const r= i===0?0: 1050*Math.sqrt(i);
     const th=i*GA;
-    centers.push({name,x:r*Math.cos(th),y:r*Math.sin(th),members:groups[name]});
+    const R=ringsFor(groups[name].length)*240+150;   // the ring's own reach, cards included
+    centers.push({name,x:r*Math.cos(th),y:r*Math.sin(th),members:groups[name],R});
   });
+  // the sunflower spacing was one number for every group; a 21-ring and a
+  // 12-ring next to it overlapped. Push any two that touch apart until none do.
+  for(let it=0;it<60;it++){
+    let moved=false;
+    for(let i=0;i<centers.length;i++)for(let j=i+1;j<centers.length;j++){
+      const a=centers[i],b=centers[j];
+      const dx=b.x-a.x, dy=(b.y-a.y)/.86, d=Math.hypot(dx,dy)||1, need=a.R+b.R+520;
+      if(d>=need)continue;
+      const push=(need-d)/2, ux=dx/d, uy=dy/d*.86;
+      a.x-=ux*push;a.y-=uy*push;b.x+=ux*push;b.y+=uy*push; moved=true;
+    }
+    if(!moved)break;
+  }
   CLUSTERS=centers;
   order=[];
   centers.forEach(c=>{
@@ -1168,6 +1196,7 @@ const content=document.getElementById('content');
 
 function select(id,noFly){
   const p=BY_ID[id]; if(!p)return;
+  unfold();
   if(selected)BY_ID[selected]?._el.classList.remove('sel');
   selected=id;
   p._el.classList.add('sel');
@@ -1231,7 +1260,6 @@ function renderProfile(p){
          return `<button class="r" onclick="select(${m.id})"><span>${m.artistic}</span><small>${ic} ${ro}</small></button>`}).join('')+
        `</div>`;
   }
-  h+=`<div class="footline">notations '26 — hosq community</div>`;
   content.innerHTML=h;
   renderState(); renderWalk();
 }
@@ -1254,11 +1282,8 @@ function renderGuestProfile(p){
   if(p.disciplines.length){h+=`<div class="sect"><h3>Discipline</h3><div class="pills">${tagPills(p.disciplines)}</div></div>`}
   else if(p.skills.length){h+=`<div class="sect"><h3>Craft</h3><div class="pills">${tagPills(p.skills.slice(0,4))}</div></div>`}
   const others=(group?group.members.length-1:0);
-  h+=`<div class="lock"><h3>Name · skills · connect</h3>
-      <p>The name, the tools and the Instagram and Telegram of this ${role} are shared inside the hosq community only${others?` — together with the ${others} others in ${p.project}`:''}.</p>
-      <div class="row"><button class="btn primary" onclick="openModal('join')">Join hosq →</button>
-      <button class="btn quiet" onclick="openModal('login')">already a member? log in</button></div></div>`;
-  h+=`<div class="footline">notations '26 — hosq community</div>`;
+  h+=`<div class="lock"><h3>Members only</h3>
+      <p>Name, tools, Instagram and Telegram of this ${role}${others?` — and of the ${others} others in ${p.project}`:''} — open once you are inside the community.</p></div>`;
   content.innerHTML=h;
   renderState(); renderWalk();
   document.getElementById('panel-scroll').scrollTop=0;
@@ -1287,7 +1312,6 @@ function renderHome(){
   h+=`<div class="sect"><h3>Roles</h3><div class="pills">`+
      Object.entries(nRoles).map(([r,n])=>`<button class="pill ${filterRole===r?'on':''}" onclick="toggleRole('${r}')">${r} · ${n}</button>`).join('')+
      `</div></div>`;
-  h+=`<div class="footline">notations '26 — hosq community</div>`;
   content.innerHTML=h;
   renderState(); renderWalk();
 }
@@ -1303,6 +1327,7 @@ function tagPill(t){
 }
 function showTag(tag){
   if(activeTag===tag){clearTag();return}
+  unfold();
   activeTag=tag;
   THREAD_MODE={kind:'tag',tag};
   // a thread and a role filter may hold at once — the state bar names both,
@@ -1373,12 +1398,9 @@ function renderTagPanel(tag){
        `</div>`;
     h+=`<div class="sect"><h3>Standing</h3><div class="pills">`+
        Object.entries(nRoles).map(([r,n])=>`<span class="pill">${r} · ${n}</span>`).join('')+`</div></div>`;
-    h+=`<div class="lock"><h3>Reach them</h3>
-        <p>Members can open every one of these ${people.length} by name, see their tools and write to them directly.</p>
-        <div class="row"><button class="btn primary" onclick="openModal('join')">Join hosq →</button>
-        <button class="btn quiet" onclick="openModal('login')">log in</button></div></div>`;
+    h+=`<div class="lock"><h3>Members only</h3>
+        <p>Every one of these ${people.length} by name, with their tools and a direct line — open once you are inside the community.</p></div>`;
   }
-  h+=`<div class="footline">notations '26 — hosq community</div>`;
   content.innerHTML=h;
   renderState(); renderWalk();
   document.getElementById('panel-scroll').scrollTop=0;
@@ -1449,10 +1471,22 @@ function renderWalk(){
 
 /* the logo takes you home; the project list lives in the panel below, so
    there is no second copy of it up here */
-document.getElementById('homelogo').addEventListener('click',()=>{goHome();fitAll(true)});
+document.getElementById('homelogo').addEventListener('click',()=>{unfold();goHome();fitAll(true)});
 function buildMenu(){}
 
 /* the arrows sit just inside the map, beside the panel's edge */
+function setFolded(on){
+  document.body.classList.toggle('folded',on);
+  const b=document.getElementById('fold');
+  b.textContent=on?'›':'‹'; b.setAttribute('aria-expanded',String(!on));
+  b.title=b.ariaLabel=on?'Open the panel':'Fold the panel';
+  try{localStorage.setItem('hosq-map-folded',on?'1':'0')}catch(e){}
+  setTimeout(()=>{placeArrows();refreshThreads()},300);
+}
+document.getElementById('fold').addEventListener('click',()=>setFolded(!document.body.classList.contains('folded')));
+try{if(localStorage.getItem('hosq-map-folded')==='1'&&innerWidth>760)setFolded(true)}catch(e){}
+/* anything that puts a reading in the panel opens it first */
+const unfold=()=>{if(document.body.classList.contains('folded'))setFolded(false)};
 function placeArrows(){
   const el=document.getElementById('navarrows');
   if(innerWidth<=760){el.style.left='';return}    // the sheet layout places them
@@ -1636,7 +1670,6 @@ function renderCountryPanel(c){
   h+=`<p class="lead">${people.length} ${people.length===1?'person':'people'} across ${Object.keys(byProj).length} projects.</p>`;
   h+=`<div class="rel"><h3>Everyone from here</h3>`+
      people.map(p=>`<button class="r" onclick="select(${p.id})"><span>${p.artistic}</span><small>${p.project}</small></button>`).join('')+`</div>`;
-  h+=`<div class="footline">notations '26 — hosq community</div>`;
   content.innerHTML=h; renderState(); renderWalk();
   document.getElementById('panel-scroll').scrollTop=0;
 }
