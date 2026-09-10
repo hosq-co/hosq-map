@@ -331,6 +331,27 @@ body.guest .card .ph .init{font-size:26px}
 body.guest .card .tag{padding-top:7px}
 #authbar{flex:none;border-top:1px solid var(--line);padding:16px 34px 18px;
   display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--paper)}
+/* the guest's door: one coral block, one verb, the way in underlined beneath */
+#authbar.guest{border-top:0;padding:0 18px 18px;display:block}
+.cta{background:var(--coral);border-radius:18px;padding:20px 22px 18px}
+.cta .eyebrow{color:rgba(35,31,32,.7);margin-bottom:8px}
+.cta p{font-size:17px;line-height:1.4;font-weight:500;margin-bottom:16px}
+.btn.dark{display:flex;justify-content:space-between;align-items:center;width:100%;
+  background:var(--ink);border-color:var(--ink);color:var(--paper);font-size:16px;padding:14px 18px}
+.btn.dark:hover{background:#000}
+.btn.dark span{font-weight:400}
+.loginlink{display:block;width:100%;text-align:center;margin-top:10px;font-size:13.5px;
+  color:rgba(35,31,32,.75);padding:6px}
+.loginlink u{text-underline-offset:3px}
+.loginlink:hover{color:var(--ink)}
+@media (max-height:640px){.cta p{display:none}.cta{padding:14px 16px 12px}}
+@media (max-width:760px){
+  #authbar.guest{padding:8px 12px calc(10px + env(safe-area-inset-bottom))}
+  .cta{padding:12px 14px;display:flex;align-items:center;gap:12px}
+  .cta .eyebrow,.cta p{display:none}
+  .btn.dark{flex:1;padding:12px 16px}
+  .loginlink{width:auto;margin:0;white-space:nowrap}
+}
 #authbar .who{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--text-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .btn{font-family:'Cera Pro',sans-serif;font-weight:700;font-size:14px;padding:10px 18px;
@@ -511,9 +532,15 @@ function setMember(on,email){
 }
 function renderAuth(){
   const bar=document.getElementById('authbar'); if(!bar)return;
+  bar.classList.toggle('guest',!MEMBER);
   bar.innerHTML=MEMBER
     ? `<span class="who">member · ${MEMBER_EMAIL}</span><button class="btn quiet" onclick="setMember(false)">Log out</button>`
-    : `<button class="btn" onclick="openModal('login')">Log in</button><button class="btn primary" onclick="openModal('join')">Join hosq</button>`;
+    : `<div class="cta">
+         <div class="eyebrow">Members only</div>
+         <p>Names, skills and a direct line to all ${PEOPLE.length||138} people.</p>
+         <button class="btn dark" onclick="openModal('join')">Join hosq <span>→</span></button>
+         <button class="loginlink" onclick="openModal('login')">Already a member? <u>Log in</u></button>
+       </div>`;
 }
 function openModal(tab){
   document.getElementById('veil').classList.add('open');
@@ -547,6 +574,17 @@ function openModal(tab){
   setTimeout(()=>{const i=b.querySelector('input');i&&i.focus()},30);
 }
 function closeModal(){document.getElementById('veil').classList.remove('open')}
+/* Every panel but home opens with the way back — to the thread, the
+   country, the standing or the whole map — so no reading is a dead end. */
+function backRow(from){
+  if(from!=='tag'&&activeTag)
+    return `<button class="backrow" onclick="renderTagPanel('${esc(activeTag)}')">← ${activeTag} · ${(TAGINDEX[activeTag]||[]).length} people</button>`;
+  if(from!=='country'&&SEARCH_HOLD&&SEARCH_KIND==='country')
+    return `<button class="backrow" onclick="renderCountryPanel('${esc(SEARCH_HOLD)}')">← ${SEARCH_HOLD}</button>`;
+  if(filterRole)
+    return `<button class="backrow" onclick="goHome()">← all ${PEOPLE.length} people · ${filterRole}s only</button>`;
+  return `<button class="backrow" onclick="goHome()">← all ${PEOPLE.length} people</button>`;
+}
 /* what a guest may read of a person: standing, project, country, craft */
 const publicName=p=>{const r=ROLE_ICON(p.role)[1];return r.charAt(0).toUpperCase()+r.slice(1)};
 applyMode();
@@ -800,14 +838,21 @@ function setBoil(on){
 let THREAD_MODE={kind:'none'};
 function refreshThreads(){
   apply();
-  drawThreads(THREAD_MODE.kind==='tag'?tagThreads(THREAD_MODE.tag):[]);
+  drawThreads(THREAD_MODE.kind==='tag'?tagThreads(THREAD_MODE.tag)
+             :filterRole?roleThreads(filterRole):[]);
 }
 /* tag mode: one thread stitching everyone who shares the tag, nearest-first */
 function tagThreads(tag){
   const ids=TAGINDEX[tag]||[];
-  const m=ids.map(id=>BY_ID[id]).filter(Boolean);
+  return stitch(ids.map(id=>BY_ID[id]).filter(Boolean),BRAND[hash32(tag)%BRAND.length]);
+}
+/* a standing is a thread too: pick "curator" on the home screen and every
+   curator is stitched to the next across the rings */
+function roleThreads(role){
+  return stitch(PEOPLE.filter(p=>ROLE_ICON(p.role)[1]===role),BRAND[hash32('role:'+role)%BRAND.length]);
+}
+function stitch(m,color){
   if(m.length<2)return[];
-  const color=BRAND[hash32(tag)%BRAND.length];
   // Prim over the nearest-distance frontier: each round only rescans the
   // people still outside the tree, not every pair
   const n=m.length, inTree=new Array(n).fill(false), best=new Array(n).fill(Infinity),
@@ -1150,10 +1195,7 @@ function renderProfile(p){
   const role=ROLE_ICON(p.role)[1];
   const art=p.artistic, given=p.name!==p.artistic?p.name:'';
   const group=clusterOf(p.project);
-  let h='';
-  if(activeTag){                       // a way back into the thread you came from
-    h+=`<button class="backrow" onclick="renderTagPanel('${esc(activeTag)}')">← ${activeTag} · ${(TAGINDEX[activeTag]||[]).length} people</button>`;
-  }
+  let h=backRow('profile');
   // the hosq team's project is the team, so it would otherwise say it twice
   h+=`<div class="eyebrow">${p.project.toLowerCase()===role.toLowerCase()?role:p.project+' · '+role}</div>`;
   h+=`<h1 class="big" tabindex="-1">${art}</h1>`;
@@ -1201,10 +1243,7 @@ function renderProfile(p){
 function renderGuestProfile(p){
   const role=ROLE_ICON(p.role)[1];
   const group=clusterOf(p.project);
-  let h='';
-  if(activeTag){
-    h+=`<button class="backrow" onclick="renderTagPanel('${esc(activeTag)}')">← ${activeTag} · ${(TAGINDEX[activeTag]||[]).length} people</button>`;
-  }
+  let h=backRow('profile');
   h+=`<div class="eyebrow">${p.project.toLowerCase()===role.toLowerCase()?role:p.project+' · '+role}</div>`;
   h+=`<h1 class="big" tabindex="-1">${publicName(p)}</h1>`;
   h+=`<div class="pphoto" style="--prot:${(p._rot*.22).toFixed(2)}deg">`+
@@ -1232,9 +1271,9 @@ function renderHome(){
   const nRoles={};
   PEOPLE.forEach(p=>{const r=ROLE_ICON(p.role)[1];nRoles[r]=(nRoles[r]||0)+1});
   let h='';
-  h+=`<p class="display">hosq is a community of <span class="lk" onclick="fitAll(true)">${PEOPLE.length} people</span> — musicians, artists, engineers and curators — building <b style="font-weight:500">Notations '26</b> across ${CLUSTERS.length} projects.</p>`;
+  h+=`<p class="display">Talent Map is a community of <span class="lk" onclick="fitAll(true)">${PEOPLE.length} people</span> — musicians, artists, engineers and curators — gathered around the <b style="font-weight:500">hosq</b> foundation.</p>`;
   if(MEMBER){
-    h+=`<p class="lead">Everyone stands in a ring around the name of their project. Drag across the field, zoom in, and open a card. Press and hold one to pick it up.</p>`;
+    h+=`<p class="lead">Everyone stands in a ring around the name of their project in Notations '26 — ${CLUSTERS.length} projects in all. Drag across the field, zoom in, and open a card. Press and hold one to pick it up.</p>`;
     h+=`<div class="sect"><h3>Projects</h3><div class="pills">`+
        CLUSTERS.map((c,i)=>`<button class="pill" onclick="flyToCluster(CLUSTERS[${i}])">${c.name} · ${c.members.length}</button>`).join('')+
        `</div></div>`;
@@ -1309,11 +1348,13 @@ function fitPeople(list,anim){
   if(anim===false){vx=tx;vy=ty;vs=s;apply()} else animateTo(tx,ty,s);
 }
 function renderTagPanel(tag){
+  // the thread is the subject now; the card you came from lets go
+  if(selected){BY_ID[selected]._el.classList.remove('sel');selected=null;history.replaceState(null,'','#')}
   const people=(TAGINDEX[tag]||[]).map(id=>BY_ID[id]);
   const byProj={};
   people.forEach(p=>{(byProj[p.project]=byProj[p.project]||[]).push(p)});
   const projs=Object.entries(byProj).sort((a,b)=>b[1].length-a[1].length);
-  let h='';
+  let h=`<button class="backrow" onclick="clearTag()">← all ${PEOPLE.length} people</button>`;
   h+=`<div class="eyebrow">Shared craft</div>`;
   h+=`<h1 class="big">${tag}</h1>`;
   h+= people.length===1
@@ -1345,6 +1386,7 @@ function renderTagPanel(tag){
 /* One way out, and one place that says what is holding the map. Every lens —
    a pulled thread, a role filter, a chosen person — is listed and releasable. */
 function goHome(){
+  if(SEARCH_HOLD){SEARCH_HOLD=null;SEARCH_KIND=null;lightUp([]);const i=document.getElementById('q');if(i)i.value='';document.getElementById('search').classList.remove('has')}
   if(activeTag)clearTag();
   if(filterRole)toggleRole(filterRole);
   if(selected){BY_ID[selected]._el.classList.remove('sel');selected=null}
@@ -1382,6 +1424,8 @@ function toggleRole(r){
     const mine=ROLE_ICON(p.role)[1];
     p._el.classList.toggle('dim',!!filterRole&&mine!==filterRole);
   });
+  refreshThreads();
+  if(filterRole&&!activeTag&&!selected)fitPeople(PEOPLE.filter(p=>ROLE_ICON(p.role)[1]===filterRole));
   if(!activeTag&&!selected)renderHome(); else renderState();
 }
 
@@ -1529,7 +1573,7 @@ fetch('data/people.json')
    skills, countries and projects at once; the matches light up on the map
    while you type, and picking one turns it into the thing it already is —
    a thread, a person, a ring, a country. */
-let SEARCH_HOLD=null, SEARCH_IDX=[];
+let SEARCH_HOLD=null, SEARCH_KIND=null, SEARCH_IDX=[];
 const countriesOf=p=>(p.country||'').split('/').map(c=>c.trim()).filter(Boolean);
 const fold=s=>(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 function buildSearch(){
@@ -1576,14 +1620,19 @@ function pick(i){
   lightUp([]);
   if(e.kind==='person'||e.kind==='project'){SEARCH_HOLD=null}
   eval(e.act);
-  if(e.kind==='project'){SEARCH_HOLD=e.label;lightUp(e.ids);renderState()}
+  if(e.kind==='project'){SEARCH_HOLD=e.label;SEARCH_KIND='project';lightUp(e.ids);renderState()}
 }
 function showCountry(c){
   const ids=PEOPLE.filter(p=>countriesOf(p).includes(c)).map(p=>p.id);
-  SEARCH_HOLD=c; lightUp(ids); fitPeople(ids.map(i=>BY_ID[i]));
-  const people=ids.map(i=>BY_ID[i]);
+  SEARCH_HOLD=c; SEARCH_KIND='country'; lightUp(ids); fitPeople(ids.map(i=>BY_ID[i]));
+  renderCountryPanel(c);
+}
+function renderCountryPanel(c){
+  if(selected){BY_ID[selected]._el.classList.remove('sel');selected=null}
+  const people=PEOPLE.filter(p=>countriesOf(p).includes(c));
   const byProj={}; people.forEach(p=>{(byProj[p.project]=byProj[p.project]||[]).push(p)});
-  let h=`<div class="eyebrow">Country</div><h1 class="big">${c}</h1>`;
+  let h=`<button class="backrow" onclick="clearSearch()">← all ${PEOPLE.length} people</button>`;
+  h+=`<div class="eyebrow">Country</div><h1 class="big">${c}</h1>`;
   h+=`<p class="lead">${people.length} ${people.length===1?'person':'people'} across ${Object.keys(byProj).length} projects.</p>`;
   h+=`<div class="rel"><h3>Everyone from here</h3>`+
      people.map(p=>`<button class="r" onclick="select(${p.id})"><span>${p.artistic}</span><small>${p.project}</small></button>`).join('')+`</div>`;
@@ -1595,9 +1644,9 @@ function clearSearch(){
   const inp=document.getElementById('q'); if(inp)inp.value='';
   document.getElementById('search').classList.remove('has');
   document.getElementById('sugg').classList.remove('open');
-  SEARCH_HOLD=null;
+  const had=SEARCH_HOLD; SEARCH_HOLD=null; SEARCH_KIND=null;
   if(!activeTag)lightUp([]); else PEOPLE.forEach(p=>p._el.classList.remove('hit'));
-  renderState();
+  if(had&&!selected&&!activeTag)renderHome(); else renderState();
 }
 (function(){
   const inp=document.getElementById('q'); if(!inp)return;
@@ -1607,7 +1656,7 @@ function clearSearch(){
     if(e.key==='Escape'){e.stopPropagation();clearSearch();inp.blur()}
     if(e.key==='Enter'){e.preventDefault();const m=searchMatches(inp.value);if(m.length)pick(SEARCH_IDX.indexOf(m[0]))}
   });
-  document.getElementById('qclear').addEventListener('click',()=>{clearSearch();inp.focus()});
+  document.getElementById('qclear').addEventListener('click',()=>{if(activeTag)clearTag();clearSearch();inp.focus()});
   document.addEventListener('click',e=>{if(!e.target.closest('#search'))document.getElementById('sugg').classList.remove('open')});
 })();
 
