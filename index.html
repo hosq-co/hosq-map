@@ -367,17 +367,21 @@ body.wall.expose #paper{opacity:.55;animation-duration:240s}   /* the grid steps
 body.wall.roll #paper{animation-duration:240s}
 body.wall .cluster-label b{font-size:17px}
 /* long exposure: every card starts as unexposed paper and only gains light */
-/* an unexposed card is a sepia plate — opaque, the grid stays behind it —
-   and the print with its cream frame develops on top; the more threads pass
-   through a face the more solid the print becomes */
-body.wall.expose .card{background:#4a3d31;transition:transform .6s}
-body.wall.expose .card.team{background:#4f4233}
-body.wall.expose .card .face{background:var(--frame);opacity:var(--exp,0);transition:opacity 1.6s ease-out}
-body.wall.expose .card.curator .face{background:#f4f0e4}
-body.wall.expose .card.team .face{background:var(--kraft)}
+/* the latent image: every card is a whole polaroid from the first second —
+   cream frame, caption — and the print sits in its window in a fog: faint,
+   blurred, washed out. Every thread that passes through lifts the fog a
+   little: sharper, denser, more contrast, until the print is fully there. */
+body.wall.expose .card{--exp:0;transition:transform .6s}
+body.wall.expose .card .ph img{
+  opacity:calc(.38 + .62*var(--exp));
+  filter:grayscale(1) sepia(.28) blur(calc(5px*(1 - var(--exp)))) contrast(calc(.55 + .5*var(--exp))) brightness(calc(1.12 - .15*var(--exp)));
+  transition:opacity 1.8s ease-out,filter 1.8s ease-out}
+body.wall.expose .card .ph .init{opacity:calc(.55 + .45*var(--exp));transition:opacity 1.8s}
+body.wall.expose .card .cap,body.wall.expose .card .tag{opacity:calc(.6 + .4*var(--exp))}
 body.wall.expose .card.lit{transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.03)}
 body.wall.expose .card::after{display:none}
-body.wall.fix .card .face{transition:opacity 28s linear}
+body.wall.fix .card .ph img{transition:opacity 28s linear,filter 28s linear}
+body.wall.fix .card .ph .init{transition:opacity 28s linear}
 /* the camera's breath on the wall: a compositor animation on a wrapper, so
    the field is rasterised once and only moved */
 #breath{position:absolute;inset:0;transform-origin:50% 50%}
