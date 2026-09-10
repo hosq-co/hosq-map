@@ -1399,7 +1399,7 @@ function renderGuestProfile(p){
   if(p.disciplines.length){h+=`<div class="sect"><h3>Discipline</h3><div class="pills">${tagPills(p.disciplines)}</div></div>`}
   else if(p.skills.length){h+=`<div class="sect"><h3>Craft</h3><div class="pills">${tagPills(p.skills.slice(0,4))}</div></div>`}
   const others=(group?group.members.length-1:0);
-  h+=`<div class="lock"><h3>Members only</h3>
+  h+=`<div class="lock"><h3>Name · tools · contacts</h3>
       <p>Name, tools, Instagram and Telegram of this ${role}${others?` — and of the ${others} others in ${p.project}`:''} — open once you are inside the community.</p></div>`;
   content.innerHTML=h;
   renderState(); renderWalk();
@@ -1515,7 +1515,7 @@ function renderTagPanel(tag){
        `</div>`;
     h+=`<div class="sect"><h3>Standing</h3><div class="pills">`+
        Object.entries(nRoles).map(([r,n])=>`<span class="pill">${r} · ${n}</span>`).join('')+`</div></div>`;
-    h+=`<div class="lock"><h3>Members only</h3>
+    h+=`<div class="lock"><h3>Names · tools · contacts</h3>
         <p>Every one of these ${people.length} by name, with their tools and a direct line — open once you are inside the community.</p></div>`;
   }
   content.innerHTML=h;
@@ -1604,7 +1604,7 @@ function setFolded(on){
 document.getElementById('wallfs').addEventListener('click',()=>{
   document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()});
 document.getElementById('fold').addEventListener('click',()=>setFolded(!document.body.classList.contains('folded')));
-try{if(localStorage.getItem('hosq-map-folded')==='1'&&innerWidth>760)setFolded(true)}catch(e){}
+try{if(!WALL&&localStorage.getItem('hosq-map-folded')==='1'&&innerWidth>760)setFolded(true)}catch(e){}
 /* anything that puts a reading in the panel opens it first */
 const unfold=()=>{if(document.body.classList.contains('folded'))setFolded(false)};
 function placeArrows(){
@@ -1719,6 +1719,7 @@ fetch('data/people.json')
   })
   .catch(err=>{
     console.error(err);
+    if(WALL){setTimeout(()=>location.reload(),15000);return}   // a projector has no one to click "try again"
     content.innerHTML=`<div class="eyebrow">The map is not here</div>
       <h1 class="big">Nobody loaded</h1>
       <p class="lead">The community file could not be read — <code>${String(err.message||err)}</code>.</p>
@@ -1734,7 +1735,7 @@ const countriesOf=p=>(p.country||'').split('/').map(c=>c.trim()).filter(Boolean)
 const fold=s=>(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 function buildSearch(){
   SEARCH_IDX=[];
-  PEOPLE.forEach(p=>SEARCH_IDX.push({kind:'person',label:p.artistic,sub:p.project,key:fold(p.artistic+' '+p.name),ids:[p.id],act:`select(${p.id})`}));
+  PEOPLE.forEach(p=>SEARCH_IDX.push({kind:'person',label:p.artistic,sub:(p.name!==p.artistic?p.name+' · ':'')+p.project,key:fold(p.artistic+' '+p.name),ids:[p.id],act:`select(${p.id})`}));
   Object.entries(TAGINDEX).forEach(([t,ids])=>SEARCH_IDX.push({kind:'craft',label:t,n:ids.length,key:fold(t),ids,act:`showTag('${esc(t)}')`}));
   CLUSTERS.forEach((c,i)=>SEARCH_IDX.push({kind:'project',label:c.name,n:c.members.length,key:fold(c.name),ids:c.members.map(m=>m.id),act:`flyToCluster(CLUSTERS[${i}])`}));
   // "Russia / Armenia" belongs to both countries, not to a third one
