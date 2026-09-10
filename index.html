@@ -128,7 +128,7 @@ a{color:inherit}
   transform:translate(-50%,-50%) rotate(var(--rot,0deg)) scale(1.03);
   box-shadow:0 3px 6px rgba(0,0,0,.6),0 26px 50px rgba(0,0,0,.6)}
 .card.sel{outline:2px solid var(--coral);outline-offset:3px}
-.card .ph{position:relative;width:100%;height:138px;background:#2a2620;overflow:hidden}
+.card .ph{position:relative;width:100%;height:138px;background:linear-gradient(160deg,#d3c6a8,#c6b592);overflow:hidden}
 .card .ph img{width:100%;height:100%;object-fit:cover;display:block;
   filter:grayscale(1) sepia(.28) contrast(1.04) brightness(.97);
   /* the photograph is part of the card, not a thing you can peel off it */
@@ -171,7 +171,7 @@ a{color:inherit}
 
 /* what is holding the map right now, and how to let go of it */
 /* two doors to the wall: a polaroid and a net, quiet in the corner of the map */
-#walldoors{position:fixed;right:18px;top:16px;z-index:32;display:flex;gap:4px}
+#walldoors{position:fixed;right:18px;top:16px;z-index:32;display:flex;gap:2px;padding:2px;border-radius:8px;background:rgba(35,31,32,.62)}
 #walldoors a{display:block;width:28px;height:28px;padding:6px;border-radius:6px;opacity:.42;transition:opacity .15s,background .15s}
 #walldoors a:hover,#walldoors a:focus-visible{opacity:1;background:rgba(238,231,211,.1);outline:none}
 #walldoors svg{width:16px;height:16px;display:block;fill:none;stroke:var(--paper);stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round}
@@ -336,7 +336,7 @@ button.pill.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   #walkpos{font-size:11px;color:var(--text-soft)}
 
   /* what holds the map, said once, above the sheet and releasable at 44px */
-  #statebar{top:auto;left:12px;right:12px;bottom:calc(var(--sheet-h,22dvh) + 10px);
+  #statebar{top:46px;left:12px;right:12px;bottom:auto;
     font-size:11px;border-radius:999px}
   #statebar .row{padding:11px 8px 11px 14px}
   #statebar button{padding:10px 12px;font-size:14px}
@@ -390,8 +390,8 @@ body.wall.expose #breath{will-change:transform;animation:breathe 258s ease-in-ou
   50%{transform:translate(0,28px) scale(1)}75%{transform:translate(-38px,-10px) scale(.96)}100%{transform:translate(0,0) scale(1)}}
 /* the thread is a hair, not a rope */
 body.wall #edges{opacity:var(--eop,1)}
-body.wall #edges path{vector-effect:non-scaling-stroke;stroke-width:3px;stroke-opacity:1}
-body.wall #edges path.halo{display:none}
+body.wall #edges path{vector-effect:non-scaling-stroke;stroke-width:3.5px;stroke-opacity:1}
+body.wall #edges path.halo{stroke-width:11px;stroke-opacity:.22}
 body.wall #edges circle{display:none}
 /* roll call: one face, one line, a scale of 138 marks */
 #wallcap{position:fixed;left:6vw;right:6vw;bottom:9vh;z-index:35;display:none;pointer-events:none;
@@ -412,7 +412,7 @@ body.wall.roll .card::after{display:none}
 body.wall.roll #stage::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34vh;z-index:34;pointer-events:none;
   background:linear-gradient(to top,rgba(35,31,32,.92),rgba(35,31,32,0))}
 #wallmark{position:fixed;right:48px;bottom:4vh;z-index:35;display:none;opacity:.32;pointer-events:none}
-#wallmark img{width:clamp(48px,4.5vw,84px);display:block}
+#wallmark img{width:clamp(48px,4.5vw,84px);display:block;filter:brightness(0) invert(1)}   /* the black mark, printed light */
 body.wall #wallmark{display:block}
 /* a fullscreen mark you have to know about: top-right, twelve pixels, nearly paper-coloured */
 #wallfs{position:fixed;bottom:14px;right:14px;z-index:36;display:none;width:22px;height:22px;padding:5px;
@@ -436,7 +436,7 @@ body.guest .card .tag{padding-top:7px}
   display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--paper)}
 /* the guest's door: one coral block, one verb, the way in underlined beneath */
 #authbar.guest{border-top:0;padding:0 18px 18px;display:block;position:absolute;left:0;right:0;bottom:0;
-  background:transparent;pointer-events:none}
+  background:linear-gradient(to top,var(--paper) 18px,rgba(235,226,214,0) 18px);pointer-events:none}
 #authbar.guest .cta{pointer-events:auto}
 body.guest #panel-scroll{padding-bottom:210px}   /* room to scroll the last pill out from under the door */
 .cta{background:rgba(255,255,255,.38);border-radius:18px;padding:20px 22px 18px;
@@ -496,6 +496,7 @@ body.guest #panel-scroll{padding-bottom:210px}   /* room to scroll the last pill
   border:1px solid var(--line);background:#fff;color:var(--ink);margin-bottom:14px;outline:none}
 #modal input:focus{border-color:var(--coral)}
 #modal .actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#modal .actions .loginlink{width:auto;margin:0;padding:6px 4px}
 #modal .close{position:absolute;top:18px;right:20px;font-size:18px;color:var(--text-soft);padding:6px}
 #modal .close:hover{color:var(--coral)}
 #modal .demo{margin-top:18px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;
@@ -683,7 +684,7 @@ function openModal(tab){
         <label for="email-join">Email</label>
         <input id="email-join" name="email" type="email" placeholder="you@example.com" required>
         <div class="actions"><button class="btn primary" type="submit">Apply to join →</button>
-          <button class="btn quiet" type="button" onclick="openModal('login')">already a member? log in</button></div>
+          <button class="loginlink" type="button" onclick="openModal('login')">Already a member? <u>Log in</u></button></div>
       </form>
       <div class="demo">demo · no account is created — the switch only shows the logic</div>`
    : `<h2 id="modal-title">Welcome back.</h2>
@@ -692,7 +693,7 @@ function openModal(tab){
         <label for="email-login">Email</label>
         <input id="email-login" name="email" type="email" placeholder="you@example.com" required>
         <div class="actions"><button class="btn primary" type="submit">Send the link →</button>
-          <button class="btn quiet" type="button" onclick="openModal('join')">not a member yet? join</button></div>
+          <button class="loginlink" type="button" onclick="openModal('join')">Not a member yet? <u>Join</u></button></div>
       </form>
       <div class="demo">demo · any email opens the member view on this browser</div>`;
   setTimeout(()=>{const i=b.querySelector('input');i&&i.focus()},30);
@@ -1388,7 +1389,7 @@ function renderGuestProfile(p){
   const role=ROLE_ICON(p.role)[1];
   const group=clusterOf(p.project);
   let h=backRow('profile');
-  h+=`<div class="eyebrow">${p.project.toLowerCase()===role.toLowerCase()?role:p.project+' · '+role}</div>`;
+  h+=`<div class="eyebrow">${p.project.toLowerCase()===role.toLowerCase()?'Notations \'26':p.project}</div>`;
   h+=`<h1 class="big" tabindex="-1">${publicName(p)}</h1>`;
   h+=`<div class="pphoto" style="--prot:${(p._rot*.22).toFixed(2)}deg">`+
      (p.photo?`<img src="photos/${p.photo}.jpg" alt="${publicName(p)}" onerror="this.outerHTML='<div class=no>${ROLE_ICON(p.role)[0]}</div>'">`
